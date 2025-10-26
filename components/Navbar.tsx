@@ -1,74 +1,101 @@
-import React from 'react'
-import Link from 'next/link'
+"use client"
+import React, { useState } from "react"
+import Link from "next/link"
+import logo from '../public/assets/logo.jpg'
+import Image from "next/image"
 
 const Navbar = () => {
-  return (
-     <nav className="bg-linear-to-b from-[#e6effd] to-white w-full">
-      <div className="max-w-5xl mx-auto flex items-center justify-between px-4 py-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-0.5 font-bold text-2xl select-none">
-          {/* Grid logo */}
-          <span className="inline-block mr-2">
-            {/* 3x3 black grid */}
-            <span className="flex flex-col space-y-0.5">
-              {[0, 1, 2].map(row => (
-                <span key={row} className="flex space-x-0.5">
-                  {[0, 1, 2].map(col => (
-                    <span key={col} className="w-1.5 h-1.5 bg-black rounded-sm inline-block" />
-                  ))}
-                </span>
-              ))}
-            </span>
-          </span>
-          <span>DOM</span>
-          <span className="text-blue-600 ml-px">Z</span>
-        </Link>
+  const [menuOpen, setMenuOpen] = useState(false)
 
-        {/* Navbar Links */}
-        <div className="flex items-center gap-2 bg-red-900">
-          <div className="relative">
-            {/* Home Link with dropdown arrow */}
-            <button className="bg-white text-gray-800 font-medium px-6 py-2 rounded-full shadow border flex items-center hover:bg-gray-50 transition">
-              Home
-              <svg
-                className="ml-1 w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-          </div>
-          <Link
-            href="/buy"
-            className="bg-white text-gray-800 font-medium px-6 py-2 rounded-full shadow border hover:bg-gray-50 transition"
-          >
-            Buy
-          </Link>
-          <Link
-            href="/sell"
-            className="bg-white text-gray-800 font-medium px-6 py-2 rounded-full shadow border hover:bg-gray-50 transition"
-          >
-            Sell
-          </Link>
-          <Link
-            href="/contact"
-            className="bg-white text-gray-800 font-medium px-6 py-2 rounded-full shadow border hover:bg-gray-50 transition"
-          >
-            Contact
-          </Link>
+  return (
+    <nav className=" fixed w-full z-50">
+      <div className="container mx-auto px-4 flex justify-between items-center py-3">
+        {/* Logo */}
+        <div className="flex items-center space-x-2">
+          <Image
+            src={logo}
+            alt="Domz Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+            priority
+          />
+          {/* <span className="text-xl font-bold text-purple-600">Domz</span> */}
         </div>
 
-        {/* My Domz Button */}
-        <Link
-          href="/dashboard"
-          className="bg-blue-600 text-white font-bold px-6 py-2 rounded-full shadow hover:bg-blue-700 transition"
+        {/* Desktop Menu */}
+        <div className="hidden sm:flex space-x-6 text-sm font-semibold text-gray-800">
+          <Link href="#" className="hover:text-purple-600">Home</Link>
+          <Link href="#" className="hover:text-purple-600">Buy</Link>
+          <Link href="#" className="hover:text-purple-600">Sell</Link>
+          <Link href="#" className="hover:text-purple-600">Contact</Link>
+        </div>
+
+        {/* Buttons (Desktop) */}
+        <div className="hidden sm:flex items-center space-x-4">
+          <Link
+            href="#"
+            className="
+    text-white
+    font-semibold
+    py-2
+    px-8
+    rounded-full
+    bg-linear-to-b
+    from-blue-500
+    to-blue-700
+    shadow-md
+    transition
+    duration-150
+    hover:from-blue-600
+    hover:to-blue-800
+    text-center
+    tracking-wide
+    text-base
+  "
+          >
+            My Domz
+          </Link>
+
+
+        </div>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="sm:hidden text-purple-600 focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          My Domz
-        </Link>
+          {menuOpen ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="sm:hidden bg-white border-t shadow-md">
+          <div className="flex flex-col items-start p-4 space-y-3 text-sm font-semibold text-gray-800">
+            <Link href="#" className="hover:text-purple-600" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link href="#" className="hover:text-purple-600" onClick={() => setMenuOpen(false)}>Buy</Link>
+            <Link href="#" className="hover:text-purple-600" onClick={() => setMenuOpen(false)}>Sell</Link>
+            <Link href="#" className="hover:text-purple-600" onClick={() => setMenuOpen(false)}>Contact</Link>
+            <div className="flex flex-col w-full border-t pt-3 space-y-2">
+              <Link
+                href="#"
+                className="border px-4 py-2 rounded-lg text-center hover:text-purple-600 hover:border-purple-600"
+              >
+                My Domz
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
