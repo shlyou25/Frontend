@@ -32,11 +32,11 @@ const NavbarComponenet = (props: NavbarTextProp) => {
             <li className="hover:text-blue-600 transition cursor-pointer">Contact</li>
           </ul>
         </div>
-        <div className="hidden md:flex justify-end">
+        <Link href={'/portfolio'} className="hidden md:flex justify-end">
           <button className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:from-blue-600 hover:to-blue-700 transition text-[16px]">
             My Domz
           </button>
-        </div>
+        </Link>
         <button
           className="md:hidden flex items-center absolute right-6 top-6 text-gray-800 focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
