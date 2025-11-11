@@ -1,4 +1,5 @@
 import DomainTable from '@/components/DomainTable'
+import FilterDashboard from '@/components/FilterDashboard'
 import Footer from '@/components/Footer'
 import NavbarComponenet from '@/components/NavbarComponenet'
 
@@ -87,6 +88,7 @@ const page = () => {
                 </div>
             </div>
             <Footer/>
+            {/* <FilterDashboard/> */}
         </div>
     )
 }

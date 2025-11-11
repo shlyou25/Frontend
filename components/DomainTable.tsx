@@ -1,31 +1,16 @@
 import React from 'react'
 const DomainTable = () => {
-    const Data=[
-        {
-           "Domain":"Listure.com",
-           "Seller":"KellyJoan"
-        },
-        {
-           "Domain":"Edenbay.com",
-           "Seller":"Dom88"
-        },
-        {
-           "Domain":"PodCity.com",
-           "Seller":"PhoenixX"
-        },
-        {
-           "Domain":"HIIW.com",
-           "Seller":"TodSimons"
-        },
-        {
-           "Domain":"Nishmas.com",
-           "Seller":"EchoWolf91"
-        },
-        {
-           "Domain":"AiSpyz.com",
-           "Seller":"SilentRun"
-        }
-    ]
+    const Data = [
+  { Domain: "Listure.com", Seller: "KellyJoan" },
+  { Domain: "EdenBay.com", Seller: "Dom88" },
+  { Domain: "PodCity.com", Seller: "PhoenixX" },
+  { Domain: "HIIW.com", Seller: "TodSimons" },
+  { Domain: "Nishmas.org", Seller: "EchoWolf91" },
+  { Domain: "AiSpyz.com", Seller: "SilentRun" },
+  { Domain: "OBGYNBlog.com", Seller: "NightHawk" },
+  { Domain: "Wahew.com", Seller: "SealUK" },
+  { Domain: "Example.com", Seller: "Temple613" },
+];
     return (
         <>
             <section className=" sm:p-5">
