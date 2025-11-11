@@ -83,10 +83,10 @@ const NavbarComponenet = (props: NavbarTextProp) => {
         </h1>
       </div>
       <div>
-        {props?.paraText &&
+        {props?.IsParaText &&
           <div className="w-full flex flex-col items-center py-6">
             <div className="mb-3 text-center text-black">
-              Browse a commission-free catalog and connect directly with domain owners.
+             {props?.ParaText}
             </div>
             <div className="flex items-center w-full max-w-xl rounded-full bg-white shadow-lg px-4 py-2">
               <input
