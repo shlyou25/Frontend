@@ -1,6 +1,31 @@
 import React from 'react'
-
 const DomainTable = () => {
+    const Data=[
+        {
+           "Domain":"Listure.com",
+           "Seller":"KellyJoan"
+        },
+        {
+           "Domain":"Edenbay.com",
+           "Seller":"Dom88"
+        },
+        {
+           "Domain":"PodCity.com",
+           "Seller":"PhoenixX"
+        },
+        {
+           "Domain":"HIIW.com",
+           "Seller":"TodSimons"
+        },
+        {
+           "Domain":"Nishmas.com",
+           "Seller":"EchoWolf91"
+        },
+        {
+           "Domain":"AiSpyz.com",
+           "Seller":"SilentRun"
+        }
+    ]
     return (
         <>
             <section className=" sm:p-5">
@@ -86,8 +111,9 @@ const DomainTable = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="border-b">
-                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">Apple iMac 27&#34;</th>
+                                    {Data?.map((data=>(
+                                      <tr className="border-b">
+                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data.Domain}</th>
                                         <td className="px-4 py-3 cursor-pointer">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -99,8 +125,10 @@ const DomainTable = () => {
                                                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                                                 </svg>
                                         </td>
-                                        <td className="px-4 py-3">Apple</td>
+                                        <td className="px-4 py-3">{data.Seller}</td>
                                     </tr>
+                                    )))}
+                                   
                                 </tbody>
                             </table>
                         </div>
