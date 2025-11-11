@@ -5,7 +5,7 @@ import NavbarComponenet from '@/components/NavbarComponenet'
 const page = () => {
     return (
         <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
-            <NavbarComponenet colorText='My ' plainText='Portfolio' paraText={true} />
+            <NavbarComponenet colorText="S" plainText="ignUp" IsParaText={true} ParaText="Your paragraph text here" />
             <div className="w-full max-w-5xl mx-auto mt-8">
                 <div className="flex justify-between mb-2">
                     <button className="rounded-full border border-gray-300 px-4 py-1 bg-white text-gray-700 shadow hover:bg-gray-100">

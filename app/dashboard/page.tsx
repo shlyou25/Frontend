@@ -13,7 +13,7 @@ const sidebarLinks = [
 const page = () => {
     return (
         <div className="min-h-screen bg-white lg:pl-[10%] lg:pr-[10%] lg:pt-9">
-            <NavbarComponenet colorText='P' plainText='rofile' paraText={false} />
+            <NavbarComponenet colorText="P" plainText="rofile" IsParaText={false} />
             <div className="min-h-screen flex flex-col sm:flex-row bg-white">
                 {/* Sidebar */}
                 <aside className="sm:w-64 w-full bg-white border-r border-gray-200 px-4 py-8 shrink-0  fixed  left-0 ">

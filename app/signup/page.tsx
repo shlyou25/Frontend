@@ -3,7 +3,7 @@ import NavbarComponenet from '@/components/NavbarComponenet';
 
 const Page = () => (
   <div className=" bg-white lg:pl-[10%] lg:pr-[10%] lg:pt-9">
-    <NavbarComponenet colorText='S' plainText='ignUp' paraText={false}/>
+    <NavbarComponenet colorText="S" plainText="ignUp" IsParaText={false} />
     <div className="lg:px-[10%] lg:pt-16">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white">
