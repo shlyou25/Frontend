@@ -48,10 +48,8 @@ const Page = () => {
           withCredentials: true, // ✅ allow cookies from backend
         }
       );
-
-      // ✅ backend sets cookie automatically; no need to save token manually
       toast.success(res.data.message || 'Login successful!');
-      router.push('/portfolio');
+      router.push('/dashboard');
     } catch (error: any) {
       toast.error(error?.response?.data?.message || 'An unexpected error occurred', {
         position: 'top-right',

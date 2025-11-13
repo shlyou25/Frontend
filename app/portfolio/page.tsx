@@ -10,28 +10,26 @@ import Loader from '@/components/Loader';
 const Page = () => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-
     useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                // ✅ Send POST request with credentials (cookie)
-                await axios.get(`${process.env.NEXT_PUBLIC_apiLink}auth/authenticate`, {
-                    withCredentials: true,
-                });
+    let isMounted = true; // flag to prevent state update on unmounted component
+    const checkAuth = async () => {
+      try {
+        await axios.get(
+          `${process.env.NEXT_PUBLIC_apiLink}auth/authenticate`,
+          { withCredentials: true }
+        );
+        if (isMounted) setLoading(false);
+      } catch (err) {
+        if (isMounted) router.push("/login");
+      }
+    };
+    checkAuth();
+    return () => {
+      isMounted = false; // clean up flag
+    };
+  }, [router]);
 
-                setLoading(false);
-            } catch (err) {
-                console.error("Auth error:", err);
-                router.push("/login");
-            }
-        };
-
-        checkAuth();
-    }, [router]);
-
-    console.log(process.env.NEXT_PUBLIC_apiLink, "process.env.NEXT_PUBLIC_apiLinkprocess.env.NEXT_PUBLIC_apiLink")
     if (loading) return <Loader />;
-
     return (
         <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
             <NavbarComponenet colorText="MY " plainText="Portfolio" IsParaText={true} ParaText="Browse a commission-free catalog and connect directly with domain owners." />

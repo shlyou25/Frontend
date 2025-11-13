@@ -12,7 +12,7 @@ const DemoVideo: React.FC = () => (
       <iframe
         width="100%"
         height="100%"
-        src="https://www.youtube.com/embed/pRpeEdMmmQ0?si=ZXWS4xCSFKGuR0C6"
+        src="https://www.youtube.com/embed/IYkpHNTF0dU?si=zZExPH7FFToFIj62"
         title="Platform Demo Video"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

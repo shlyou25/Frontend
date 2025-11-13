@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import backgroundImg from '../public/assets/background.webp'
-import DomainTable from '@/components/DomainTable'
 import ConnectedBrands from '@/components/ConnectedBrands'
 import BrowseDomain from '@/components/BrowseDomain'
 import Features from '@/components/Features'
@@ -28,10 +27,6 @@ const page = () => {
       <Faq/>
       <GetStarted/>
       <Footer/>
-      {/* <div className='px-4 lg:ml-[20%] lg:mr-[20%]'>
-        <DomainTable />
-      </div> */}
-
     </div>
   )
 }
