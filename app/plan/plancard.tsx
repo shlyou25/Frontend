@@ -9,8 +9,8 @@ export interface PlanCardInterface {
     price: number;
     per: string;
     feature: number;
-    startDate: string;
-    endingDate: string;
+    startDate?: string;
+    endingDate?: string;
 }
 
 
