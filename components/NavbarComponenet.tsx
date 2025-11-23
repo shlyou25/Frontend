@@ -7,7 +7,7 @@ export type NavbarTextProp =
     colorText: string;
     plainText: string;
     IsParaText: true;
-    ParaText: string;
+    ParaText?: string;
   }
   | {
     colorText: string;
@@ -20,7 +20,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="bg-linear-to-b from-white to-blue-50 w-full lg:pb-16 sticky top-0 z-40 ">
+    <div className="bg-linear-to-b from-white to-blue-50 w-full lg:pb-16 sticky top-0 z-40 rounded-b-3xl">
       <nav className="max-w-7xl mx-auto flex items-center h-20 px-6 lg:px-20 relative z-50" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr' }}>
         <Link href={'/'} className="flex items-center">
           <Image
@@ -41,7 +41,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           </ul>
         </div>
         <Link href={'/portfolio'} className="hidden md:flex justify-end">
-          <button className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:from-blue-600 hover:to-blue-700 transition text-[16px]">
+          <button className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:from-blue-600 hover:to-blue-700 transition text-[16px] cursor-pointer">
             My Domz
           </button>
         </Link>

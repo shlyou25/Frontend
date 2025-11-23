@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-4 relative z-50">
       <Link href={'/'}>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 cursor-pointer">
         <Image
           src="/assets/logo.jpg"
           alt="Domz Logo"

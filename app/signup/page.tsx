@@ -133,6 +133,7 @@ const Page = () => {
                   <button
                     type="submit"
                     className="
+                      cursor-pointer
                       rounded-full
                       px-8
                       py-2
