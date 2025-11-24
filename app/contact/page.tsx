@@ -18,7 +18,7 @@ const page = () => {
     name: '',
     email: '',
     message: '',
-    subject: 'This is from contact me section'
+    subject: 'New Submisson On the Contact Form'
   });
   const [loaderStatus, setLoaderStatus] = useState(false);
 
