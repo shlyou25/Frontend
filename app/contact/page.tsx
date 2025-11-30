@@ -40,9 +40,7 @@ const page = () => {
         message: userData.message,
         subject: userData.subject,
       });
-      console.log(res?.data?.message);
-
-      toast.success(res?.data.message);
+      toast.success(res?.data?.message);
     } catch (err: any) {
       toast.error(err?.response?.data.message || "An unexpected error occurred", {
         position: 'top-right',
