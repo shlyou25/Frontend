@@ -87,7 +87,6 @@ const Page = () => {
                     onChange={onChangeHandler}
                   />
                 </div>
-
                 <div className="w-full">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                     Password*
