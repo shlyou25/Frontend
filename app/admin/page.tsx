@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Content from './content';
 
-export default function Page() {
+const Page=()=> {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -122,3 +122,4 @@ export default function Page() {
     </div>
   );
 }
+export default Page
