@@ -40,7 +40,6 @@ const Page = () => {
     { label: "Plans", icon: "/assets/icons/padlock.webp", onClick: () => router.push("/plan") },
     { label: "My Portfolio", icon: "/assets/icons/padlock.webp", onClick: () => setActiveSection("myPortfolio") },
     { label: "Subscription", icon: "/assets/icons/credit-card.webp", onClick: () => setActiveSection("Subscription") },
-    { label: "Billing", icon: "/assets/icons/bill.webp", onClick: () => setActiveSection("billing") },
     { label: "Logout", icon: "/assets/icons/logout.png", onClick:()=> logoutHandler(router) },
   ];
 

@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { logoutHandler } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 

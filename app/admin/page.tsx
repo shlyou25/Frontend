@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
-
 import Content from './content';
 import Loader from '@/components/Loader';
+import Table from '@/utils/Table';
 
 interface User {
   _id: string;
@@ -14,14 +14,23 @@ interface User {
   name?: string;        // optional
   phoneNumber?: string; // optional
 }
+interface Domain {
+  domain: string;
+  createdAt: string;
+}
 
-
+interface DomainsResponse {
+  success: boolean;
+  count: number;
+  domains: Domain[];
+}
 const Page = () => {
   const router = useRouter();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [domainsData, setDomainsData] = useState<DomainsResponse | null>(null);
 
   useEffect(() => {
     const checkAdminAuth = async () => {
@@ -59,10 +68,23 @@ useEffect(()=>{
     fetchAllUser();
 },[router])
 
-console.log(allUsers);
+useEffect(()=>{
+    const fetchAlldomain=async ()=>{
+      try {
+        const res=await axios.get(
+          `${process.env.NEXT_PUBLIC_apiLink}domain/getalldomains`,
+          {withCredentials:true}
+        )
+        .then((res:any)=>setDomainsData(res.data)
+        )
+      } catch (error) {
+        toast.error('Error Fetching Domains')
+      }
+    }
+    fetchAlldomain();
+},[router])
 
   if (loading) return <Loader />;
-
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
       {/* Mobile Hamburger */}
@@ -117,7 +139,7 @@ console.log(allUsers);
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {[
             { label: 'Total Users', value: allUsers?.length, change: '↑ 12%', color: 'bg-blue-500' },
-            { label: 'Domains Registered', value: '0', change: '↑ 20%', color: 'bg-teal-500' },
+            { label: 'Domains Registered', value: domainsData?.count, change: '↑ 20%', color: 'bg-teal-500' },
             { label: 'Query', value: '50', change: '↓ 10%', color: 'bg-orange-500' },
             { label: 'Requests', value: '£10,000', change: '↑ 10%', color: 'bg-red-500' },
           ].map((item) => (
@@ -138,22 +160,7 @@ console.log(allUsers);
             </div>
           ))}
         </div>
-
-        {/* CHARTS */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="col-span-2 bg-white shadow-md rounded-xl p-6 h-[380px] flex items-center justify-center">
-            <p className="text-gray-400">[ Bar Chart ]</p>
-          </div>
-
-          <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center justify-center">
-            <h3 className="text-lg font-semibold mb-4">
-              Average Automation Cost
-            </h3>
-            <div className="relative w-48 h-48 flex items-center justify-center font-semibold">
-              £143,000
-            </div>
-          </div>
-        </div>
+        <Table/>
 
         {/* TABLE */}
         <div className="bg-white shadow-md rounded-xl p-6 h-64 flex items-center justify-center mb-10">

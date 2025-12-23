@@ -1,8 +1,7 @@
 "use client";
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import Image from 'next/image'
-import { useState } from 'react';
 
 export interface PlanCardInterface {
     title: string;
@@ -15,18 +14,10 @@ export interface PlanCardInterface {
 
 
 const Plancard = ({ title, price, per, feature }: PlanCardInterface) => {
-    const buyPlanHandler = async () => {
-        try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_apiLink}plan/addplan`, { title: title },
-                { withCredentials: true }
-            )
-            toast.success(res?.data?.message)
-        } catch (error: any) {
-            toast.error(error?.response?.data?.message || 'An unexpected Error Occured', {
-                position: 'top-right'
-            })
-        }
-    }
+    const router=useRouter();
+    const buyPlanHandler = () => {
+    router.push(`/payment?plan=${encodeURIComponent(title)}`);
+  };
 
     return (
         <div className="relative bg-linear-to-b from-[#F6F9FF] to-[#EEF3FF] rounded-4xl shadow-[0_4px_24px_rgba(146,151,255,0.12)] border border-[#EBEEF8] p-8 w-full max-w-xs flex flex-col items-start mx-auto ">
