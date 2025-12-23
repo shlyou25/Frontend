@@ -1,146 +1,91 @@
-'use client';
+"use client";
 
-import { ChangeEvent, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import Footer from '@/components/Footer';
-import NavbarComponenet from '@/components/NavbarComponenet';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import Loader from '@/components/Loader';
-import 'react-toastify/dist/ReactToastify.css';
+import NavbarComponenet from "@/components/NavbarComponenet";
+import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
 
-interface UserDataLogin {
-  email: string;
-  password: string;
-  terms: boolean;
-}
-
-const Page = () => {
-  const [userData, setUserData] = useState<UserDataLogin>({
-    email: '',
-    password: '',
-    terms: false,
-  });
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setUserData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
-const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setLoading(true);
-
-  try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_apiLink}auth/login`,
-      {
-        email: userData.email.trim(),
-        password: userData.password,
-        terms: userData.terms,
-      },
-      { withCredentials: true }
-    );
-
-    // 🔐 ADMIN → OTP REQUIRED (200)
-    if (res.data?.code === "ADMIN_OTP_REQUIRED") {
-      toast.info("OTP sent to your email");
-      router.push("/verify");
-      return;
-    }
-
-    // ✅ NORMAL USER → SESSION EXISTS
-    const me = await axios.get(
-      `${process.env.NEXT_PUBLIC_apiLink}auth/me`,
-      { withCredentials: true }
-    );
-    toast.success("Login successful");
-    router.push(me.data.user.role === "admin" ? "/admin" : "/dashboard");
-
-  } catch (error: any) {
-    // 🔒 FORCED PASSWORD CHANGE (403)
-    if (
-      error?.response?.status === 403 &&
-      error?.response?.data?.code === "PASSWORD_CHANGE_REQUIRED"
-    ) {
-      router.push("/changepassword");
-      return;
-    }
-
-    toast.error(
-      error?.response?.data?.message || "Login failed"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-
-  if (loading) return <Loader />;
-
+export default function SignIn() {
   return (
-    <div className="min-h-screen bg-white lg:px-[10%] lg:pt-9">
-      <NavbarComponenet colorText="S" plainText="ignIn" IsParaText={false} />
+    <div className="min-h-screen bg-white flex flex-col">
 
-      <div className="lg:px-[10%] lg:pt-16">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            <span className="text-blue-600">Login</span> to Your Account
-          </h2>
+      {/* HERO + NAVBAR */}
+      <NavbarComponenet
+        colorText="S"
+        plainText="ign In"
+        IsParaText={false}
+      />
 
-          <form className="space-y-6" onSubmit={onSubmitHandler} noValidate>
+      {/* FORM SECTION */}
+      <main className="flex-1 flex justify-center px-4 sm:px-6 lg:px-0">
+        <div className="w-full max-w-3xl mt-10 lg:mt-16">
+
+          <form className="space-y-6">
+
+            {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1">Email *</label>
+              <label className="block text-sm font-medium mb-2">Email</label>
               <input
-                name="email"
                 type="email"
-                required
-                className="w-full rounded-lg bg-blue-50 px-4 py-2"
-                onChange={onChangeHandler}
+                className="w-full rounded-xl bg-blue-50 px-5 py-3
+                           focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-1">Password *</label>
+              <label className="block text-sm font-medium mb-2">Password</label>
               <input
-                name="password"
                 type="password"
-                required
-                className="w-full rounded-lg bg-blue-50 px-4 py-2"
-                onChange={onChangeHandler}
+                className="w-full rounded-xl bg-blue-50 px-5 py-3
+                           focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            <div className="flex items-center">
-              <input
-                name="terms"
-                type="checkbox"
-                required
-                className="h-4 w-4"
-                onChange={onChangeHandler}
-              />
-              <label className="ml-2 text-sm">
-                I agree to the Terms & Privacy Policy
-              </label>
+            {/* Terms */}
+            <div className="flex items-start gap-2 text-sm text-gray-700">
+              <input type="checkbox" className="mt-1 h-4 w-4 rounded" />
+              <p>
+                I agree to the{" "}
+                <span className="text-blue-600 cursor-pointer">
+                  Terms of Service
+                </span>{" "}
+                and{" "}
+                <span className="text-blue-600 cursor-pointer">
+                  Privacy Policy
+                </span>
+              </p>
             </div>
 
+            {/* Login Button */}
             <button
               type="submit"
-              className="rounded-full px-8 py-2 bg-blue-600 text-white font-semibold"
+              className="w-full sm:w-56 rounded-full py-3
+                         bg-linear-to-r from-blue-500 to-blue-600
+                         text-white font-semibold shadow-md
+                         hover:from-blue-600 hover:to-blue-700 transition"
             >
               LOGIN
             </button>
+
+            {/* Links */}
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-3 text-sm">
+              <p>
+                Don’t have an account?{" "}
+                <span className="text-blue-600 font-semibold cursor-pointer">
+                  Sign Up
+                </span>
+              </p>
+              <span className="text-blue-600 cursor-pointer">
+                Forgot password?
+              </span>
+            </div>
+
           </form>
         </div>
-      </div>
+      </main>
 
       <Footer />
       <ToastContainer />
     </div>
   );
-};
-
-export default Page;
+}

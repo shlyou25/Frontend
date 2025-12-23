@@ -54,7 +54,7 @@ const page = () => {
     <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
       <NavbarComponenet colorText="Let's Star" plainText="t the conversation" IsParaText={true} ParaText="As a user-centric platfrom, we value your feedback.
         Reach out via the form or email us at info@domz.com - We'll respond promptly" searchbarStatus={false} />
-      <form onSubmit={onSubmitHandler} className="max-w-[680px] mx-auto pt-6 px-4 md:px-0">
+      <form onSubmit={onSubmitHandler} className="max-w-170 mx-auto pt-6 px-4 md:px-0">
         <h2 className="text-center text-[2rem] font-bold mb-3 leading-tight select-none">
           <span className="text-blue-600 font-bold">Your questions</span> and feedback matter.
         </h2>

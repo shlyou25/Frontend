@@ -11,7 +11,6 @@ const CheckoutForm = () => {
   const elements = useElements();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const planTitle = searchParams.get("plan");
 
   const handlePay = async () => {
@@ -31,7 +30,7 @@ const CheckoutForm = () => {
         toast.error(intentRes.data.message);
         setTimeout(() => {
           router.push("/plan");
-        }, 3000);
+        }, 5000);
 
       }
       // ✅ Continue payment only if allowed
@@ -58,6 +57,10 @@ const CheckoutForm = () => {
       }
     } catch {
       toast.error("Payment failed");
+      setTimeout(()=>{
+        router.back()
+      },5000)
+      router.back();
     }
   };
 return (
@@ -65,9 +68,7 @@ return (
       <h2 className="text-xl font-semibold mb-4">
         Pay for <span className="text-blue-600">{planTitle}</span>
       </h2>
-
       <CardElement className="p-3 border rounded" />
-
       <button
         onClick={handlePay}
         className="mt-4 w-full bg-blue-600 text-white py-2 rounded"

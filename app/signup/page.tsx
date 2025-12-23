@@ -140,7 +140,7 @@ const Page = () => {
                       shadow-md
                       focus:outline-none
                       transition
-                      w-[220px] 
+                      w-55 
                       text-center
                     "
                   >
