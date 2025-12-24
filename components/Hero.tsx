@@ -10,7 +10,7 @@ const Hero = () => {
         className="relative max-w-7xl mx-auto rounded-3xl overflow-hidden
                    bg-cover bg-center"
         style={{
-          backgroundImage: "url('/assets/hero-bg.png')" // background image
+          backgroundImage: "url('/assets/hero-bg.png')" 
         }}
       >
         {/* SUBTLE BLUE OVERLAY */}
@@ -20,7 +20,7 @@ const Hero = () => {
         />
 
         {/* INNER WHITE CARD */}
-        <div className="relative z-10  rounded-[28px]
+        <div className="relative z-10 rounded-[28px]
                         m-4 sm:m-6 lg:m-8">
 
           {/* CONTENT */}
@@ -94,8 +94,6 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-
-            {/* RIGHT IMAGE */}
             <div className="lg:w-1/2 w-full flex justify-center items-center mb-10 lg:mb-0">
               <img
                 src="/assets/heroAnimation.png"
@@ -105,8 +103,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
-        {/* DOTTED TEXTURE (VERY SUBTLE) */}
         <div
           className="absolute inset-0 pointer-events-none
                      bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)]

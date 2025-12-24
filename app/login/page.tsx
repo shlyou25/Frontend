@@ -2,9 +2,84 @@
 
 import NavbarComponenet from "@/components/NavbarComponenet";
 import Footer from "@/components/Footer";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer ,toast} from "react-toastify";
+import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Loader from "@/components/Loader";
 
-export default function SignIn() {
+interface UserDataLogin{
+  email:string,
+  password:string,
+  terms:boolean,
+}
+
+const  Page =()=> {
+  const [userData, setUserData] = useState<UserDataLogin>({
+    email: '',
+    password: '',
+    terms: false,
+  });
+  const [loaderStatus, setLoaderStatus] = useState(false);
+  const router = useRouter();
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setLoaderStatus(true);
+
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_apiLink}auth/login`,
+      {
+        email: userData.email.trim(),
+        password: userData.password,
+        terms: userData.terms,
+      },
+      { withCredentials: true }
+    );
+
+    // 🔐 ADMIN → OTP REQUIRED (200)
+    if (res.data?.code === "ADMIN_OTP_REQUIRED") {
+      toast.info("OTP sent to your email");
+      router.push("/verify");
+      return;
+    }
+
+    // ✅ NORMAL USER → SESSION EXISTS
+    const me = await axios.get(
+      `${process.env.NEXT_PUBLIC_apiLink}auth/me`,
+      { withCredentials: true }
+    );
+
+    toast.success("Login successful");
+    router.push(me.data.user.role === "admin" ? "/admin" : "/dashboard");
+
+  } catch (error: any) {
+    // 🔒 FORCED PASSWORD CHANGE (403)
+    if (
+      error?.response?.status === 403 &&
+      error?.response?.data?.code === "PASSWORD_CHANGE_REQUIRED"
+    ) {
+      router.push("/changepassword");
+      return;
+    }
+
+    toast.error(
+      error?.response?.data?.message || "Login failed"
+    );
+  } finally {
+    setLoaderStatus(false);
+  }
+};
+if(loaderStatus) return <Loader/>
   return (
     <div className="min-h-screen bg-white flex flex-col">
 
@@ -19,7 +94,7 @@ export default function SignIn() {
       <main className="flex-1 flex justify-center px-4 sm:px-6 lg:px-0">
         <div className="w-full max-w-3xl mt-10 lg:mt-16">
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={onSubmitHandler}>
 
             {/* Email */}
             <div>
@@ -28,6 +103,8 @@ export default function SignIn() {
                 type="email"
                 className="w-full rounded-xl bg-blue-50 px-5 py-3
                            focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           name="email"
+                           onChange={onChangeHandler}
               />
             </div>
 
@@ -38,23 +115,33 @@ export default function SignIn() {
                 type="password"
                 className="w-full rounded-xl bg-blue-50 px-5 py-3
                            focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           name="password"
+                           onChange={onChangeHandler}
               />
             </div>
 
             {/* Terms */}
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <input type="checkbox" className="mt-1 h-4 w-4 rounded" />
-              <p>
-                I agree to the{" "}
-                <span className="text-blue-600 cursor-pointer">
-                  Terms of Service
-                </span>{" "}
-                and{" "}
-                <span className="text-blue-600 cursor-pointer">
-                  Privacy Policy
-                </span>
-              </p>
-            </div>
+           {/* Terms */}
+<div className="flex items-start gap-2 text-sm text-gray-700">
+  <input
+    type="checkbox"
+    name="terms"
+    checked={userData.terms}
+    onChange={onChangeHandler}
+    className="mt-1 h-4 w-4 rounded"
+    required
+  />
+  <p>
+    I agree to the{" "}
+    <span className="text-blue-600 cursor-pointer">
+      Terms of Service
+    </span>{" "}
+    and{" "}
+    <span className="text-blue-600 cursor-pointer">
+      Privacy Policy
+    </span>
+  </p>
+</div>
 
             {/* Login Button */}
             <button
@@ -66,8 +153,6 @@ export default function SignIn() {
             >
               LOGIN
             </button>
-
-            {/* Links */}
             <div className="flex flex-col sm:flex-row sm:justify-between gap-3 text-sm">
               <p>
                 Don’t have an account?{" "}
@@ -79,7 +164,6 @@ export default function SignIn() {
                 Forgot password?
               </span>
             </div>
-
           </form>
         </div>
       </main>
@@ -89,3 +173,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default Page;
