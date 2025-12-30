@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
-import { toast ,ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 
 interface FaqItem {
@@ -12,35 +12,35 @@ interface FaqItem {
 }
 
 const AllFaq = ({ setIsAllFaq }: any) => {
-   const [faq, setFaq] = useState<FaqItem[]>([]);
+    const [faq, setFaq] = useState<FaqItem[]>([]);
 
-const fetchFaq = async () => {
-  try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_apiLink}faq/`);
-    setFaq(res.data.faqs.sort((a: FaqItem, b: FaqItem) => 
-      a.priorityNumber - b.priorityNumber
-    ));
-  } catch (err) {
-    console.error("Failed to fetch FAQs:", err);
-  }
-};
+    const fetchFaq = async () => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_apiLink}faq/`);
+            setFaq(res.data.faqs.sort((a: FaqItem, b: FaqItem) =>
+                a.priorityNumber - b.priorityNumber
+            ));
+        } catch (err) {
+            console.error("Failed to fetch FAQs:", err);
+        }
+    };
 
-useEffect(() => {
-  fetchFaq();
-}, []); // Empty deps - runs once on mount
+    useEffect(() => {
+        fetchFaq();
+    }, []); // Empty deps - runs once on mount
 
-const handleDelete = async (id: string) => {
-  try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_apiLink}faq/${id}`,
-      { withCredentials: true }
-    );
-    toast.success(res.data.message);
-    fetchFaq(); 
-  } catch (err: any) {
-    toast.error(err?.response?.data?.message);
-  }
-};
+    const handleDelete = async (id: string) => {
+        try {
+            const res = await axios.delete(
+                `${process.env.NEXT_PUBLIC_apiLink}faq/${id}`,
+                { withCredentials: true }
+            );
+            toast.success(res.data.message);
+            fetchFaq();
+        } catch (err: any) {
+            toast.error(err?.response?.data?.message);
+        }
+    };
 
     return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base ">
@@ -102,12 +102,10 @@ const handleDelete = async (id: string) => {
 
                         </tr>
                     ))}
-
                 </tbody>
             </table>
-            <ToastContainer/>
+            <ToastContainer />
         </div>
-
     )
 }
 export default AllFaq

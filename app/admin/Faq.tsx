@@ -43,8 +43,6 @@ const Faq = () => {
       );
       toast.success(res?.data.message);
       // Reset form
-
-      
       setFaq({
         question: "",
         answer: "",

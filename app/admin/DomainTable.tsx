@@ -3,11 +3,16 @@
 import React, { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import Modal from "@/components/model";
+import Promotion from "./Promotion";
+import { ToastContainer } from "react-toastify";
+
 
 /* 🔑 TYPES */
 export interface DomainItem {
   domain: string;
   createdAt: string;
+  domainId: string
   owner: {
     name: string;
     email: string;
@@ -22,6 +27,11 @@ interface DomainsTableProps {
 const DomainsTable = ({ data }: DomainsTableProps) => {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [open, setOpen] = useState(false);
+  const [domainPromotion, setDomainPromotion] = useState({
+    domain_id: "",
+    domain: ''
+  })
 
   /* 🔍 FILTER LOGIC */
   const filteredData = useMemo(() => {
@@ -65,7 +75,6 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
       "domains.xlsx"
     );
   };
-
   return (
     <div className="bg-white rounded-xl shadow border border-gray-200">
       {/* HEADER */}
@@ -110,6 +119,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
               <th className="px-6 py-3 text-left">Owner</th>
               <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Registered Date</th>
+              <th className="px-6 py-3 text-left">Promote</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -122,12 +132,37 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
                 <td className="px-6 py-4">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
+                <td className="px-6 py-4">
+                  <button
+                    className="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    data-id="ITEM_ID"
+                    onClick={() => {
+                      setOpen(true)
+                      setDomainPromotion({
+                        domain_id: item.domainId,
+                        domain: item.domain
+                      })
+                    }}
+                  >
+                    Promote
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Promote Domain"
+      >
+        <Promotion
+          domainPromotion={domainPromotion}
+          onClose={() => setOpen(false)}
+        />
+      </Modal>
+<ToastContainer/>
     </div>
   );
 }

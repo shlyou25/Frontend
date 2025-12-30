@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 import Content from './content';
 import Loader from '@/components/Loader';
 import Table from '@/utils/Table';
-import DomainTable from '../../utils/DomainTable';
+import DomainTable from './DomainTable';
 import PlanTable, { PlansResponse } from './PlanTable';
 import Faq from './Faq';
 
-type AdminView = "dashboard" | "domains" | "Plans" | "Faq";
+type AdminView = "dashboard" | "domains" | "Plans" | "Faq" ;
 
 interface User {
   _id: string;
@@ -112,6 +112,8 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated])
+
+  
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">

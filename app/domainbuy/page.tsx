@@ -1,4 +1,4 @@
-import DomainTable from '@/components/DomainTable'
+import DomainTable from '@/app/admin/DomainTable'
 import FilterDashboard from '@/components/FilterDashboard'
 import Footer from '@/components/Footer'
 import NavbarComponenet from '@/components/NavbarComponenet'
