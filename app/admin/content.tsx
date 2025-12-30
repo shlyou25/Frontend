@@ -1,12 +1,39 @@
-import React from "react";
-import { logoutHandler } from "@/utils/auth";
+'use client';
+
+import React, { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
+import { logoutHandler } from "@/utils/auth";
 
+/* 🔑 SHARED TYPE */
+export type AdminView = "dashboard" | "domains" | "Plans" | "domains";
 
+/* ✅ PROPS TYPE */
+interface SidebarProps {
+  activeView: AdminView;
+  setActiveView: Dispatch<SetStateAction<AdminView>>;
+}
 
-const menu = [
+/* MENU TYPE */
+interface MenuItem {
+  label: string;
+  view: AdminView;
+  iconBg: string;
+  iconColor: string;
+  svg: React.ReactNode;
+}
+
+interface MenuSection {
+  section: string;
+  children: MenuItem[];
+}
+
+type Menu = (MenuItem | MenuSection)[];
+
+/* MENU DATA */
+const menu: Menu = [
   {
     label: "Dashboard",
+    view: "dashboard",
     iconBg: "bg-[#FEE4E2]",
     iconColor: "text-[#D92D20]",
     svg: (
@@ -23,7 +50,8 @@ const menu = [
     section: "Explore",
     children: [
       {
-        label: "Ideas",
+        label: "Domains",
+        view: "domains",
         iconBg: "bg-[#E0EAFF]",
         iconColor: "text-[#2970FF]",
         svg: (
@@ -37,21 +65,8 @@ const menu = [
         ),
       },
       {
-        label: "Improvements",
-        iconBg: "bg-[#FEF0C7]",
-        iconColor: "text-[#DC6803]",
-        svg: (
-          <path
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 3v18m9-9H3"
-          />
-        ),
-      },
-      {
-        label: "People",
+        label: "Plans",
+        view: "Plans",
         iconBg: "bg-[#E6F4FF]",
         iconColor: "text-[#1570EF]",
         svg: (
@@ -65,110 +80,66 @@ const menu = [
         ),
       },
       {
-        label: "Leaderboard",
+        label: "Domains",
+        view: "domains",
         iconBg: "bg-[#F4EBFF]",
         iconColor: "text-[#7F56D9]",
         svg: (
           <>
-            <path
-              stroke="currentColor"
-              strokeWidth="1.8"
-              d="M9 3H5v18h4V3Zm10 0h-4v18h4V3Z"
-            />
-            <path
-              stroke="currentColor"
-              strokeWidth="1.8"
-              d="M14 8h-4v13h4V8Z"
-            />
+            <path stroke="currentColor" strokeWidth="1.8" d="M9 3H5v18h4V3Z" />
+            <path stroke="currentColor" strokeWidth="1.8" d="M19 3h-4v18h4V3Z" />
           </>
-        ),
-      },
-      {
-        label: "Component",
-        iconBg: "bg-[#FFF1F3]",
-        iconColor: "text-[#E31B54]",
-        svg: (
-          <path
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 7h16M4 12h16M4 17h16"
-          />
         ),
       },
     ],
   },
-  {
-    label: "Workshop",
-    iconBg: "bg-[#E5F7EF]",
-    iconColor: "text-[#12A870]",
-    svg: (
-      <path
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4 20v-6l8-4 8 4v6M4 4l8 4 8-4"
-      />
-    ),
-  },
-  {
-    label: "Settings",
-    iconBg: "bg-[#F2F4F7]",
-    iconColor: "text-[#475467]",
-    svg: (
-      <path
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7.5-3a1 1 0 0 0 .87-1.5l-1.12-1.94a1 1 0 0 0-.76-.5l-2.22-.18a1 1 0 0 1-.84-.63l-.83-2.1a1 1 0 0 0-1.6-.45l-1.7 1.42a1 1 0 0 1-1.22 0L7.9 4.7a1 1 0 0 0-1.6.46l-.83 2.1a1 1 0 0 1-.84.63l-2.22.18a1 1 0 0 0-.76.5L.55 10.5A1 1 0 0 0 1.42 12l1.94 1.12c.33.19.57.49.67.86l.18 2.22a1 1 0 0 0 .76.9l2.1.83a1 1 0 0 1 .63.84l.18 2.22a1 1 0 0 0 .5.76l1.94 1.12a1 1 0 0 0 1.5-.87l-.18-2.22c-.06-.37.04-.74.27-1.04l1.35-1.79c.28-.37.46-.82.51-1.29l.12-.83"
-      />
-    ),
-  },
-  {
-    label: "Administration",
-    iconBg: "bg-[#E8EFFD]",
-    iconColor: "text-[#3366FF]",
-    svg: (
-      <path
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4 6h16M4 12h16M4 18h16"
-      />
-    ),
-  },
 ];
 
-export default function Content() {
+/* ✅ COMPONENT */
+export default function Content({ activeView, setActiveView }: SidebarProps) {
   const router = useRouter();
   return (
     <div className="h-full px-6 py-6 overflow-y-auto bg-white border-r border-gray-200">
-      {/* LOGO */}
       <h1 className="text-xl font-bold text-gray-800 mb-6">Admin</h1>
 
-      {/* MENU */}
       {menu.map((item, index) => (
         <div key={index} className="mb-4">
-          {item.section && (
-            <p className="text-xs uppercase text-gray-400 mb-2">{item.section}</p>
+          {"section" in item && (
+            <p className="text-xs uppercase text-gray-400 mb-2">
+              {item.section}
+            </p>
           )}
-          {item.children ? (
-            item.children.map((sub, idx) => (
-              <SidebarItem key={idx} {...sub} />
-            ))
-          ) : (
-            <SidebarItem {...item} />
-          )}
+
+          {"children" in item
+            ? item.children.map((sub, idx) => (
+                <SidebarItem
+                  key={idx}
+                  label={sub.label}
+                  iconBg={sub.iconBg}
+                  iconColor={sub.iconColor}
+                  svg={sub.svg}
+                  active={activeView === sub.view}
+                  onClick={() => setActiveView(sub.view)}
+                />
+              ))
+            : (
+              <SidebarItem
+                label={item.label}
+                iconBg={item.iconBg}
+                iconColor={item.iconColor}
+                svg={item.svg}
+                active={activeView === item.view}
+                onClick={() => setActiveView(item.view)}
+              />
+            )}
         </div>
       ))}
 
-      {/* SIGN OUT */}
       <div className="mt-6 border-t pt-4">
-        <button onClick={() => logoutHandler(router)} className="flex items-center gap-3 text-red-500 font-medium hover:bg-red-50 w-full p-2 rounded-lg transition">
+        <button
+          onClick={() => logoutHandler(router)}
+          className="flex items-center gap-3 text-red-500 font-medium hover:bg-red-50 w-full p-2 rounded-lg transition"
+        >
           <span className="text-xl">↩</span> Sign Out
         </button>
       </div>
@@ -176,16 +147,35 @@ export default function Content() {
   );
 }
 
-/* INDIVIDUAL ITEM */
-const SidebarItem = ({ label, iconBg, iconColor, svg }: any) => (
-  <button className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-    <div
-      className={`w-9 h-9 flex items-center justify-center rounded-lg ${iconBg} ${iconColor}`}
-    >
+/* SIDEBAR ITEM */
+interface SidebarItemProps {
+  label: string;
+  iconBg: string;
+  iconColor: string;
+  svg: React.ReactNode;
+  active: boolean;
+  onClick: () => void;
+}
+
+const SidebarItem = ({
+  label,
+  iconBg,
+  iconColor,
+  svg,
+  active,
+  onClick,
+}: SidebarItemProps) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition
+      ${active ? "bg-gray-100 font-semibold" : "hover:bg-gray-100"}
+    `}
+  >
+    <div className={`w-9 h-9 flex items-center justify-center rounded-lg ${iconBg} ${iconColor}`}>
       <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
         {svg}
       </svg>
     </div>
-    <span className="text-gray-700 font-medium">{label}</span>
+    <span className="text-gray-700">{label}</span>
   </button>
 );
