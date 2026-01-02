@@ -149,8 +149,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
                  <td className="px-6 py-4">
                   <Trash className="cursor-pointer hover:text-red-400" />
                  </td>
-              </tr>
-              
+              </tr>  
             ))}
           </tbody>
         </table>

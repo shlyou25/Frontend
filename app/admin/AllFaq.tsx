@@ -4,6 +4,7 @@ import { Trash2, SquarePen } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import Modal from "@/components/model";
 import EditFaq from "./EditFaq";
+import Confirmation from "@/components/Confirmation";
 
 
 interface FaqItem {
@@ -25,6 +26,21 @@ const AllFaq = ({ setIsAllFaq }: any) => {
     const [selectedFaq, setSelectedFaq] = useState<SelectedFaq | null>(null);
     const [refreshKey, setRefreshKey] = useState(0);
     const [open, setOpen] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+    const [deleteId, setDeleteId] = useState<string | null>(null)
+
+    const openDeleteModal = (id: string) => {
+        setDeleteId(id)
+        setIsConfirmOpen(true)
+    }
+
+    const handleConfirmDelete = () => {
+        if (!deleteId) return
+        handleDelete(deleteId) // ✅ YOUR EXISTING DELETE HANDLER
+        setIsConfirmOpen(false)
+        setDeleteId(null)
+    }
+
 
 
     const fetchFaq = async () => {
@@ -87,7 +103,6 @@ const AllFaq = ({ setIsAllFaq }: any) => {
                             <th className="px-6 py-3 font-medium">Delete</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {faq?.map((faq) => (
                             <tr
@@ -126,19 +141,24 @@ const AllFaq = ({ setIsAllFaq }: any) => {
 
                                 <td className="px-6 py-4">
                                     <button
-                                        onClick={() => handleDelete(faq._id)}
+                                        onClick={() => openDeleteModal(faq._id)} // ✅ PASS ID
                                         className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
                                         title="Delete"
                                     >
                                         <Trash2 className="w-5 h-5" />
                                     </button>
                                 </td>
+
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-
+            <Confirmation
+                open={isConfirmOpen}
+                onCancel={() => setIsConfirmOpen(false)}
+                onConfirm={handleConfirmDelete} // ✅ FUNCTION REFERENCE
+            />
             <Modal
                 isOpen={open}
                 onClose={() => setOpen(false)}
