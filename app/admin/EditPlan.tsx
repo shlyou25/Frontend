@@ -8,6 +8,7 @@ import { SelectedPlan } from "./PlanTable";
 interface EditPlanProps {
   selectedPlan: SelectedPlan | null;
   onClose: () => void;
+  onSuccess:()=>void;
 }
 
 interface PlanEditData {
@@ -16,7 +17,7 @@ interface PlanEditData {
   extendByMonths: number;
 }
 
-const EditPlan = ({ selectedPlan, onClose }: EditPlanProps) => {
+const EditPlan = ({ selectedPlan, onClose,onSuccess }: EditPlanProps) => {
   const [planData, setPlanData] = useState<PlanEditData>({
     planId: "",
     feature: 0,
@@ -28,8 +29,8 @@ const EditPlan = ({ selectedPlan, onClose }: EditPlanProps) => {
     if (selectedPlan) {
       setPlanData({
         planId: selectedPlan.planId,
-        feature: selectedPlan.features,          // must exist in SelectedPlan
-        extendByMonths: 0                        // admin chooses extension
+        feature: selectedPlan.features,          
+        extendByMonths: 0                        
       });
     }
   }, [selectedPlan]);
@@ -45,29 +46,33 @@ const EditPlan = ({ selectedPlan, onClose }: EditPlanProps) => {
   };
 
   const onSubmitHandler = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
 
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_apiLink}plan/editplan-admin`,
-        planData,
-        { withCredentials: true }
-      );
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_apiLink}plan/editplan-admin`,
+      planData,
+      { withCredentials: true }
+    );
 
-      toast.success(res.data.message);
+    toast.success(res.data.message || "Plan Updated Successfully");
+
+    setTimeout(() => {
+      onSuccess();
       onClose();
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message || "Something went wrong"
-      );
-    }
-  };
+    }, 3000);
+
+  } catch (error: any) {
+    toast.error(
+      error?.response?.data?.message || "Something went wrong"
+    );
+  }
+};
+
 
   if (!selectedPlan) return null;
-  console.log(planData,"planDataplanDataplanDataplanDataplanData");
-  
   return (
     <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
       <h2 className="text-lg font-semibold text-gray-700 dark:text-white">

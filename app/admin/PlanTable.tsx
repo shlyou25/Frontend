@@ -27,6 +27,11 @@ export interface PlanItem {
   updatedAt: string;
   __v: number;
 }
+interface PlanTableProps {
+  data: PlanItem[];
+  onPlanUpdated: () => void;
+}
+
 
 export interface UserInfo {
   _id: string;
@@ -46,11 +51,12 @@ export interface SelectedPlan {
 
 
 /* ✅ COMPONENT */
-const PlanTable = ({ data }: { data: PlanItem[] }) => {
+const PlanTable = ({ data, onPlanUpdated }: PlanTableProps) => {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SelectedPlan | null>(null);
+  
 
   /* 🔍 FILTER LOGIC */
   const filteredData = useMemo(() => {
@@ -92,7 +98,7 @@ const PlanTable = ({ data }: { data: PlanItem[] }) => {
 
     saveAs(
       new Blob([excelBuffer], { type: "application/octet-stream" }),
-      "plan.xlsx"
+      "Plan.xlsx"
     );
   };
 
@@ -187,6 +193,7 @@ const PlanTable = ({ data }: { data: PlanItem[] }) => {
         <EditPlan
           selectedPlan={selectedPlan}
           onClose={() => setOpen(false)}
+          onSuccess={onPlanUpdated}
         />
       </Modal>
     </div>

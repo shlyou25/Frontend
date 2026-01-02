@@ -52,6 +52,8 @@ const Page = () => {
   const [refreshUsers, setRefreshUsers] = useState(0);
   const [domainsData, setDomainsData] = useState<DomainsResponse | null>(null);
   const [allPlans, setallPlans] = useState<PlansResponse>()
+  const [refreshPlans, setRefreshPlans] = useState(0);
+
 
 
   // 🔐 AUTH CHECK
@@ -125,7 +127,7 @@ const Page = () => {
       }
     };
     fetchPlans();
-  }, [isauthenciated])
+  }, [isauthenciated,refreshPlans])
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
@@ -197,7 +199,9 @@ const Page = () => {
         )}
         {activeView === "Plans" && allPlans?.plans && (
           <div className="bg-white p-6 rounded-xl shadow">
-            <PlanTable data={allPlans.plans} />
+            <PlanTable data={allPlans.plans} 
+            onPlanUpdated={() => setRefreshPlans(prev => prev + 1)}
+            />
           </div>
         )}
 
