@@ -96,8 +96,6 @@ const Faq = () => {
                 className="mt-2 block w-full rounded-md border px-3 py-2"
               />
             </div>
-
-            {/* PRIORITY */}
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-900">
                 Priority Number

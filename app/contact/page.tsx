@@ -96,7 +96,7 @@ const page = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-[230px] h-[60px] flex items-center justify-center text-white text-[1.15rem] bg-linear-to-r from-blue-500 to-blue-600 font-semibold rounded-full tracking-[1px] shadow-lg border-none hover:from-blue-600 hover:to-blue-700 focus:outline-none"
+            className="w-57.5 h-15 flex items-center justify-center text-white text-[1.15rem] bg-linear-to-r from-blue-500 to-blue-600 font-semibold rounded-full tracking-[1px] shadow-lg border-none hover:from-blue-600 hover:to-blue-700 focus:outline-none"
             style={{ letterSpacing: "1px" }}
           >
             SUBMIT
@@ -142,3 +142,8 @@ const page = () => {
 }
 
 export default page
+
+
+
+
+

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, SquarePen } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
+import Modal from "@/components/model";
+import EditFaq from "./EditFaq";
 
 
 interface FaqItem {
@@ -10,9 +12,20 @@ interface FaqItem {
     answer: string;
     priorityNumber: number;
 }
+export interface SelectedFaq {
+    id: string;
+    question: string;
+    answer: string;
+    priorityNumber: number;
+}
+
 
 const AllFaq = ({ setIsAllFaq }: any) => {
     const [faq, setFaq] = useState<FaqItem[]>([]);
+    const [selectedFaq, setSelectedFaq] = useState<SelectedFaq | null>(null);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [open, setOpen] = useState(false);
+
 
     const fetchFaq = async () => {
         try {
@@ -27,7 +40,7 @@ const AllFaq = ({ setIsAllFaq }: any) => {
 
     useEffect(() => {
         fetchFaq();
-    }, []); // Empty deps - runs once on mount
+    }, [refreshKey]); // Empty deps - runs once on mount
 
     const handleDelete = async (id: string) => {
         try {
@@ -41,7 +54,9 @@ const AllFaq = ({ setIsAllFaq }: any) => {
             toast.error(err?.response?.data?.message);
         }
     };
-
+    const refreshFaq = () => {
+        setRefreshKey(prev => prev + 1);
+    };
     return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base ">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -61,49 +76,81 @@ const AllFaq = ({ setIsAllFaq }: any) => {
                     Add FAQ
                 </button>
             </div>
-            <table className="w-full text-sm text-left rtl:text-right text-body">
-                <thead className="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
-                    <tr>
-                        <th scope="col" className="px-6 py-3 font-medium">
-                            Question
-                        </th>
-                        <th scope="col" className="px-6 py-3 font-medium">
-                            Answer
-                        </th>
-                        <th scope="col" className="px-6 py-3 font-medium">
-                            Pariority
-                        </th>
-                        <th scope="col" className="px-6 py-3 font-medium">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {faq?.map(faq => (
-                        <tr className="bg-neutral-primary border-b border-default">
-                            <th scope="row" className="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                                {faq.question}
-                            </th>
-                            <td className="px-6 py-4">
-                                {faq.answer}
-                            </td>
-                            <td className="px-6 py-4">
-                                {faq.priorityNumber}
-                            </td>
-                            <td className="px-6 py-4">
-                                <button
-                                    onClick={() => handleDelete(faq._id)} // Replace with your delete function
-                                    className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                                    title="Delete"
-                                >
-                                    <Trash2 className="w-5 h-5" />
-                                </button>
-                            </td>
-
+            <div className="relative max-h-150 overflow-y-auto rounded-base">
+                <table className="w-full text-sm text-left rtl:text-right text-body">
+                    <thead className="text-sm text-body bg-neutral-secondary-soft border-b border-default sticky top-0 z-10">
+                        <tr>
+                            <th className="px-6 py-3 font-medium">Question</th>
+                            <th className="px-6 py-3 font-medium">Answer</th>
+                            <th className="px-6 py-3 font-medium">Priority</th>
+                            <th className="px-6 py-3 font-medium">Edit</th>
+                            <th className="px-6 py-3 font-medium">Delete</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        {faq?.map((faq) => (
+                            <tr
+                                key={faq._id}
+                                className="bg-neutral-primary border-b border-default"
+                            >
+                                <th className="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                                    {faq.question}
+                                </th>
+
+                                <td className="px-6 py-4 text-justify">
+                                    {faq.answer}
+                                </td>
+
+                                <td className="px-6 py-4">
+                                    {faq.priorityNumber}
+                                </td>
+
+                                <td className="px-6 py-4">
+                                    <button
+                                        className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                                        title="Edit"
+                                        onClick={() => {
+                                            setOpen(true);
+                                            setSelectedFaq({
+                                                id: faq._id,
+                                                question: faq.question,
+                                                answer: faq.answer,
+                                                priorityNumber: faq.priorityNumber,
+                                            });
+                                        }}
+                                    >
+                                        <SquarePen className="w-5 h-5" />
+                                    </button>
+                                </td>
+
+                                <td className="px-6 py-4">
+                                    <button
+                                        onClick={() => handleDelete(faq._id)}
+                                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                                        title="Delete"
+                                    >
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <Modal
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                title="EDIT FAQ"
+            >
+                <EditFaq
+                    selectedFaq={selectedFaq}
+                    onClose={() => setOpen(false)}
+                    onSuccess={refreshFaq}
+                />
+
+            </Modal>
             <ToastContainer />
         </div>
     )

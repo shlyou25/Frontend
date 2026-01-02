@@ -71,7 +71,6 @@ const EditPlan = ({ selectedPlan, onClose,onSuccess }: EditPlanProps) => {
   }
 };
 
-
   if (!selectedPlan) return null;
   return (
     <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
@@ -110,7 +109,6 @@ const EditPlan = ({ selectedPlan, onClose,onSuccess }: EditPlanProps) => {
             />
           </div>
 
-          {/* ✅ Extend duration */}
           <div>
             <label className="text-gray-700 dark:text-gray-200">
               Extend Duration (Months)
