@@ -7,7 +7,7 @@ export default function NotFound() {
       {/* Illustration */}
       <div className="mb-10">
         <img
-          src="/404-computer.svg"
+          src="/assets/error.svg"
           alt="404 Illustration"
           className="mx-auto max-w-105 w-full"
         />
@@ -35,10 +35,10 @@ export default function NotFound() {
           Home
         </Link>
         <Link
-          href="/search"
+          href="/domainbuy"
           className="underline hover:text-gray-900 transition"
         >
-          Search
+          Buy
         </Link>
         <Link
           href="/contact"
