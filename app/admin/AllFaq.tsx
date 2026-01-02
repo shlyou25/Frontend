@@ -78,7 +78,7 @@ const AllFaq = ({ setIsAllFaq }: any) => {
             </div>
             <div className="relative max-h-150 overflow-y-auto rounded-base">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
-                    <thead className="text-sm text-body bg-blue-500 border-b border-default sticky top-0 z-10">
+                    <thead className="text-sm text-body bg-white/30 backdrop-blur-sm border-b border-default sticky top-0 z-10">
                         <tr>
                             <th className="px-6 py-3 font-medium">Question</th>
                             <th className="px-6 py-3 font-medium">Answer</th>
