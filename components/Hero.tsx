@@ -5,68 +5,98 @@ import Image from "next/image";
 const Hero = () => {
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10 pt-6">
-      {/* OUTER BACKGROUND */}
+      {/* Outer Background */}
       <div
         className="relative max-w-7xl mx-auto rounded-3xl overflow-hidden
                    bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/assets/hero-bg.png')" 
-        }}
+        style={{ backgroundImage: "url('/assets/hero-bg.png')" }}
       >
-        {/* SUBTLE BLUE OVERLAY */}
+        {/* Dotted overlay */}
         <div
           className="absolute inset-0 pointer-events-none
-                     "
+                     bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)]
+                     bg-size-[16px_16px] opacity-30"
         />
 
-        {/* INNER WHITE CARD */}
-        <div className="relative z-10 rounded-[28px]
-                        m-4 sm:m-6 lg:m-8">
-
-          {/* CONTENT */}
-          <div className="flex flex-col-reverse lg:flex-row
-                          items-center justify-between
-                          px-6 sm:px-10 lg:px-16
-                          py-14 sm:py-16 lg:py-20">
-
-            {/* LEFT CONTENT */}
-            <div className="lg:w-1/2 w-full flex flex-col justify-center space-y-6">
-
-              {/* BADGE */}
-              <span className="inline-block bg-white rounded-full px-4 py-1
-                               text-gray-600 font-medium shadow w-fit">
+        {/* Content */}
+        <div className="relative z-10 m-4 sm:m-6 lg:m-8 rounded-[28px]">
+          <div
+            className="
+              flex flex-col lg:flex-row
+              items-center justify-between
+              gap-10
+              px-6 sm:px-10 lg:px-16
+              py-10 sm:py-14 lg:py-20
+            "
+          >
+            {/* LEFT: TEXT */}
+            <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
+              <span
+                className="
+                  inline-block bg-white rounded-full px-4 py-1
+                  text-gray-600 font-medium shadow
+                  mx-auto lg:mx-0
+                "
+              >
                 TRANSPARENT BY DESIGN
               </span>
 
-              {/* HEADING */}
-              <h1 className="text-4xl lg:text-5xl font-semibold leading-snug text-gray-900">
+              <h1
+                className="
+                  text-3xl sm:text-4xl lg:text-5xl
+                  font-semibold leading-snug text-gray-900
+                "
+              >
                 List. Connect. Close.
                 <br />
                 <span className="text-blue-600 font-bold">Find</span>{" "}
                 <span className="font-bold">your domain</span>
               </h1>
 
-              {/* SUBTITLE */}
-              <p className="text-lg text-gray-700 font-medium max-w-lg">
+              <p
+                className="
+                  text-base sm:text-lg
+                  text-gray-700 font-medium
+                  max-w-lg mx-auto lg:mx-0
+                "
+              >
                 The Decentralized Future of Domain Discovery
               </p>
 
-              {/* CTA BUTTONS */}
-              <div className="flex gap-4 mt-2">
-                <button className="bg-blue-600 text-white px-6 py-3 rounded-full
-                                   font-medium shadow hover:bg-blue-700 transition">
+              {/* CTA */}
+              <div
+                className="
+                  flex flex-wrap gap-4
+                  justify-center lg:justify-start
+                "
+              >
+                <button
+                  className="
+                    bg-blue-600 text-white px-6 py-3 rounded-full
+                    font-medium shadow hover:bg-blue-700 transition
+                  "
+                >
                   Buy
                 </button>
-                <button className="border border-blue-600 text-blue-600 px-6 py-3
-                                   rounded-full font-medium hover:bg-blue-100 transition">
+                <button
+                  className="
+                    border border-blue-600 text-blue-600 px-6 py-3
+                    rounded-full font-medium hover:bg-blue-100 transition
+                  "
+                >
                   Sell
                 </button>
               </div>
 
-              {/* FEATURES */}
-              <div className="flex gap-8 mt-6 flex-wrap">
+              {/* Features */}
+              <div
+                className="
+                  flex flex-wrap gap-6
+                  justify-center lg:justify-start
+                "
+              >
                 <div className="flex items-center gap-2">
-                  <span className="inline-block bg-white rounded-full p-2 shadow">
+                  <span className="bg-white rounded-full p-2 shadow">
                     <Image
                       src="/assets/icons/shake-hands.webp"
                       alt="Direct Negotiations"
@@ -74,13 +104,13 @@ const Hero = () => {
                       height={20}
                     />
                   </span>
-                  <span className="font-semibold text-gray-900 text-base">
+                  <span className="font-semibold text-gray-900">
                     Direct Negotiations
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="inline-block bg-white rounded-full p-2 shadow">
+                  <span className="bg-white rounded-full p-2 shadow">
                     <Image
                       src="/assets/icons/discount.webp"
                       alt="Zero Commission"
@@ -88,26 +118,35 @@ const Hero = () => {
                       height={20}
                     />
                   </span>
-                  <span className="font-semibold text-gray-900 text-base">
+                  <span className="font-semibold text-gray-900">
                     Zero Commission
                   </span>
                 </div>
               </div>
             </div>
-            <div className="lg:w-1/2 w-full flex justify-center items-center mb-10 lg:mb-0">
-              <img
+
+            {/* RIGHT: IMAGE */}
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <Image
                 src="/assets/heroAnimation.png"
                 alt="Globe and Server Illustration"
-                className="max-w-xl w-full h-auto"
+                width={600}
+                height={600}
+                priority
+                className="
+                  w-full
+                  max-w-50        
+                  sm:max-w-70     
+                  md:max-w-90     
+                  lg:max-w-130    
+                  xl:max-w-150
+                  h-auto
+                  object-contain
+                "
               />
             </div>
           </div>
         </div>
-        <div
-          className="absolute inset-0 pointer-events-none
-                     bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)]
-                     bg-size-[16px_16px] opacity-30"
-        />
       </div>
     </header>
   );
