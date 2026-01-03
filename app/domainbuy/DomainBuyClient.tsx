@@ -44,7 +44,7 @@ return (
       </div>
 
       <Footer />
-      <FilterDashboard />
+      {/* <FilterDashboard /> */}
     </div>
   );
 }
