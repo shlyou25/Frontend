@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import Footer from '@/components/Footer'
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import NavbarComponenet from '@/components/NavbarComponenet'
 import Loader from '@/components/Loader';
 
@@ -135,8 +135,7 @@ const page = () => {
         </div>
       </div>
 
-      <Footer />
-      <ToastContainer />
+      <Footer />x
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import { backendUserData } from './profile'
 import axios from 'axios'
 
@@ -70,7 +70,7 @@ const UpdateInfo = (props: UpdateInfoProps) => {
                     <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Update</button>
                 </div>
             </form>
-            <ToastContainer/>
+
         </section>
     )
 }

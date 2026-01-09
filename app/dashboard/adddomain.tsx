@@ -1,10 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+
+
 
 const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
   const [domainData, setDomainData] = useState("");
+
 
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -20,6 +23,11 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
       .map(d => d.trim().toLowerCase())
       .filter(Boolean);
 
+    if (!formatted.length) {
+      toast.error("Please enter at least one domain.");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}domain/adddomain`,
@@ -27,15 +35,69 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
         { withCredentials: true }
       );
 
-      toast.success(res?.data?.message);
+      const {
+        message,
+        added = [],
+        manualReview = [],
+        failed = [],
+        remaining
+      } = res.data;
+      console.log(message);
+
+      // ✅ Base success message
+      toast.success(message || "Domain processing completed.");
+
+      // ✅ Added domains
+      if (added.length > 0) {
+        toast.success(
+          `Added (${added.length}): ${added.join(", ")}`,
+
+        );
+      }
+
+      // ⚠️ Manual review domains
+      if (manualReview.length > 0) {
+        toast(
+          `Manual Review (${manualReview.length}): ${manualReview.join(", ")}`,
+
+        );
+      }
+
+      // ❌ Failed domains
+      if (failed.length > 0) {
+        toast.error(
+          `Failed (${failed.length}): ${failed.join(", ")}`,
+
+        );
+      }
+
+      // ℹ️ Remaining quota (optional)
+      if (remaining !== undefined) {
+        toast(
+          `Remaining domain quota: ${remaining}`,
+        );
+      }
+
       setDomainData("");
-      onClose(); // ✅ close modal on success
+      onClose(); // ✅ close modal
+
     } catch (error: any) {
+      const data = error?.response?.data;
+
       toast.error(
-        error?.response?.data?.message || "An unexpected error occurred"
+        data?.message || "An unexpected error occurred"
       );
+
+      // 🔎 Optional: show backend-provided breakdown even on failure
+      if (data?.failed?.length) {
+        toast.error(
+          `Failed: ${data.failed.join(", ")}`,
+
+        );
+      }
     }
   };
+
 
   return (
     <>
@@ -85,8 +147,6 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
           </button>
         </div>
       </form>
-
-      <ToastContainer />
     </>
   );
 };

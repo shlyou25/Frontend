@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface UsersInfo {
   success: boolean;
@@ -137,7 +137,6 @@ const filteredUsers = useMemo(() => {
     </table>
   </div>
 </div>
-<ToastContainer/>
     </div>
   );
 }

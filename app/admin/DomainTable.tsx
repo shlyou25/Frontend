@@ -5,7 +5,6 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import Modal from "@/components/model";
 import Promotion from "./Promotion";
-import { ToastContainer } from "react-toastify";
 import { Trash } from "lucide-react";
 
 
@@ -13,7 +12,10 @@ import { Trash } from "lucide-react";
 export interface DomainItem {
   domain: string;
   createdAt: string;
-  domainId: string
+  domainId: string,
+  status:string,
+  finalUrl:string,
+  manualReviewCount:number,
   owner: {
     name: string;
     email: string;
@@ -116,6 +118,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
               <th className="px-6 py-3 text-left">Domain</th>
               <th className="px-6 py-3 text-left">Owner</th>
               <th className="px-6 py-3 text-left">Email</th>
+              <th className="px-6 py-3 text-left">Staus</th>
               <th className="px-6 py-3 text-left">Registered Date</th>
               <th className="px-6 py-3 text-left">Promote</th>
               <th className="px-6 py-3 text-left">Delete</th>
@@ -128,6 +131,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
                 <td className="px-6 py-4 text-blue-600 font-medium">{item.domain}</td>
                 <td className="px-6 py-4">{item.owner.name}</td>
                 <td className="px-6 py-4">{item.owner.email}</td>
+                 <td className="px-6 py-4">{item.status}</td>
                 <td className="px-6 py-4">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
@@ -164,7 +168,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
           onClose={() => setOpen(false)}
         />
       </Modal>
-      <ToastContainer />
+     
     </div>
   );
 }

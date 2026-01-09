@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useState } from "react";
-import { toast,ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import AllFaq from "./AllFaq";
 
 interface FaqForm {
@@ -137,7 +137,6 @@ const Faq = () => {
         </button>
       </div>
     </form>
-    <ToastContainer/>
     </>
   );
 };

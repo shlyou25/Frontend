@@ -36,8 +36,20 @@ export interface UserInterface {
 interface DomainsResponse {
   success: boolean;
   count: number;
-  domains: any[];
+  manualReviewCount: number;
+  domains: Array<{
+    domainId: string;
+    domain: string;
+    status: "Pass" | "Manual Review";
+    finalUrl: string | null;
+    createdAt: string;
+    owner: {
+      name: string;
+      email: string;
+    };
+  }>;
 }
+
 
 const Page = () => {
   const router = useRouter();
@@ -128,6 +140,8 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated,refreshPlans])
+  console.log(domainsData,"domainsDatadomainsDatadomainsData");
+  
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
@@ -166,12 +180,11 @@ const Page = () => {
         {/* DASHBOARD */}
         {activeView === "dashboard" && (
           <>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               {[
                 { label: 'Total Users', value: allUsers.length, color: 'bg-blue-500' },
                 { label: 'Domains Registered', value: domainsData?.count, color: 'bg-teal-500' },
-                { label: 'Query', value: '50', color: 'bg-orange-500' },
+                { label: 'Manual Review', value:domainsData?.manualReviewCount, color: 'bg-orange-500' },
                 { label: 'Requests', value: '£10,000', color: 'bg-red-500' },
               ].map(item => (
                 <div key={item.label} className="bg-white p-5 rounded-xl shadow flex justify-between">

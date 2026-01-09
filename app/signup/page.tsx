@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { useRouter } from "next/navigation";
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import Loader from '@/components/Loader';
 import Footer from '@/components/Footer';
 import NavbarComponenet from '@/components/NavbarComponenet';
@@ -169,7 +169,6 @@ const Page = () => {
       )}
 
       <Footer />
-      <ToastContainer />
     </div>
   );
 };

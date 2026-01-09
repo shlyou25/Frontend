@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
 import Image from 'next/image'
 
 export interface PlanCardInterface {
@@ -39,7 +38,6 @@ const Plancard = ({ title, price, per, feature }: PlanCardInterface) => {
             >
                 Start 30 Day Free Trial
             </button>
-            <ToastContainer />
         </div>
     )
 }

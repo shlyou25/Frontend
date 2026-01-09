@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { UserInterface } from "./page";
 import axios from "axios";
 import Modal from "@/components/model";
@@ -194,7 +194,6 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
                     onClose={() => setOpen(false)}
                 />
             </Modal>
-            <ToastContainer />
         </div>
     );
 }

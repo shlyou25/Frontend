@@ -23,10 +23,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
         {children}
-         <ToastContainer
+        <ToastContainer
           position="top-right"
-          autoClose={4000}
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
           pauseOnHover
+          draggable
+          theme="light"
         />
       </body>
     </html>

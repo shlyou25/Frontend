@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const VerifyPage = () => {
   const router = useRouter();
@@ -139,8 +139,6 @@ const VerifyPage = () => {
           </div>
         </form>
       </div>
-
-      <ToastContainer />
     </div>
   );
 };

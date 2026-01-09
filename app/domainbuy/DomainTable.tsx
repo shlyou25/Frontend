@@ -107,7 +107,6 @@ const DomainTable = ({ searchQuery }: DomainTableProps) => {
             <span>per page</span>
           </div>
         </div>
-
         {/* SCROLL CONTAINER */}
         <div className="overflow-x-auto max-h-105 overflow-y-auto">
           <table className="w-full min-w-150 text-sm border-collapse">

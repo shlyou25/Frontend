@@ -2,7 +2,7 @@
 
 import NavbarComponenet from "@/components/NavbarComponenet";
 import Footer from "@/components/Footer";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -173,7 +173,6 @@ const Page = () => {
           </form>
         </div>
       </main>
-     <ToastContainer/>
       <Footer />
     </div>
   );

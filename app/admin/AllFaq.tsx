@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Trash2, SquarePen } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Modal from "@/components/model";
 import EditFaq from "./EditFaq";
 import Confirmation from "@/components/Confirmation";
@@ -171,7 +171,6 @@ const AllFaq = ({ setIsAllFaq }: any) => {
                 />
 
             </Modal>
-            <ToastContainer />
         </div>
     )
 }
