@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loader from "@/components/Loader";
 
 
 
 const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
   const [domainData, setDomainData] = useState("");
+  const [loaderStatus, setLoaderStatus] = useState(false);
 
 
   const onChangeHandler = (
@@ -17,7 +19,7 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setLoaderStatus(true);
     const formatted = domainData
       .split(/[\n,]+/)
       .map(d => d.trim().toLowerCase())
@@ -42,7 +44,6 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
         failed = [],
         remaining
       } = res.data;
-      console.log(message);
 
       // ✅ Base success message
       toast.success(message || "Domain processing completed.");
@@ -53,6 +54,7 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
           `Added (${added.length}): ${added.join(", ")}`,
 
         );
+
       }
 
       // ⚠️ Manual review domains
@@ -95,12 +97,22 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
         );
       }
+
+    }
+    finally {
+      setLoaderStatus(false); // ✅ ALWAYS turn off loader
     }
   };
 
 
   return (
     <>
+      {loaderStatus && (
+        <div className="absolute inset-0 bg-white/70 dark:bg-gray-800/70 flex items-center justify-center z-50">
+          <Loader />
+        </div>
+      )}
+
       <form onSubmit={onSubmitHandler}>
         <p className="text-center text-lg mb-6">
           To bulk upload domains, browse or drag the file into the dropbox.
@@ -140,10 +152,12 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
         <div className="flex justify-center mt-8">
           <button
+          disabled={loaderStatus}
             type="submit"
             className="rounded-full bg-blue-600 text-white px-6 py-2 hover:bg-blue-700"
           >
-            Add Domains
+            {loaderStatus ? "Adding..." : "Add Domain"}
+
           </button>
         </div>
       </form>

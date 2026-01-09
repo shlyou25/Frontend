@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Loader from "@/components/Loader";
 
 interface PromotionProps {
     domainPromotion: {
@@ -11,13 +12,14 @@ interface PromotionProps {
 }
 const Promotion = ({ domainPromotion, onClose }: PromotionProps) => {
     const [priority, setPriority] = useState<number | undefined>(undefined);
+    const [loaderStatus,setLoaderStatus]=useState(false)
     const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         if (!domainPromotion?.domain_id || priority === undefined) {
             toast.error("Domain ID and priority are required");
             return;
         }
+        setLoaderStatus(true);
         try {
             const payload = {
                 domainId: domainPromotion.domain_id,
@@ -30,15 +32,18 @@ const Promotion = ({ domainPromotion, onClose }: PromotionProps) => {
                 { withCredentials: true }
             );
             toast.success(res?.data?.message || "Success!");
+            setLoaderStatus(false)
             onClose();
         } catch (err: any) {
             const errorMessage = err?.response?.data?.message ||
                 err?.message ||
                 "An unexpected error occurred";
             toast.error(errorMessage);
+            setLoaderStatus(false)
             onClose()
         }
     };
+    if(loaderStatus) return <Loader/>
     return (
         <>
             <form onSubmit={onSubmitHandler} className="max-w-sm mx-auto">
