@@ -23,7 +23,6 @@ const AddPlan = ({ selectedUser, onClose }: AddPlanProps) => {
         title: '',
         feature: '',
         durationInMonths: ''
-
     });
     const [loaderStatus, setLoaderStatus] = useState(false)
 
@@ -55,7 +54,7 @@ const AddPlan = ({ selectedUser, onClose }: AddPlanProps) => {
             );
 
             toast.success(res.data.message);
-            onClose(); 
+            onClose();
 
         } catch (error: any) {
             toast.error(
@@ -66,8 +65,6 @@ const AddPlan = ({ selectedUser, onClose }: AddPlanProps) => {
             setLoaderStatus(false); // ✅ ALWAYS turn off loader
         }
     };
-
-
 
 
     return (
@@ -115,7 +112,6 @@ const AddPlan = ({ selectedUser, onClose }: AddPlanProps) => {
                         />
                     </div>
                 </div>
-
                 <div className="flex justify-end mt-6">
                     <button disabled={loaderStatus} className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">{loaderStatus ? "Saving..." : "Save"}</button>
                 </div>

@@ -57,7 +57,7 @@ const PlanRequest = ({ onClose }: PlanRequestProps) => {
   return (
     <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
       <h2 className="text-lg font-semibold text-gray-700">
-        Plan Request
+        Please Select a Plan
       </h2>
 
       <form onSubmit={onSubmitHandler}>
@@ -99,7 +99,7 @@ const PlanRequest = ({ onClose }: PlanRequestProps) => {
               ${loading ? "bg-gray-400" : "bg-gray-700 hover:bg-gray-600"}
             `}
           >
-            {loading ? "Submitting..." : "Save"}
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>

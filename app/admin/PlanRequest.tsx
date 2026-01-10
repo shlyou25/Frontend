@@ -4,40 +4,80 @@ import React, { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import Modal from "@/components/model";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Loader from "@/components/Loader";
+import { PlanRequestItem } from "./page";
 
-/* ================= TYPES ================= */
 
-export interface PlanRequestItem {
-  _id: string;
-  userId: {
-    _id: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-  };
-  planTitle: string;
-  price: number;
-  per: "Month" | "Year";
-  featureLimit: number;
-  status: "Pending" | "Approved" | "Rejected";
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface PlanRequestTableProps {
   data: PlanRequestItem[];
+  total: number;
+  pendingCount: number;
   onRequestUpdated: () => void;
 }
 
-/* ================= COMPONENT ================= */
 
 const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<PlanRequestItem | null>(null);
+  const [loaderStatus, setLoaderStatus] = useState(false)
 
-  /* 🔍 FILTER */
+  const approvePlan = async (
+    userId: string, title: string
+  ) => {
+    if (loaderStatus) return;
+    setLoaderStatus(true);
+    const payload = {
+      userId,
+      title,
+    };
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}planrequest/approveplanrequest`,
+        payload,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      onRequestUpdated();
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Something went wrong"
+      );
+    } finally {
+      setLoaderStatus(false); 
+    }
+  };
+  const rejectPlan = async (
+    userId: string, title: string
+  ) => {
+    if (loaderStatus) return;
+    setLoaderStatus(true);
+    const payload = {
+      userId,
+      title,
+    };
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}planrequest/approveplanrequest`,
+        payload,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      onRequestUpdated();
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Something went wrong"
+      );
+    } finally {
+      setLoaderStatus(false); // ✅ ALWAYS turn off loader
+    }
+  };
   const filteredData = useMemo(() => {
     return data.filter(item => {
       const searchValue = search?.toLowerCase();
@@ -55,7 +95,6 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
     });
   }, [data, search, dateFilter]);
 
-  /* 📤 EXPORT */
   const exportToExcel = () => {
     const sheetData = filteredData.map((item, index) => ({
       "S.No": index + 1,
@@ -83,8 +122,9 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
       "PlanRequests.xlsx"
     );
   };
-  console.log(data,"PlanReuest");
-  
+
+
+if(loaderStatus) return <Loader/>
   return (
     <div className="bg-white rounded-xl shadow border border-gray-200">
       {/* HEADER */}
@@ -149,10 +189,9 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
                 <td className="px-6 py-4">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium
-                      ${
-                        item.status === "Pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : item.status === "Approved"
+                      ${item.status === "Pending"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : item.status === "Approved"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }
@@ -169,30 +208,38 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
 
-                <td
-                  className="px-6 py-4 cursor-pointer"
-                  onClick={() => {
-                    setOpen(true);
-                    setSelectedRequest(item);
-                  }}
-                >
-                  <span className="text-blue-600 hover:underline">
-                    View
-                  </span>
+                <td className="px-6 py-4">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                    <button
+                      onClick={() => approvePlan(item.userId._id, item.planTitle)}
+                      className="px-3 py-1.5 text-xs font-semibold rounded-md
+                 bg-green-100 text-green-700 hover:bg-green-200
+                 transition w-full sm:w-auto"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => rejectPlan(item.userId._id, item.planTitle)}
+                      className="px-3 py-1.5 text-xs font-semibold rounded-md
+                 bg-red-100 text-red-700 hover:bg-red-200
+                 transition w-full sm:w-auto"
+                    >
+                      Reject
+                    </button>
+
+                  </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {/* MODAL PLACEHOLDER */}
       <Modal
         isOpen={open}
         onClose={() => setOpen(false)}
         title="Plan Request"
       >
-        {/* You can plug Approve / Reject UI here */}
         <pre className="text-xs">
           {JSON.stringify(selectedRequest, null, 2)}
         </pre>

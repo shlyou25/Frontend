@@ -51,13 +51,20 @@ interface DomainsResponse {
     };
   }>;
 }
+export interface PlanRequestResponse {
+  status: boolean;
+  total: number;
+  pendingCount: number;
+  data: PlanRequestItem[];
+}
+
 export interface PlanRequestItem {
   _id: string;
   userId: {
     _id: string;
     email: string;
-    name: string;
-    phoneNumber: string;
+    name?: string;
+    phoneNumber?: string;
   };
   planTitle: string;
   price: number;
@@ -69,13 +76,15 @@ export interface PlanRequestItem {
 }
 
 
+
 const Page = () => {
   const router = useRouter();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isauthenciated, setisAuthenciated] = useState(false);
-  const [planRequests, setPlanRequests] = useState<PlanRequestItem[]>([]);
+  const [planResponse, setPlanResponse] = useState<PlanRequestResponse | null>(null);
+
 
 
   const [activeView, setActiveView] = useState<AdminView>("dashboard");
@@ -136,13 +145,13 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}planrequest/getallplanrequest`,
           { withCredentials: true }
         );
-        setPlanRequests(res.data.data);
+        setPlanResponse(res.data);
       } catch {
         toast.error("Error fetching Plan Requests");
       }
     };
     fetchPlanRequests();
-  }, [isauthenciated,refreshPlanRequest]);
+  }, [isauthenciated, refreshPlanRequest]);
 
   // 🌐 DOMAINS
   useEffect(() => {
@@ -177,6 +186,7 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated, refreshPlans])
+
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
@@ -220,7 +230,7 @@ const Page = () => {
                 { label: 'Total Users', value: allUsers.length, color: 'bg-blue-500' },
                 { label: 'Domains Registered', value: domainsData?.count, color: 'bg-teal-500' },
                 { label: 'Manual Review', value: domainsData?.manualReviewCount, color: 'bg-orange-500' },
-                { label: 'Plan Requests', value: '£10,000', color: 'bg-red-500' },
+                { label: 'Pending Plan Requests', value: planResponse?.pendingCount, color: 'bg-red-500' },
               ].map(item => (
                 <div key={item.label} className="bg-white p-5 rounded-xl shadow flex justify-between">
                   <div>
@@ -253,14 +263,17 @@ const Page = () => {
           </div>
         )}
 
-        {activeView === "Plan Requests" && planRequests?.length > 0 && (
+        {activeView === "Plan Requests" && planResponse && (
           <div className="bg-white p-6 rounded-xl shadow">
             <PlanRequestTable
-              data={planRequests}
-              onRequestUpdated={() => setRefreshPlanRequests(prev => prev + 1)}
+              data={planResponse.data}
+              total={planResponse.total}
+              pendingCount={planResponse.pendingCount}
+              onRequestUpdated={() => setRefreshPlanRequests(p => p + 1)}
             />
           </div>
         )}
+
         {activeView === "Faq" && (
           <div className="bg-white p-6 rounded-xl shadow">
             <Faq />
