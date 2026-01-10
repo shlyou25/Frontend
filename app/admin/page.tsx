@@ -177,7 +177,6 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated, refreshPlans])
-  console.log(planRequests, "planRequestsplanRequestsplanRequestsplanRequests");
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
@@ -262,8 +261,6 @@ const Page = () => {
             />
           </div>
         )}
-
-
         {activeView === "Faq" && (
           <div className="bg-white p-6 rounded-xl shadow">
             <Faq />

@@ -40,12 +40,12 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
   /* 🔍 FILTER */
   const filteredData = useMemo(() => {
     return data.filter(item => {
-      const searchValue = search.toLowerCase();
+      const searchValue = search?.toLowerCase();
 
       const matchesText =
-        item.userId.name.toLowerCase().includes(searchValue) ||
-        item.userId.email.toLowerCase().includes(searchValue) ||
-        item.planTitle.toLowerCase().includes(searchValue);
+        item.userId.name?.toLowerCase().includes(searchValue) ||
+        item.userId.email?.toLowerCase().includes(searchValue) ||
+        item.planTitle?.toLowerCase().includes(searchValue);
 
       const matchesDate = dateFilter
         ? item.createdAt.slice(0, 10) === dateFilter
@@ -83,7 +83,8 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
       "PlanRequests.xlsx"
     );
   };
-
+  console.log(data,"PlanReuest");
+  
   return (
     <div className="bg-white rounded-xl shadow border border-gray-200">
       {/* HEADER */}
