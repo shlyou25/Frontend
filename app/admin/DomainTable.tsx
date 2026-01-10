@@ -8,7 +8,6 @@ import Promotion from "./Promotion";
 import { Trash } from "lucide-react";
 
 
-/* 🔑 TYPES */
 export interface DomainItem {
   domainId: string;
   domain: string;
@@ -21,12 +20,10 @@ export interface DomainItem {
   };
 }
 
-
 interface DomainsTableProps {
   data: DomainItem[];
 }
 
-/* ✅ COMPONENT */
 const DomainsTable = ({ data }: DomainsTableProps) => {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
@@ -36,7 +33,6 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
     domain: ''
   })
 
-  /* 🔍 FILTER LOGIC */
   const filteredData = useMemo(() => {
     return data.filter(item => {
       const searchValue = search.toLowerCase();
@@ -54,7 +50,7 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
     });
   }, [data, search, dateFilter]);
 
-  /* 📤 EXPORT TO EXCEL */
+
   const exportToExcel = () => {
     const sheetData = filteredData.map((item, index) => ({
       "#": index + 1,
@@ -169,7 +165,6 @@ const DomainsTable = ({ data }: DomainsTableProps) => {
                     );
                   })()}
                 </td>
-
                 <td className="px-6 py-4">
                   <Trash className="cursor-pointer hover:text-red-400" />
                 </td>

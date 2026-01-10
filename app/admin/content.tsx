@@ -4,16 +4,16 @@ import React, { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { logoutHandler } from "@/utils/auth";
 
-/* 🔑 SHARED TYPE */
+
 export type AdminView = "dashboard" | "Users" | "domains" | "Plans" | "Faq";
 
-/* ✅ PROPS TYPE */
+
 interface SidebarProps {
   activeView: AdminView;
   setActiveView: Dispatch<SetStateAction<AdminView>>;
 }
 
-/* MENU TYPE */
+
 interface MenuItem {
   label: string;
   view: AdminView;
@@ -29,7 +29,6 @@ interface MenuSection {
 
 type Menu = (MenuItem | MenuSection)[];
 
-/* MENU DATA */
 const menu: Menu = [
   {
     label: "Dashboard",
@@ -131,7 +130,6 @@ const menu: Menu = [
   },
 ];
 
-/* ✅ COMPONENT */
 export default function Content({ activeView, setActiveView }: SidebarProps) {
   const router = useRouter();
   return (
@@ -183,7 +181,6 @@ export default function Content({ activeView, setActiveView }: SidebarProps) {
   );
 }
 
-/* SIDEBAR ITEM */
 interface SidebarItemProps {
   label: string;
   iconBg: string;

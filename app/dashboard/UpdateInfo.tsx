@@ -8,7 +8,6 @@ interface UpdateInfoProps extends backendUserData {
   setUpdateInfoStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-
 const UpdateInfo = (props: UpdateInfoProps) => {
     const [updateInfo, setUpdateInfo] = useState<backendUserData>({
         name: props?.name,

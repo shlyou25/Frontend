@@ -8,6 +8,7 @@ import Loader from '@/components/Loader';
 import Modal from '@/components/model';
 import AddDomainsCard from './adddomain';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 interface DomainType {
   id: string;
@@ -15,6 +16,8 @@ interface DomainType {
   isHidden: boolean;
   isChatActive: boolean;
   clicks: number;
+  finalUrl:string,
+  createdAt:string
 }
 const Toggle = ({
   checked,
@@ -121,7 +124,6 @@ const Myportfolio = () => {
     }
   };
   if (loading) return <Loader />;
-
   return (
     <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <div className="max-w-5xl mx-auto mt-8">
@@ -154,15 +156,14 @@ const Myportfolio = () => {
                 <th className="px-4 py-2 text-center">Hide</th>
                 <th className="px-4 py-2 text-center">Chat</th>
                 <th className="px-4 py-2 text-center">Delete</th>
-                <th className="px-4 py-2 text-center">Clicks</th>
+                <th className="px-4 py-2 text-center">Added On</th>
               </tr>
             </thead>
-
             <tbody>
-              {userDomains.map((d) => (
+              {userDomains?.map((d) => (
                 <tr key={d.id} className="odd:bg-white even:bg-blue-50">
                   <td className="px-4 py-2 text-blue-600 underline break-all">
-                    {d.domain}
+                    <Link href={d.finalUrl} target={d?.domain}>{d?.domain}</Link>
                   </td>
 
                   <td className="px-4 py-2 text-center">
@@ -172,7 +173,6 @@ const Myportfolio = () => {
                       onChange={(val) => toggleHide(d.id, val)}
                     />
                   </td>
-
                   <td className="px-4 py-2 text-center">
                     <Toggle
                       id={`chat-${d.id}`}
@@ -191,7 +191,7 @@ const Myportfolio = () => {
                   </td>
 
                   <td className="px-4 py-2 text-center">
-                    {d.clicks ?? 0}
+                   {new Date(d?.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
