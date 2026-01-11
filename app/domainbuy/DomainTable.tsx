@@ -110,7 +110,7 @@ const DomainTable = ({ searchQuery }: DomainTableProps) => {
           </div>
         </div>
         {/* SCROLL CONTAINER */}
-        <div className="overflow-x-auto max-h-105 overflow-y-auto">
+        
           <table className="w-full min-w-150 text-sm border-collapse">
 
             {/* FIXED HEADER */}
@@ -177,7 +177,7 @@ const DomainTable = ({ searchQuery }: DomainTableProps) => {
               )}
             </tbody>
           </table>
-        </div>
+        
       </div>
 
 
