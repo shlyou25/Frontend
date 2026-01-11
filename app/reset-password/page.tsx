@@ -101,7 +101,7 @@ const  ResetPassword=()=> {
       {/* RIGHT SIDE – IMAGE */}
       <div className="hidden lg:flex items-center justify-center ">
         <img
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/authentication/illustration.svg"
+          src="/assets/resetpass.png"
           alt="Reset password"
           className="max-w-md"
         />
