@@ -6,10 +6,12 @@ import { Send } from 'lucide-react';
 import Modal from '@/components/model';
 import EmailTemplate from '@/components/EmailTemplate';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 
 interface Domain {
   domainId: string;
+  finalUrl:string;
   domain: string;
   isChatActive: boolean;
   user: {
@@ -138,9 +140,18 @@ const DomainTable = ({ searchQuery }: DomainTableProps) => {
                 filteredDomains.map((d) => (
                   <tr key={d.domainId} className="border-t">
                     <td className="px-6 py-4">
-                      <span className="text-blue-700 font-medium break-all">
-                        {d.domain}
-                      </span>
+                      {d?.finalUrl ? (
+                        <Link
+                          href={d.finalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {d?.domain}
+                        </Link>
+                      ) : (
+                        <span className="text-gray-700">{d?.domain}</span>
+                      )}
                     </td>
 
                     <td className="px-6 py-4 text-center">
