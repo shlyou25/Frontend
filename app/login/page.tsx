@@ -166,9 +166,9 @@ const Page = () => {
                   Sign Up
                 </Link>
               </p>
-              <span className="text-blue-600 cursor-pointer">
+              <Link href={'/forgot-password'} className="text-blue-600 cursor-pointer">
                 Forgot password?
-              </span>
+              </Link>
             </div>
           </form>
         </div>
