@@ -101,24 +101,10 @@ const Table = () => {
                   <td >{user.phoneNumber}</td>
                   <td >{user.activePlan}</td>
                   <td className="text-center">
-                    {new Date(user.planActivationDate).toLocaleString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: true
-                    })}
+                    {new Date(user.planActivationDate).toLocaleDateString()}
                   </td>
 
-                  <td className="text-center">{new Date(user.planEndingDate).toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                  })}</td>
+                  <td className="text-center">{new Date(user?.planEndingDate)?.toLocaleDateString()}</td>
                   <td className="text-center">{user.numberOfDomains}</td>
                   {/* <td className="px-2">
                     <div className="flex gap-2 justify-center">

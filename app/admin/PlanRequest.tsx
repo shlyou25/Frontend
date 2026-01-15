@@ -8,6 +8,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 import { PlanRequestItem } from "./page";
+import { Trash2 } from "lucide-react";
+import Confirmation from "@/components/Confirmation";
 
 
 
@@ -25,6 +27,9 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<PlanRequestItem | null>(null);
   const [loaderStatus, setLoaderStatus] = useState(false)
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
 
   const approvePlan = async (
     userId: string, title: string
@@ -35,7 +40,6 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
       userId,
       title,
     };
-
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}planrequest/approveplanrequest`,
@@ -49,19 +53,18 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
         error?.response?.data?.message || "Something went wrong"
       );
     } finally {
-      setLoaderStatus(false); 
+      setLoaderStatus(false);
     }
   };
   const rejectPlan = async (
     userId: string, planTitle: string
-  ) => { 
+  ) => {
     if (loaderStatus) return;
     setLoaderStatus(true);
     const payload = {
       userId,
       planTitle,
     };
-   
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}planrequest/rejectplanrequest`,
@@ -78,19 +81,36 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
       setLoaderStatus(false); // ✅ ALWAYS turn off loader
     }
   };
+  const handleConfirmDelete = async () => {
+    if (!deleteId) return;
+
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_apiLink}planrequest/${deleteId}`,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      onRequestUpdated();
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Something went wrong"
+      );
+    } finally {
+      setIsConfirmOpen(false);
+      setDeleteId(null);
+    }
+  };
+
   const filteredData = useMemo(() => {
     return data.filter(item => {
       const searchValue = search?.toLowerCase();
-
       const matchesText =
         item.userId.name?.toLowerCase().includes(searchValue) ||
         item.userId.email?.toLowerCase().includes(searchValue) ||
         item.planTitle?.toLowerCase().includes(searchValue);
-
       const matchesDate = dateFilter
         ? item.createdAt.slice(0, 10) === dateFilter
         : true;
-
       return matchesText && matchesDate;
     });
   }, [data, search, dateFilter]);
@@ -124,7 +144,7 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
   };
 
 
-if(loaderStatus) return <Loader/>
+  if (loaderStatus) return <Loader />
   return (
     <div className="bg-white rounded-xl shadow border border-gray-200">
       {/* HEADER */}
@@ -174,6 +194,7 @@ if(loaderStatus) return <Loader/>
               <th className="px-6 py-3 text-left">Phone</th>
               <th className="px-6 py-3 text-left">Requested On</th>
               <th className="px-6 py-3 text-left">Action</th>
+              <th className="px-6 py-3 text-left">Delete</th>
             </tr>
           </thead>
 
@@ -229,7 +250,15 @@ if(loaderStatus) return <Loader/>
 
                   </div>
                 </td>
-
+                <td className="px-6 py-4 cursor-pointer">
+                  <Trash2
+                    className="w-5 h-5 cursor-pointer hover:text-red-500"
+                    onClick={() => {
+                      setDeleteId(item._id);
+                      setIsConfirmOpen(true);
+                    }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -244,6 +273,11 @@ if(loaderStatus) return <Loader/>
           {JSON.stringify(selectedRequest, null, 2)}
         </pre>
       </Modal>
+      <Confirmation
+        open={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={handleConfirmDelete} // ✅ FUNCTION REFERENCE
+      />
     </div>
   );
 };
