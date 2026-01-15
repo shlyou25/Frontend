@@ -47,9 +47,6 @@ export interface SelectedPlan {
   features:number;
   EndingDate:string
 }
-
-
-
 /* ✅ COMPONENT */
 const PlanTable = ({ data, onPlanUpdated }: PlanTableProps) => {
   const [search, setSearch] = useState("");

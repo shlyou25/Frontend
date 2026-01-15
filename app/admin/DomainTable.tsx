@@ -10,6 +10,7 @@ import ChangeDomainStatus from "./ChangeDomainStatus";
 import Confirmation from "@/components/Confirmation";
 import axios from "axios";
 import { toast } from "react-toastify";
+import PromotedDomainTable from "./PromotedDomainTable";
 
 
 export interface DomainItem {
@@ -40,6 +41,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
     domain: ''
   })
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [isPromotedDomain, setIsPromotedDomain] = useState<boolean>(false);
 
   const openDeleteModal = (domainId: string) => {
     setDeleteId(domainId)
@@ -97,7 +99,6 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
     const worksheet = XLSX.utils.json_to_sheet(sheetData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Domains");
-
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
@@ -107,13 +108,27 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
       "domains.xlsx"
     );
   };
+  if (isPromotedDomain) {
+    return (
+      <PromotedDomainTable
+        setIsPromotedDomain={setIsPromotedDomain}
+      />
+    );
+  }
   return (
     <div className="bg-white rounded-xl shadow border border-gray-200">
-      {/* HEADER */}
       <div className="p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between border-b">
         <h2 className="text-lg font-semibold text-gray-800">
           No Of Domains - {filteredData.length}
         </h2>
+        <button
+          onClick={() => setIsPromotedDomain(!isPromotedDomain)}
+          className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2  cursor-pointer
+             text-sm font-medium text-gray-700 hover:bg-gray-50 
+             transition focus:outline-none focus:ring-2 focus:ring-gray-300"
+        >
+          Promoted Domains
+        </button>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -166,8 +181,8 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
               <tr key={index} className="hover:bg-gray-50 transition">
                 <td className="px-6 py-4">{index + 1}</td>
                 <td className="px-6 py-4 text-blue-600 font-medium">{item.domain}</td>
-                <td className="px-6 py-4">{item.owner.name}</td>
-                <td className="px-6 py-4">{item.owner.email}</td>
+                <td className="px-6 py-4">{item?.owner?.name}</td>
+                <td className="px-6 py-4">{item?.owner?.email}</td>
                 <ChangeDomainStatus
                   status={item.status}
                   domainId={item.domainId}
@@ -233,7 +248,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
       <Confirmation
         open={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirmDelete} // ✅ FUNCTION REFERENCE
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
