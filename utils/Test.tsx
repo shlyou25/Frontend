@@ -1,165 +1,132 @@
-import { CheckIcon } from "@heroicons/react/20/solid"
+'use client'
 
-type Tier = {
-  name: string
-  id: string
-  href: string
-  priceMonthly: string
-  description: string
-  features: string[]
-  featured: boolean
+import { CheckIcon } from "@heroicons/react/20/solid"
+import axios from "axios"
+import { useState } from "react"
+import { toast } from "react-toastify"
+
+type Package = {
+  title: string
+  price: number
+  per: string
+  feature: number
 }
 
-const tiers: Tier[] = [
-  {
-    name: "Hobby",
-    id: "tier-hobby",
-    href: "#",
-    priceMonthly: "$29",
-    description: "The perfect plan if you're just getting started.",
-    features: [
-      "25 products",
-      "Up to 10,000 subscribers",
-      "Advanced analytics",
-      "24-hour support response time",
-    ],
-    featured: false,
-  },
-  {
-    name: "Enterprise",
-    id: "tier-enterprise",
-    href: "#",
-    priceMonthly: "$99",
-    description: "Dedicated support and infrastructure for your company.",
-    features: [
-      "Unlimited products",
-      "Unlimited subscribers",
-      "Advanced analytics",
-      "Dedicated support representative",
-      "Marketing automations",
-      "Custom integrations",
-    ],
-    featured: true,
-  },
+const packages: Package[] = [
+  { title: "Starter", price: 0.99, per: "Month", feature: 5 },
+  { title: "Basic", price: 4.99, per: "Month", feature: 100 },
+  { title: "Business", price: 9.99, per: "Month", feature: 500 },
+  { title: "Premium", price: 14.99, per: "Month", feature: 1000 },
+  { title: "Platinum", price: 19.99, per: "Month", feature: 2000 },
+  { title: "Gold", price: 24.99, per: "Month", feature: 5000 },
 ]
 
-const classNames = (...classes: (string | boolean | undefined)[]) => {
-  return classes.filter(Boolean).join(" ")
-}
+export default function Pricing() {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
 
-const Test=() =>{
+  const handleUpgrade = async (planTitle: string) => {
+    if (loadingPlan) return
+    setLoadingPlan(planTitle)
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}planrequest/upgreadplan`,
+        { planTitle },
+        { withCredentials: true }
+      ) 
+      toast.success(res.data.message || "Upgrade request submitted")
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Failed to submit upgrade request"
+      )
+    } finally {
+      setLoadingPlan(null)
+    }
+  }
+
   return (
-    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-      {/* Background blur */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"
-      >
-        <div
-          className="mx-auto aspect-1155/678 w-288.75 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        />
-      </div>
-
-      {/* Heading */}
+    <section className="relative bg-white px-6 py-24 sm:py-32 lg:px-8">
+      {/* HEADER */}
       <div className="mx-auto max-w-4xl text-center">
         <h2 className="text-base font-semibold text-indigo-600">Pricing</h2>
-        <p className="mt-2 text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
-          Choose the right plan for you
+        <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Simple, transparent pricing
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-          Simple pricing with everything you need to grow.
+          Choose the plan that fits your scale. Upgrade anytime.
         </p>
       </div>
 
-      {/* Pricing Cards */}
-      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 lg:max-w-4xl lg:grid-cols-2">
-        {tiers.map((tier, idx) => (
-          <div
-            key={tier.id}
-            className={classNames(
-              tier.featured
-                ? "relative bg-gray-900 shadow-2xl"
-                : "bg-white/60",
-              "rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10"
-            )}
-          >
-            <h3
-              className={classNames(
-                tier.featured ? "text-indigo-400" : "text-indigo-600",
-                "text-base font-semibold"
-              )}
-            >
-              {tier.name}
-            </h3>
+      {/* CARDS */}
+      <div className="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {packages.map((pkg) => {
+          const isLoading = loadingPlan === pkg.title
 
-            <p className="mt-4 flex items-baseline gap-x-2">
-              <span
-                className={classNames(
-                  tier.featured ? "text-white" : "text-gray-900",
-                  "text-5xl font-bold"
-                )}
-              >
-                {tier.priceMonthly}
-              </span>
-              <span
-                className={classNames(
-                  tier.featured ? "text-gray-400" : "text-gray-500",
-                  "text-base"
-                )}
-              >
-                /month
-              </span>
-            </p>
-
-            <p
-              className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
-                "mt-6"
-              )}
+          return (
+            <div
+              key={pkg.title}
+              className={`relative rounded-3xl p-8 bg-white transition shadow-sm hover:shadow-lg
+                ${pkg.title === "Business"
+                  ? "border-2 border-indigo-600"
+                  : "border border-gray-200"
+                }`}
             >
-              {tier.description}
-            </p>
-
-            <ul
-              role="list"
-              className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
-                "mt-8 space-y-3 text-sm"
+              {pkg.title === "Business" && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
+                  Most Popular
+                </span>
               )}
-            >
-              {tier.features.map((feature) => (
-                <li key={feature} className="flex gap-x-3">
-                  <CheckIcon
-                    className={classNames(
-                      tier.featured ? "text-indigo-400" : "text-indigo-600",
-                      "h-6 w-5 flex-none"
-                    )}
-                  />
-                  {feature}
+
+              <h3 className="text-lg font-semibold text-gray-900">
+                {pkg.title}
+              </h3>
+
+              <div className="mt-4 flex items-baseline gap-x-2">
+                <span className="text-4xl font-bold text-gray-900">
+                  ${pkg.price}
+                </span>
+                <span className="text-sm text-gray-500">/{pkg.per}</span>
+              </div>
+
+              <p className="mt-4 text-sm text-gray-600">
+                Manage up to{" "}
+                <span className="font-semibold text-gray-900">
+                  {pkg.feature}
+                </span>{" "}
+                domains.
+              </p>
+
+              <ul className="mt-6 space-y-3 text-sm text-gray-600">
+                <li className="flex items-center gap-x-3">
+                  <CheckIcon className="h-5 w-5 text-indigo-600" />
+                  {pkg.feature} domains included
                 </li>
-              ))}
-            </ul>
+                <li className="flex items-center gap-x-3">
+                  <CheckIcon className="h-5 w-5 text-indigo-600" />
+                  Priority scanning
+                </li>
+                <li className="flex items-center gap-x-3">
+                  <CheckIcon className="h-5 w-5 text-indigo-600" />
+                  Email support
+                </li>
+              </ul>
 
-            <a
-              href={tier.href}
-              className={classNames(
-                tier.featured
-                  ? "bg-indigo-500 text-white hover:bg-indigo-400"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700",
-                "mt-8 block rounded-md px-4 py-2.5 text-center text-sm font-semibold transition"
-              )}
-            >
-              Get started today
-            </a>
-          </div>
-        ))}
+              <button
+                disabled={isLoading}
+                onClick={() => handleUpgrade(pkg.title)}
+                className={`mt-8 w-full rounded-md px-4 py-3 text-sm font-semibold text-white transition
+                  ${pkg.title === "Business"
+                    ? "bg-indigo-600 hover:bg-indigo-500"
+                    : "bg-gray-900 hover:bg-gray-800"
+                  }
+                  ${isLoading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}
+                `}
+              >
+                {isLoading ? "Submitting..." : "Upgrade Plan"}
+              </button>
+            </div>
+          )
+        })}
       </div>
-    </div>
+    </section>
   )
 }
-
-export default Test;
