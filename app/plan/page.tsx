@@ -4,7 +4,7 @@ import Plancard from './plancard'
 import OurCare from './OurCare'
 import Footer from '@/components/Footer'
 
-export const packages = [
+const packages = [
   { title: 'Starter', price: 0.99, per: 'Month', feature: 5 },
   { title: 'Basic', price: 4.99, per: 'Month', feature: 100 },
   { title: 'Business', price: 9.99, per: 'Month', feature: 500 },

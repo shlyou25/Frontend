@@ -43,7 +43,6 @@ const PromotedDomainTable = ({ setIsPromotedDomain }: PromotedDomainProps) => {
             setDomains(prev =>
                 prev.filter(d => d.domainId !== selectedDomainId)
             );
-
             setConfirmOpen(false);
             setSelectedDomainId(null);
         } catch (err) {
@@ -51,8 +50,6 @@ const PromotedDomainTable = ({ setIsPromotedDomain }: PromotedDomainProps) => {
             alert("Failed to delete domain");
         }
     };
-
-
 
     useEffect(() => {
         const controller = new AbortController();
