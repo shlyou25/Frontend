@@ -18,10 +18,11 @@ interface PlanRequestTableProps {
   total: number;
   pendingCount: number;
   onRequestUpdated: () => void;
+  onRequestUpdatedDomain: ()=>void;
 }
 
 
-const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => {
+const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: PlanRequestTableProps) => {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [open, setOpen] = useState(false);
@@ -48,6 +49,7 @@ const PlanRequestTable = ({ data, onRequestUpdated }: PlanRequestTableProps) => 
       );
       toast.success(res.data.message);
       onRequestUpdated();
+      onRequestUpdatedDomain();
     } catch (error: any) {
       toast.error(
         error?.response?.data?.message || "Something went wrong"

@@ -155,7 +155,6 @@ const Page = () => {
     fetchPlanRequests();
   }, [isauthenciated, refreshPlanRequest]);
 
-  // 🌐 DOMAINS
   useEffect(() => {
     if (!isauthenciated) return;
 
@@ -190,7 +189,6 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated, refreshPlans])
-
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
@@ -202,7 +200,6 @@ const Page = () => {
       >
         ☰
       </button>
-
       {/* MOBILE OVERLAY */}
       {sidebarOpen && (
         <div
@@ -210,7 +207,6 @@ const Page = () => {
           onClick={() => setSidebarOpen(false)}
         />
       )}
-
       {/* MOBILE SIDEBAR */}
       <aside
         className={`fixed top-0 left-0 z-50 w-64 h-full bg-white shadow-lg transition-transform sm:hidden
@@ -218,12 +214,10 @@ const Page = () => {
       >
         <Content activeView={activeView} setActiveView={setActiveView} />
       </aside>
-
       {/* DESKTOP SIDEBAR */}
       <aside className="hidden sm:flex sm:w-64 sm:h-full sm:fixed bg-white border-r">
         <Content activeView={activeView} setActiveView={setActiveView} />
       </aside>
-
       {/* MAIN CONTENT */}
       <main className="sm:ml-64 p-6 overflow-y-auto h-screen">
         {/* DASHBOARD */}
@@ -276,6 +270,7 @@ const Page = () => {
               total={planResponse.total}
               pendingCount={planResponse.pendingCount}
               onRequestUpdated={() => setRefreshPlanRequests(p => p + 1)}
+              onRequestUpdatedDomain={() => setrefreshDomainStatus(p => p + 1)}
             />
           </div>
         )}
