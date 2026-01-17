@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import DomainTable from './DomainTable';
-import FilterDashboard from '@/components/FilterDashboard';
 import Footer from '@/components/Footer';
 import NavbarComponenet from '@/components/NavbarComponenet';
 
@@ -44,7 +43,6 @@ return (
       </div>
 
       <Footer />
-      <FilterDashboard />
     </div>
   );
 }
