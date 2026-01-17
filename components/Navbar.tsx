@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation"
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const router=useRouter();
+  const router = useRouter();
 
-  const checkAuth= async ()=>{
+  const checkAuth = async () => {
     try {
-      await axios.get( `${process.env.NEXT_PUBLIC_apiLink}auth/authenticate`,
-        {withCredentials:true}
+      await axios.get(`${process.env.NEXT_PUBLIC_apiLink}auth/authenticate`,
+        { withCredentials: true }
       )
       router.push('/dashboard')
     } catch (error) {
@@ -23,16 +23,16 @@ const Navbar = () => {
   return (
     <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-4 relative z-50">
       <Link href={'/'}>
-      <div className="flex items-center space-x-2 cursor-pointer">
-        <Image
-          src="/assets/logo.jpg"
-          alt="Domz Logo"
-          width={100}
-          height={100}
-          className="object-contain"
-          priority
-        />
-      </div>
+        <div className="flex items-center space-x-2 cursor-pointer">
+          <Image
+            src="/assets/logo.jpg"
+            alt="Domz Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+            priority
+          />
+        </div>
       </Link>
 
       {/* Desktop Menu */}
@@ -40,7 +40,12 @@ const Navbar = () => {
         <ul className="flex items-center space-x-8 text-gray-800 font-medium">
           <Link href={'/'} className="hover:text-blue-600 transition cursor-pointer">Home</Link>
           <Link href={'/domainbuy'} className="hover:text-blue-600 transition cursor-pointer">Buy</Link>
-          <li className="hover:text-blue-600 transition cursor-pointer">Sell</li>
+          <li
+            onClick={checkAuth}
+            className="hover:text-blue-600 transition cursor-pointer"
+          >
+            Sell
+          </li>
           <Link href={'/contact'} className="hover:text-blue-600 transition cursor-pointer">Contact</Link>
         </ul>
       </div>
@@ -48,7 +53,7 @@ const Navbar = () => {
       {/* Right Button (Desktop) */}
       <div className="hidden md:block">
         <button className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-5 py-2 rounded-full shadow hover:from-blue-600 hover:to-blue-700 transition cursor-pointer"
-        onClick={checkAuth}
+          onClick={checkAuth}
         >
           My Domz
         </button>

@@ -90,12 +90,10 @@ export default function ChangeDomainStatus({
   }
 
   const handlePassClick = () => {
-  // 🔒 ANY → Pass requires final URL
   if (safeStatus !== "pass") {
     setAskFinalUrl(true)
   }
 }
-
 
   const handleFinalUrlSubmit = () => {
     if (!finalUrl.trim()) {
