@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Plus, Minus } from "lucide-react";
 import axios from "axios";
+import { Plus, Minus, ChevronDown } from "lucide-react";
+
 
 type FaqCategory = "Sell" | "Buy" | "Plans" | "Security";
 
@@ -74,9 +75,8 @@ const Faq = () => {
             return (
               <div
                 key={category}
-                className={`rounded-2xl transition-all duration-300 ${
-                  openCategory === category ? "bg-blue-50" : "bg-gray-50"
-                }`}
+                className={`rounded-2xl transition-all duration-300 ${openCategory === category ? "bg-blue-50" : "bg-gray-50"
+                  }`}
               >
                 <button
                   onClick={() => toggleCategory(category)}
@@ -96,42 +96,48 @@ const Faq = () => {
                 </button>
                 {openCategory === category && (
                   <div className="px-6 pb-6 space-y-4">
-                    {faqs.map((item) => (
-                      <div
-                        key={item._id}
-                        className="rounded-xl bg-white border transition-all"
-                      >
-                        <button
-                          onClick={() => toggleQuestion(item._id)}
-                          className="flex items-center w-full text-left px-6 py-4 gap-4"
+                    {faqs.map((item) => {
+                      const isOpen = openQuestion === item._id;
+
+                      return (
+                        <div
+                          key={item._id}
+                          className="rounded-xl bg-white border border-gray-200 overflow-hidden transition"
                         >
-                          <span className="flex items-center justify-center w-7 h-7 bg-gray-100 rounded-full">
-                            {openQuestion === item._id ? (
-                              <Minus className="w-4 h-4" />
-                            ) : (
-                              <Plus className="w-4 h-4" />
-                            )}
-                          </span>
+                          <button
+                            onClick={() => toggleQuestion(item._id)}
+                            className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition"
+                          >
+                            <h4 className="font-medium text-gray-900">
+                              {item.question}
+                            </h4>
 
-                          <h4 className="font-medium text-gray-900">
-                            {item.question}
-                          </h4>
-                        </button>
-
-                        {openQuestion === item._id && (
-                          <div className="px-16 pb-4 text-gray-600 leading-relaxed">
-                            {item.answer}
+                            <ChevronDown
+                              className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                                }`}
+                            />
+                          </button>
+                          <div
+                            className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                              }`}
+                          >
+                            <div className="overflow-hidden">
+                              <div className="px-6 pb-5 text-gray-600 leading-relaxed border-l-4 border-blue-500 ml-2">
+                                {item.answer}
+                              </div>
+                            </div>
                           </div>
-                        )}
-                      </div>
-                    ))}
+                        </div>
+                      );
+                    })}
+
                   </div>
                 )}
               </div>
             );
-            
+
           })}
-          
+
         </div>
       </div>
     </section>
