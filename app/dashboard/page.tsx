@@ -79,7 +79,7 @@ const Page = () => {
                     item.onClick();
                     setSidebarOpen(false);
                   }}
-                  className="flex items-center gap-3 w-full text-left text-gray-700 hover:text-blue-600 font-medium"
+                  className="flex items-center gap-3 w-full text-left text-gray-700 hover:text-blue-600 font-medium cursor-pointer"
                 >
                   <Image src={item.icon} alt={item.label} width={20} height={20} />
                   <span>{item.label}</span>

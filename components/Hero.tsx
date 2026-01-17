@@ -1,8 +1,16 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { checkAuth } from "@/utils/checkAuth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Hero = () => {
+  const router=useRouter()
+  const handleAuthRedirect = async () => {
+      const status = await checkAuth()
+      router.push(status === "authenticated" ? "/dashboard" : "/login")
+    }
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10 pt-6">
       {/* Outer Background */}
@@ -17,7 +25,6 @@ const Hero = () => {
                      bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)]
                      bg-size-[16px_16px] opacity-30"
         />
-
         {/* Content */}
         <div className="relative z-10 m-4 sm:m-6 lg:m-8 rounded-[28px]">
           <div
@@ -70,15 +77,16 @@ const Hero = () => {
                   justify-center lg:justify-start
                 "
               >
-                <button
+                <Link href={'/domainbuy'}
                   className="
                     bg-blue-600 text-white px-6 py-3 rounded-full
                     font-medium shadow hover:bg-blue-700 transition
                   "
                 >
                   Buy
-                </button>
+                </Link>
                 <button
+                 onClick={handleAuthRedirect}
                   className="
                     border border-blue-600 text-blue-600 px-6 py-3
                     rounded-full font-medium hover:bg-blue-100 transition

@@ -57,6 +57,9 @@ const NavbarComponenet = (props: NavbarTextProp) => {
               >
                 Sell
               </li>
+              <Link href="/about" className="hover:text-blue-600 transition cursor-pointer">
+                About
+              </Link>
               <Link href={'/contact'} className="hover:text-blue-600 cursor-pointer">Contact</Link>
             </ul>
           </div>
