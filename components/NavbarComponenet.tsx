@@ -3,31 +3,37 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { checkAuth } from "@/utils/checkAuth";
+import { useRouter } from "next/navigation"
 
 export type NavbarTextProp =
   | {
-      colorText: string;
-      plainText: string;
-      IsParaText: true;
-      ParaText?: string;
-      searchbarStatus?: boolean;
-      onSearch?: (value: string) => void; // ✅ ADD
-    }
+    colorText: string;
+    plainText: string;
+    IsParaText: true;
+    ParaText?: string;
+    searchbarStatus?: boolean;
+    onSearch?: (value: string) => void; // ✅ ADD
+  }
   | {
-      colorText: string;
-      plainText: string;
-      IsParaText: false;
-      searchbarStatus?: boolean;
-      onSearch?: (value: string) => void; // ✅ ADD
-    };
+    colorText: string;
+    plainText: string;
+    IsParaText: false;
+    searchbarStatus?: boolean;
+    onSearch?: (value: string) => void; // ✅ ADD
+  };
+
 
 const NavbarComponenet = (props: NavbarTextProp) => {
+  const router = useRouter()
+  const handleAuthRedirect = async () => {
+    const status = await checkAuth()
+    router.push(status === "authenticated" ? "/dashboard" : "/login")
+  }
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10">
-      {/* HERO CONTAINER */}
       <div className="relative rounded-3xl bg-linear-to-br from-white via-blue-50 to-blue-100 overflow-hidden">
-        {/* NAVBAR */}
         <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6 ">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -45,7 +51,12 @@ const NavbarComponenet = (props: NavbarTextProp) => {
             <ul className="flex items-center gap-8 bg-white px-8 py-3 rounded-full shadow-sm text-gray-900 text-[15px]">
               <Link href="/" className="hover:text-blue-600">Home</Link>
               <Link href={'/domainbuy'} className="hover:text-blue-600 cursor-pointer">Buy</Link>
-              <li className="hover:text-blue-600 cursor-pointer">Sell</li>
+              <li
+                onClick={handleAuthRedirect}
+                className="hover:text-blue-600 transition cursor-pointer"
+              >
+                Sell
+              </li>
               <Link href={'/contact'} className="hover:text-blue-600 cursor-pointer">Contact</Link>
             </ul>
           </div>
