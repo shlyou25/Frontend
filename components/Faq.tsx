@@ -56,7 +56,6 @@ const Faq = () => {
     setOpenCategory(openCategory === category ? null : category);
     setOpenQuestion(null);
   };
-
   const toggleQuestion = (id: string) => {
     setOpenQuestion(openQuestion === id ? null : id);
   };
@@ -130,7 +129,9 @@ const Faq = () => {
                 )}
               </div>
             );
+            
           })}
+          
         </div>
       </div>
     </section>

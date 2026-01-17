@@ -1,17 +1,10 @@
 'use client';
-
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import AllFaq from "./AllFaq";
 
-
-export const Faq_Category = [
-  'Sell',
-  'Buy',
-  'Plans',
-  'Security'
-]
+export const Faq_Category = ['Sell','Buy','Plans','Security']
 interface FaqForm {
   question: string;
   answer: string;

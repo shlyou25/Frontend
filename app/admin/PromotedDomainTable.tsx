@@ -106,9 +106,7 @@ const PromotedDomainTable = ({ setIsPromotedDomain }: PromotedDomainProps) => {
                                 <th className="px-6 py-3 text-left text-sm font-semibold">
                                     Status
                                 </th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold">
-                                    Final URL
-                                </th>
+                               
                                 <th className="px-6 py-3 text-left text-sm font-semibold">
                                     Delete
                                 </th>
@@ -125,8 +123,19 @@ const PromotedDomainTable = ({ setIsPromotedDomain }: PromotedDomainProps) => {
                                             {d.priority}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 font-medium text-gray-900">
-                                        {d.domain}
+                                    <td className="px-6 py-4">
+                                        {d.finalUrl ? (
+                                            <a
+                                                href={d.finalUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-600 hover:underline"
+                                            >
+                                                {d.domain}
+                                            </a>
+                                        ) : (
+                                            <span className="text-gray-400">—</span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4">
                                         <span
@@ -140,20 +149,7 @@ const PromotedDomainTable = ({ setIsPromotedDomain }: PromotedDomainProps) => {
                                             {d.status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        {d.finalUrl ? (
-                                            <a
-                                                href={d.finalUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-600 hover:underline"
-                                            >
-                                                Visit
-                                            </a>
-                                        ) : (
-                                            <span className="text-gray-400">—</span>
-                                        )}
-                                    </td>
+                                    
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => handleDeleteClick(d.domainId)}
