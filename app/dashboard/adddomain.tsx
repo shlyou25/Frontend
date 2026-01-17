@@ -124,11 +124,9 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
         >
           +
         </button>
-
         <p className="text-center text-lg mt-8 mb-4">
           To manually add domains, paste or enter them one per line.
         </p>
-
         <textarea
           value={domainData}
           placeholder="example.com"
