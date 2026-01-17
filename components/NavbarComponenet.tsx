@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { checkAuth } from "@/utils/checkAuth";
-import { useRouter } from "next/navigation"
+import { handleAuthRedirect } from "@/utils/checkAuth";
+import { useRouter } from "next/navigation";
+
 
 export type NavbarTextProp =
   | {
@@ -25,11 +26,7 @@ export type NavbarTextProp =
 
 
 const NavbarComponenet = (props: NavbarTextProp) => {
-  const router = useRouter()
-  const handleAuthRedirect = async () => {
-    const status = await checkAuth()
-    router.push(status === "authenticated" ? "/dashboard" : "/login")
-  }
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10">
@@ -52,15 +49,13 @@ const NavbarComponenet = (props: NavbarTextProp) => {
               <Link href="/" className="hover:text-blue-600">Home</Link>
               <Link href={'/domainbuy'} className="hover:text-blue-600 cursor-pointer">Buy</Link>
               <li
-                onClick={handleAuthRedirect}
+                onClick={() => handleAuthRedirect(router)}
                 className="hover:text-blue-600 transition cursor-pointer"
               >
                 Sell
               </li>
-              <Link href="/about" className="hover:text-blue-600 transition cursor-pointer">
-                About
-              </Link>
               <Link href={'/contact'} className="hover:text-blue-600 cursor-pointer">Contact</Link>
+              <Link href="/about" className="hover:text-blue-600 transition cursor-pointer">About</Link>
             </ul>
           </div>
 

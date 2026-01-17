@@ -16,3 +16,4 @@ export const logoutHandler = async (router: any) => {
     router.replace("/login");
   }
 };
+

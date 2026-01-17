@@ -1,4 +1,5 @@
 import axios from "axios"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 export type AuthResult = "authenticated" | "unauthenticated"
 
@@ -13,3 +14,10 @@ export const checkAuth = async (): Promise<AuthResult> => {
     return "unauthenticated"
   }
 }
+
+export const handleAuthRedirect = async (
+    router: AppRouterInstance
+  ) => {
+    const status = await checkAuth()
+    router.push(status === "authenticated" ? "/dashboard" : "/login")
+  }

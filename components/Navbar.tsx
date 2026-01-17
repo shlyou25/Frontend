@@ -4,18 +4,13 @@ import React, { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { checkAuth } from "@/utils/checkAuth"
+import { handleAuthRedirect } from "@/utils/checkAuth"
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
-
-  const handleAuthRedirect = async () => {
-    const status = await checkAuth()
-    router.push(status === "authenticated" ? "/dashboard" : "/login")
-  }
-
-  return (
+  
+return (
     <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-4 relative z-50">
       <Link href="/">
         <div className="flex items-center space-x-2 cursor-pointer">
@@ -40,7 +35,7 @@ const Navbar = () => {
             Buy
           </Link>
           <li
-            onClick={handleAuthRedirect}
+           onClick={() => handleAuthRedirect(router)}
             className="hover:text-blue-600 transition cursor-pointer"
           >
             Sell
@@ -57,7 +52,7 @@ const Navbar = () => {
       {/* Right Button (Desktop) */}
       <div className="hidden md:block">
         <button
-          onClick={handleAuthRedirect}
+          onClick={() => handleAuthRedirect(router)}
           className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-5 py-2 rounded-full shadow hover:from-blue-600 hover:to-blue-700 transition cursor-pointer"
         >
           My Domz
@@ -98,7 +93,7 @@ const Navbar = () => {
               className="hover:text-blue-600 w-full cursor-pointer"
               onClick={() => {
                 setMenuOpen(false)
-                handleAuthRedirect()
+                handleAuthRedirect(router)
               }}
             >
               Sell
@@ -109,7 +104,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 setMenuOpen(false)
-                handleAuthRedirect()
+                handleAuthRedirect(router)
               }}
               className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-5 py-2 rounded-full shadow hover:from-blue-600 hover:to-blue-700 transition w-full"
             >

@@ -60,7 +60,7 @@ const Faq = () => {
     setOpenQuestion(openQuestion === id ? null : id);
   };
   return (
-    <section className="bg-white py-20">
+    <section id="faq" className="bg-white py-20 ">
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-4xl md:text-5xl font-semibold text-center text-gray-900 mb-14">
           Got Questions? We’ve Got Answers.

@@ -1,8 +1,13 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { handleAuthRedirect } from '@/utils/checkAuth'
+import { useRouter } from 'next/navigation'
+
 
 const Footer = () => {
+  const router=useRouter();
   return (
     <footer className="bg-white">
       <div className="mx-auto max-w-7xl space-y-8 px-4 lg:py-16 sm:px-6 lg:space-y-16 lg:px-8 sm:mx-auto">
@@ -19,7 +24,6 @@ const Footer = () => {
                 />
               </Link>
             </div>
-
             <p className="mt-4 max-w-xs text-left">
               Learn more about our mission, our features, and how we're dedicated to providing exceptional
               domain name related services
@@ -72,11 +76,11 @@ const Footer = () => {
                 </li>
 
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> About </a>
+                  <Link href={'/about'} className="text-gray-700 transition hover:opacity-75"> About </Link>
                 </li>
 
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75">
+                  <a href="#faq" className="text-gray-700 transition hover:opacity-75">
                     FAQ
                   </a>
                 </li>
@@ -86,28 +90,23 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-
             <div>
-              {/* <p className="font-medium text-gray-900">Company</p> */}
-
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Demo </a>
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75"> Demo </Link>
                 </li>
 
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75">Figures</a>
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75">Figures</Link>
                 </li>
 
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75">
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75">
                     Recources
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75">
-                    Contact
-                  </a>
+                  <Link href={'/contact'} className="text-gray-700 transition hover:opacity-75">Contact</Link>
                 </li>
               </ul>
             </div>
@@ -116,14 +115,14 @@ const Footer = () => {
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Terms </a>
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75"> Terms </Link>
                 </li>
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Privacy policy </a>
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75"> Privacy policy </Link>
                 </li>
 
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Support </a>
+                  <Link href={'/'} className="text-gray-700 transition hover:opacity-75"> Support </Link>
                 </li>
               </ul>
             </div>
@@ -132,11 +131,15 @@ const Footer = () => {
               <p className="font-medium text-gray-900">DOMZ</p>
 
               <ul className="mt-6 space-y-4 text-sm">
+
                 <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Buy </a>
+                  <Link href={'/domainbuy'} className="text-gray-700 transition hover:opacity-75"> Buy </Link>
                 </li>
-                <li>
-                  <a href="1" className="text-gray-700 transition hover:opacity-75"> Sell </a>
+                <li
+                  onClick={() => handleAuthRedirect(router)}
+                  className="text-gray-700 transition hover:opacity-75"
+                >
+                  Sell
                 </li>
               </ul>
             </div>
