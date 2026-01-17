@@ -132,7 +132,7 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
         <textarea
           value={domainData}
           placeholder="example.com"
-          className="w-full max-w-2xl mx-auto block border border-gray-300 rounded-lg p-4 text-blue-600 italic text-center focus:outline-none"
+          className="w-full max-w-2xl mx-auto block border border-gray-300 rounded-lg p-4 text-blue-600 italic focus:outline-none text-left"
           rows={5}
           onChange={onChangeHandler}
           required
