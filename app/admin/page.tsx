@@ -86,8 +86,6 @@ const Page = () => {
   const [isauthenciated, setisAuthenciated] = useState(false);
   const [planResponse, setPlanResponse] = useState<PlanRequestResponse | null>(null);
 
-
-
   const [activeView, setActiveView] = useState<AdminView>("dashboard");
 
   const [allUsers, setAllUsers] = useState<UserInterface[]>([]);
@@ -99,8 +97,6 @@ const Page = () => {
   const [refreshPlanRequest, setRefreshPlanRequests] = useState(0);
 
 
-
-  // 🔐 AUTH CHECK
   useEffect(() => {
     const checkAdminAuth = async () => {
       try {
@@ -164,9 +160,7 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}domain/getalldomains`,
           { withCredentials: true }
         );
-        setDomainsData(res.data);
-        console.log(res.data);
-        
+        setDomainsData(res.data); 
       } catch {
         toast.error("Error fetching domains");
       }
@@ -242,7 +236,7 @@ const Page = () => {
           </>
         )}
         {/* IDEAS */}
-        {activeView === "dashboard" && <Table />}
+       {isauthenciated &&  activeView === "dashboard" && <Table />}
         {activeView === "Users" && <UserTable data={allUsers}
           onRefresh={() => setRefreshUsers(prev => prev + 1)}
         />}

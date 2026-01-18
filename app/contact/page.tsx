@@ -135,7 +135,7 @@ const page = () => {
         </div>
       </div>
 
-      <Footer />x
+      <Footer />
     </div>
   )
 }
