@@ -9,8 +9,8 @@ import { handleAuthRedirect } from "@/utils/checkAuth"
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
-  
-return (
+
+  return (
     <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-4 relative z-50">
       <Link href="/">
         <div className="flex items-center space-x-2 cursor-pointer">
@@ -28,14 +28,36 @@ return (
       {/* Desktop Menu */}
       <div className="hidden md:flex bg-white/70 backdrop-blur-lg shadow-sm px-6 py-2 rounded-full border border-gray-200">
         <ul className="flex items-center space-x-8 text-gray-800 font-medium">
-          <Link href="/" className="hover:text-blue-600 transition cursor-pointer">
-            Home
-          </Link>
+          <li className="relative group">
+            <Link href="/" className="hover:text-blue-600 transition cursor-pointer">
+              Home
+            </Link>
+            <div className="absolute left-0 top-full mt-3 w-44 rounded-xl bg-white shadow-lg border border-gray-200 
+                  opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                  transition-all duration-200">
+              <ul className="py-2 text-sm text-gray-700">
+                <Link
+                  href="#faq"
+                  className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
+                >
+                  FAQ
+                </Link>
+                <Link
+                  href="#demo"
+                  className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
+                >
+                  Demo
+                </Link>
+              </ul>
+            </div>
+          </li>
+
+
           <Link href="/domainbuy" className="hover:text-blue-600 transition cursor-pointer">
             Buy
           </Link>
           <li
-           onClick={() => handleAuthRedirect(router)}
+            onClick={() => handleAuthRedirect(router)}
             className="hover:text-blue-600 transition cursor-pointer"
           >
             Sell

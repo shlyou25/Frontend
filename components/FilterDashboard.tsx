@@ -85,20 +85,52 @@ const FilterDomain = ({ filters, onChange }: Props) => {
           <input
             type="number"
             placeholder="Min"
+            min={1}
+            step={1}
+            inputMode="numeric"
             className="w-1/2 border rounded px-3 py-2"
             value={filters.minLength ?? ""}
-            onChange={e =>
-              update({ minLength: Number(e.target.value) || undefined })
-            }
+            onKeyDown={e => {
+              if (['-', '+', '.', 'e', 'E'].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={e => {
+              const value = e.target.value;
+              if (value === "") {
+                update({ minLength: undefined });
+                return;
+              }
+              const num = Number(value);
+              if (Number.isInteger(num) && num >= 1) {
+                update({ minLength: num });
+              }
+            }}
           />
           <input
             type="number"
             placeholder="Max"
+            min={1}
+            step={1}
+            inputMode="numeric"
             className="w-1/2 border rounded px-3 py-2"
             value={filters.maxLength ?? ""}
-            onChange={e =>
-              update({ maxLength: Number(e.target.value) || undefined })
-            }
+            onKeyDown={e => {
+              if (['-', '+', '.', 'e', 'E'].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={e => {
+              const value = e.target.value;
+              if (value === "") {
+                update({ maxLength: undefined });
+                return;
+              }
+              const num = Number(value);
+              if (Number.isInteger(num) && num >= 1) {
+                update({ maxLength: num });
+              }
+            }}
           />
         </div>
       </section>

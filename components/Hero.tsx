@@ -19,7 +19,6 @@ const Hero = () => {
                    bg-cover bg-center"
         style={{ backgroundImage: "url('/assets/hero-bg.png')" }}
       >
-        {/* Dotted overlay */}
         <div
           className="absolute inset-0 pointer-events-none
                      bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)]

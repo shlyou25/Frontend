@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import DomainStatus from './DomainStatus';
 
-type DateRange = 'all' | 'today' | '7days' | '30days';
+type DateRange = 'all' | 'today' | '7days' | '30days' | 'custom';
 
 export interface DomainType {
   id: string;
@@ -86,9 +86,17 @@ const SegmentedTabs = ({
 const StatusHeader = ({
   active,
   onChange,
+  customFrom,
+  customTo,
+  setCustomFrom,
+  setCustomTo,
 }: {
   active: DateRange;
   onChange: (val: DateRange) => void;
+  customFrom: string;
+  customTo: string;
+  setCustomFrom: React.Dispatch<React.SetStateAction<string>>;
+  setCustomTo: React.Dispatch<React.SetStateAction<string>>;
 }) => (
   <div className="mb-4 rounded-xl border bg-blue-50 px-4 py-3">
     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -101,7 +109,7 @@ const StatusHeader = ({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2 text-xs">
+      <div className="flex flex-wrap items-center gap-2 text-xs">
         {[
           { key: 'all', label: 'All' },
           { key: 'today', label: 'Today' },
@@ -112,24 +120,70 @@ const StatusHeader = ({
             key={key}
             onClick={() => onChange(key as DateRange)}
             className={`rounded-full px-3 py-1 border transition
-              ${active === key
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-slate-600 hover:bg-blue-100'
+              ${
+                active === key
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'bg-white text-slate-600 hover:bg-blue-100'
               }`}
           >
             {label}
           </button>
         ))}
+
+        {/* Calendar Button (GUARDED) */}
+        <button
+          onClick={() => active !== 'custom' && onChange('custom')}
+          className={`rounded-full px-3 py-1 border transition
+            ${
+              active === 'custom'
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'bg-white text-slate-600 hover:bg-blue-100'
+            }`}
+        >
+          Range
+        </button>
+      </div>
+    </div>
+
+    {/* Calendar Inputs (NEVER UNMOUNTED) */}
+    <div className={`mt-3 ${active === 'custom' ? 'block' : 'hidden'}`}>
+      <div className="flex flex-wrap items-center gap-3 text-xs">
+        <div>
+          <label className="block text-slate-600 mb-1">From</label>
+          <input
+            type="date"
+            value={customFrom}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setCustomFrom(e.target.value)}
+            className="rounded-md border px-2 py-1 text-slate-700"
+          />
+        </div>
+
+        <div>
+          <label className="block text-slate-600 mb-1">To</label>
+          <input
+            type="date"
+            value={customTo}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setCustomTo(e.target.value)}
+            className="rounded-md border px-2 py-1 text-slate-700"
+          />
+        </div>
       </div>
     </div>
   </div>
 );
+
 
 const Myportfolio = () => {
   const [loading, setLoading] = useState(true);
   const [userDomains, setUserDomains] = useState<DomainType[]>([]);
   const [domainStatus, setDomainStatus] = useState(false);
   const [open, setOpen] = useState(false);
+  const [customFrom, setCustomFrom] = useState('');
+  const [customTo, setCustomTo] = useState('');
+
+
 
   const router = useRouter();
   const API = `${process.env.NEXT_PUBLIC_apiLink}domain`;
@@ -235,9 +289,21 @@ const Myportfolio = () => {
         return diff <= 30 * 24 * 60 * 60 * 1000;
       }
 
+      if (dateRange === 'custom') {
+        if (!customFrom || !customTo) return true;
+
+        const from = new Date(customFrom);
+        const to = new Date(customTo);
+
+        to.setHours(23, 59, 59, 999);
+
+        return created >= from && created <= to;
+      }
+
       return true;
     });
   };
+
 
 
 
@@ -280,7 +346,15 @@ const Myportfolio = () => {
 
         {domainStatus ? (
           <>
-            <StatusHeader active={dateRange} onChange={setDateRange} />
+            <StatusHeader
+              active={dateRange}
+              onChange={setDateRange}
+              customFrom={customFrom}
+              customTo={customTo}
+              setCustomFrom={setCustomFrom}
+              setCustomTo={setCustomTo}
+            />
+
 
             <DomainStatus data={filterDomainsByDate(userDomains)} />
 

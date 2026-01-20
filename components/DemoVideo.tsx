@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DemoVideo: React.FC = () => (
-  <section className="w-full flex flex-col items-center pt-14 pb-20 bg-transparent">
+  <section id="demo" className="w-full flex flex-col items-center pt-14 pb-20 bg-transparent">
     <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-900 mb-3">
       Watch the Demo — <span className="font-bold">See the Platform in Action</span>
     </h2>
