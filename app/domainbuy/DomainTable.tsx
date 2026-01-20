@@ -16,44 +16,57 @@ interface Domain {
   isChatActive: boolean;
   user: { name: string };
 }
-
 interface Props {
   searchQuery: string;
 }
-
 const DomainTable = ({ searchQuery }: Props) => {
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<DomainFilters>({ extensions: [] });
 
   const [domains, setDomains] = useState<Domain[]>([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState<number | 'all'>(10);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-
   const [open, setOpen] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+  const numericLimit = limit === 'all' ? total : limit;
+  const totalPages = limit === 'all'
+  ? 1
+  : Math.ceil(total / numericLimit);
 
-  const totalPages = Math.ceil(total / limit);
+
   useEffect(() => {
     const fetchDomains = async () => {
       try {
         setLoading(true);
+        const params: any = { page };
+        if (limit !== 'all') {
+          params.limit = limit;
+        } else {
+          params.all = true;
+        }
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
-          { params: { page, limit } }
+          { params }
         );
         setDomains(res.data.domains);
         setTotal(res.data.total);
+        if (res.data.capped) {
+          toast.info(
+            `Showing first ${res.data.capLimit} domains for performance reasons`
+          );
+        }
+
       } catch {
         toast.error('Failed to load domains');
       } finally {
         setLoading(false);
       }
     };
-
     fetchDomains();
   }, [page, limit]);
+
   useEffect(() => {
     setPage(1);
   }, [filters, searchQuery]);
@@ -105,14 +118,20 @@ const DomainTable = ({ searchQuery }: Props) => {
           <span>Show</span>
           <select
             value={limit}
-            onChange={e => setLimit(Number(e.target.value))}
+            onChange={e => {
+              const value = e.target.value;
+              setLimit(value === 'all' ? 'all' : Number(value));
+              setPage(1);
+            }}
             className="border rounded-md px-2 py-1"
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
+            <option value="all">All</option>
           </select>
+
         </div>
       </div>
       <div className="flex border border-t-0 rounded-b-xl bg-white overflow-hidden min-h-150">
@@ -179,7 +198,7 @@ const DomainTable = ({ searchQuery }: Props) => {
           </table>
         </div>
       </div>
-      {totalPages > 1 && (
+      {limit !== 'all' && totalPages > 1 && (
         <div className="flex justify-center gap-3 mt-6 text-sm">
           <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>‹</button>
 
@@ -196,6 +215,7 @@ const DomainTable = ({ searchQuery }: Props) => {
           <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>›</button>
         </div>
       )}
+
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Contact Seller">
         {selectedDomain && (
           <EmailTemplate
