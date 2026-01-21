@@ -20,7 +20,7 @@ interface Props {
   searchQuery: string;
 }
 const DomainTable = ({ searchQuery }: Props) => {
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(true);
   const [filters, setFilters] = useState<DomainFilters>({ extensions: [] });
 
   const [domains, setDomains] = useState<Domain[]>([]);
