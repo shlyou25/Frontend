@@ -21,6 +21,9 @@ const DemoVideo: React.FC = () => (
         src="/comingsoon.mp4"
         controls
         preload="metadata"
+        autoPlay
+        loop
+        muted
         playsInline
         className="w-full h-full object-cover"
       >
