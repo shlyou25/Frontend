@@ -84,9 +84,9 @@ const Faq = () => {
                 >
                   <span className="flex items-center justify-center w-8 h-8 bg-white rounded-full shadow-sm">
                     {openCategory === category ? (
-                      <Minus className="w-5 h-5 text-gray-800" />
+                      <Minus className="w-5 h-5 text-gray-800 cursor-pointer" />
                     ) : (
-                      <Plus className="w-5 h-5 text-gray-800" />
+                      <Plus className="w-5 h-5 text-gray-800 cursor-pointer" />
                     )}
                   </span>
 
@@ -106,7 +106,7 @@ const Faq = () => {
                         >
                           <button
                             onClick={() => toggleQuestion(item._id)}
-                            className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition"
+                            className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition cursor-pointer"
                           >
                             <h4 className="font-medium text-gray-900">
                               {item.question}
