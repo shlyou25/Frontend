@@ -57,6 +57,9 @@ const Page = () => {
           email: userData.email,
           password: userData.password,
           terms: userData.terms,
+        },
+        {
+          withCredentials:true
         }
       );
 

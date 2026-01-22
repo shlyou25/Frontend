@@ -5,57 +5,56 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const VerifyPage = () => {
+const Page = () => {
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
 
-  // 🔐 Detect verification type
+  // 🔐 Detect verification type (user vs admin)
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("verify_email_user_domz");
     if (storedEmail) {
-      setEmail(storedEmail); // USER email verification
+      setEmail(storedEmail);
     }
   }, []);
 
+  
+
+  // -----------------------------
+  // VERIFY OTP
+  // -----------------------------
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (otp.length !== 6) {
-      toast.error("Enter valid 6-digit OTP");
+    if (otp.trim().length !== 6) {
+      toast.error("Enter a valid 6-digit OTP");
       return;
     }
 
     setLoading(true);
 
     try {
-      const isUserVerification = Boolean(email);
-      const endpoint = isUserVerification
+      const endpoint = email
         ? "auth/verify-email"
         : "auth/admin/verify-otp";
 
-      const payload = isUserVerification
-        ? { email, otp }
-        : { otp };
-      
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}${endpoint}`,
-        payload,
-        { withCredentials: true }
+        { otp: otp.trim() },           // ✅ only OTP
+        { withCredentials: true }      // ✅ REQUIRED
       );
 
       toast.success(res.data.message || "Verification successful");
 
       // 🧹 Cleanup & redirect
-      if (isUserVerification) {
+      if (email) {
         sessionStorage.removeItem("verify_email_user_domz");
         router.replace("/login");
       } else {
         router.replace("/admin");
       }
-
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message || "Invalid or expired OTP"
@@ -65,8 +64,12 @@ const VerifyPage = () => {
     }
   };
 
-  // 🔁 RESEND OTP (USER ONLY)
+  // -----------------------------
+  // RESEND OTP (USER ONLY)
+  // -----------------------------
   const handleResendOtp = async () => {
+    if (!email) return;
+
     setResending(true);
 
     try {
@@ -86,6 +89,9 @@ const VerifyPage = () => {
     }
   };
 
+  // -----------------------------
+  // UI
+  // -----------------------------
   return (
     <div className="bg-gray-100 flex items-center justify-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
@@ -105,7 +111,7 @@ const VerifyPage = () => {
             required
           />
 
-          {/* 🔁 Resend OTP (ONLY FOR USERS) */}
+          {/* 🔁 Resend OTP (USER ONLY) */}
           {email && (
             <div className="text-right">
               <button
@@ -143,4 +149,4 @@ const VerifyPage = () => {
   );
 };
 
-export default VerifyPage;
+export default Page;
