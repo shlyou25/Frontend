@@ -39,13 +39,34 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
         return;
       }
 
-      await axios.post(
+      const res =await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}domain/adddomain`,
         { domains: uniqueDomains },
         { withCredentials: true }
       );
 
-      toast.success("Domains submitted successfully");
+      const { added, manualReview, failed, remaining } = res.data;
+
+      let toastMessage = `✅ Domain processing completed\n\n`;
+
+      if (added?.length) {
+        toastMessage += `🟢 Added (${added.length}):\n${added.join(", ")}\n\n`;
+      }
+
+      if (manualReview?.length) {
+        toastMessage += `🟡 Manual review (${manualReview.length}):\n${manualReview.join(", ")}\n\n`;
+      }
+
+      if (failed?.length) {
+        toastMessage += `🔴 Failed (${failed.length}):\n${failed.join(", ")}\n\n`;
+      }
+
+      toastMessage += `📦 Remaining slots: ${remaining}`;
+
+      toast.success(toastMessage, {
+        autoClose: 8000,
+        style: { whiteSpace: "pre-line" },
+      });
       setDomainText("");
       onClose();
     } catch (error: any) {
@@ -102,13 +123,13 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
           </label>
 
           <label className="flex items-start gap-3">
-              <button
-                type="button"
-                onClick={downloadDomainTemplate}
-                className="text-blue-600 underline hover:text-blue-700 cursor-pointer"
-              >
-                Download template
-              </button>
+            <button
+              type="button"
+              onClick={downloadDomainTemplate}
+              className="text-blue-600 underline hover:text-blue-700 cursor-pointer"
+            >
+              Download template
+            </button>
           </label>
         </div>
 
