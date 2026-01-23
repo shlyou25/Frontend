@@ -323,9 +323,7 @@ const Myportfolio = () => {
           >
             + Add Domain
           </button>
-
         </div>
-
         <Modal isOpen={open} onClose={() => setOpen(false)} title="Add Domains">
           <AddDomainsCard
             onClose={() => {
