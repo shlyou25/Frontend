@@ -62,7 +62,6 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
       }
 
       toastMessage += `📦 Remaining slots: ${remaining}`;
-
       toast.success(toastMessage, {
         autoClose: 8000,
         style: { whiteSpace: "pre-line" },

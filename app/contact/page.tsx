@@ -1,10 +1,13 @@
-'use client'
+'use client';
+
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
-import Footer from '@/components/Footer'
-import {  toast } from 'react-toastify';
-import NavbarComponenet from '@/components/NavbarComponenet'
+import { toast } from 'react-toastify';
+
+import Footer from '@/components/Footer';
+import NavbarComponenet from '@/components/NavbarComponenet';
 import Loader from '@/components/Loader';
+import Modal from '@/components/model';
 
 interface UserMessageInterface {
   name: string;
@@ -18,14 +21,19 @@ const page = () => {
     name: '',
     email: '',
     message: '',
-    subject: 'New Submisson On the Contact Form'
+    subject: 'New Submisson On the Contact Form',
   });
+
   const [loaderStatus, setLoaderStatus] = useState(false);
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const onChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setUserData(prevState => ({
-      ...prevState,
+    setUserData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -33,116 +41,178 @@ const page = () => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoaderStatus(true);
+
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_apiLink}email/sendemail`, {
-        name: userData.name,
-        email: userData.email,
-        message: userData.message,
-        subject: userData.subject,
-      });
-      toast.success(res?.data?.message);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}email/sendemail`,
+        {
+          name: userData.name,
+          email: userData.email,
+          message: userData.message,
+          subject: userData.subject,
+        }
+      );
+
+      toast.success(res?.data?.message || 'Message sent successfully');
     } catch (err: any) {
-      toast.error(err?.response?.data.message || "An unexpected error occurred", {
-        position: 'top-right',
-      });
+      toast.error(
+        err?.response?.data?.message || 'An unexpected error occurred'
+      );
     } finally {
       setLoaderStatus(false);
     }
-  }
-  if (loaderStatus) return <Loader />
+  };
+
+  const handleSubscribe = async () => {
+    if (!subscribeEmail) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    try {
+      setLoaderStatus(true);
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}subscribe`,
+        { email: subscribeEmail }
+      );
+
+      toast.success(res?.data?.message || 'Subscribed successfully 🎉');
+      setSubscribeEmail('');
+      setIsSubscribeModalOpen(false);
+    } catch (err: any) {
+      toast.error(
+        err?.response?.data?.message || 'Subscription failed'
+      );
+    } finally {
+      setLoaderStatus(false);
+    }
+  };
+
+  if (loaderStatus) return <Loader />;
+
   return (
-    <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
-      <NavbarComponenet colorText="Let's Star" plainText="t the conversation" IsParaText={true} ParaText="As a user-centric platfrom, we value your feedback.
-        Reach out via the form or email us at info@domz.com - We'll respond promptly" searchbarStatus={false} />
-      <form onSubmit={onSubmitHandler} className="max-w-170 mx-auto pt-6 px-4 md:px-0">
+    <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
+      <NavbarComponenet
+        colorText="Let's Star"
+        plainText="t the conversation"
+        IsParaText={true}
+        ParaText="As a user-centric platfrom, we value your feedback.
+        Reach out via the form or email us at info@domz.com - We'll respond promptly"
+        searchbarStatus={false}
+      />
+      <form
+        onSubmit={onSubmitHandler}
+        className="max-w-170 mx-auto pt-6 px-4 md:px-0"
+      >
         <h2 className="text-center text-[2rem] font-bold mb-3 leading-tight select-none">
-          <span className="text-blue-600 font-bold">Your questions</span> and feedback matter.
+          <span className="text-blue-600 font-bold">Your questions</span> and
+          feedback matter.
         </h2>
+
         <div className="mb-8">
-          <label className="block mb-3 text-[1rem] font-semibold text-black select-none ml-2">
+          <label className="block mb-3 text-[1rem] font-semibold ml-2">
             Name<span className="text-blue-600">*</span>
           </label>
           <input
             type="text"
-            name='name'
-            className="bg-blue-100 border-none text-[1.15rem] rounded-2xl block w-full px-8 py-5 shadow-none placeholder:text-gray-500 focus:ring-2 focus:ring-blue-400"
+            name="name"
             required
             onChange={onChangeHandler}
+            className="bg-blue-100 rounded-2xl w-full px-8 py-5"
           />
         </div>
+
         <div className="mb-8">
-          <label className="block mb-3 text-[1rem] font-semibold text-black select-none ml-2">
+          <label className="block mb-3 text-[1rem] font-semibold ml-2">
             Email<span className="text-blue-600">*</span>
           </label>
           <input
             type="email"
-            className="bg-blue-100 border-none text-[1.15rem] rounded-2xl block w-full px-8 py-5 shadow-none placeholder:text-gray-500 focus:ring-2 focus:ring-blue-400"
+            name="email"
             required
-            name='email'
             onChange={onChangeHandler}
+            className="bg-blue-100 rounded-2xl w-full px-8 py-5"
           />
         </div>
+
         <div className="mb-6">
-          <label htmlFor="comment" className="block mb-3 text-[1rem] font-semibold text-black select-none ml-2">
+          <label className="block mb-3 text-[1rem] font-semibold ml-2">
             Comment<span className="text-blue-600">*</span>
           </label>
           <textarea
-            className="bg-blue-100 border-none text-[1.15rem] rounded-2xl block w-full px-8 py-5 shadow-none placeholder:text-gray-500 focus:ring-2 focus:ring-blue-400"
+            name="message"
             required
-            name='message'
             onChange={onChangeHandler}
+            className="bg-blue-100 rounded-2xl w-full px-8 py-5"
           />
         </div>
+
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-57.5 h-15 flex items-center justify-center text-white text-[1.15rem] bg-linear-to-r from-blue-500 to-blue-600 font-semibold rounded-full tracking-[1px] shadow-lg border-none hover:from-blue-600 hover:to-blue-700 focus:outline-none"
-            style={{ letterSpacing: "1px" }}
+            className="w-57.5 h-15 text-white bg-blue-600 rounded-full font-semibold"
           >
             SUBMIT
           </button>
         </div>
       </form>
       <div className="mx-auto my-20 max-w-6xl px-4">
-        <div
-          className="relative rounded-4xl bg-linear-to-br from-[#2264e9] to-[#1858ca] overflow-hidden px-10 py-20 flex flex-col items-center shadow-2xl"
-          style={{ minHeight: "340px" }}
-        >
-          <svg
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            fill="none"
-            viewBox="0 0 1100 340"
-            style={{ opacity: 0.17 }}
-          >
-            <rect x="200" y="75" width="250" height="175" rx="20" stroke="white" strokeWidth="3" fill="none" />
-            <rect x="500" y="83" width="200" height="160" rx="18" stroke="white" strokeWidth="2" fill="none" />
-            <ellipse cx="340" cy="190" rx="18" ry="7" stroke="white" strokeWidth="2" fill="none" />
-          </svg>
-
-          <h2 className="text-white text-center font-bold text-[2.6rem] leading-tight mb-4 drop-shadow">
-            Stay Updated
-          </h2>
-          <p className="text-white text-center text-lg font-medium mb-8 max-w-xl opacity-90">
-            Get news, announcements, and highlighted names when our newsletter launches.
+        <div className="rounded-4xl bg-blue-600 px-10 py-20 text-center text-white shadow-2xl">
+          <h2 className="text-[2.6rem] font-bold mb-4">Stay Updated</h2>
+          <p className="mb-8">
+            Get news, announcements, and highlighted names when our newsletter
+            launches.
           </p>
+
           <button
             type="button"
-            className="px-8 py-3 rounded-full bg-linear-to-r from-[#2264e9] to-[#1858ca] text-white text-lg font-semibold shadow-lg hover:from-[#1858ca] hover:to-[#2264e9] transition-all cursor-pointer"
-            style={{ letterSpacing: "0.5px" }}
+            onClick={() => setIsSubscribeModalOpen(true)}
+            className="px-8 py-3 rounded-full bg-white text-blue-600 font-semibold hover:bg-gray-100"
           >
             Subscribe Now
           </button>
         </div>
       </div>
+      <Modal
+        isOpen={isSubscribeModalOpen}
+        onClose={() => setIsSubscribeModalOpen(false)}
+        title="Subscribe to Newsletter"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Enter your email to receive updates and announcements.
+          </p>
 
+          <input
+            type="email"
+            value={subscribeEmail}
+            onChange={(e) => setSubscribeEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full rounded-lg border px-4 py-3"
+          />
+
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              onClick={() => setIsSubscribeModalOpen(false)}
+              className="px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleSubscribe}
+              className="px-6 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700"
+            >
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </Modal>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default page
-
-
-
-
-
+export default page;
