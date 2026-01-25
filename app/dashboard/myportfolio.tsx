@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { Calendar } from 'lucide-react';
 import DomainStatus from './DomainStatus';
+import Subscribe from '@/utils/subscribe';
 
 type DateRange = 'all' | 'today' | '7days' | '30days' | 'custom';
 
@@ -435,13 +436,7 @@ const Myportfolio = ({ searchQuery }: MyPortfolioProps) => {
             </table>
           </div>
         )}
-
-        <QuickConectCard
-          title="Stay Updated"
-          description="Get news, announcements, and highlighted names when our newsletter launches"
-          mainButton="Subscribe Now"
-          subButton={false}
-        />
+        <Subscribe/>
       </div>
     </div>
   );
