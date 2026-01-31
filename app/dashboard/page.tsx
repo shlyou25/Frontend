@@ -6,7 +6,7 @@ import Image from "next/image";
 import Footer from "../../components/Footer";
 import NavbarComponenet from "../../components/NavbarComponenet";
 import PaymentSettingCard from "../../components/cards/profile/PaymentSettingCard";
-import SubscriptionManagementCard from "@/app/dashboard/SubscriptionManagementCard";
+import SubscriptionManagementCard from "./SubscriptionManagementCard";
 import Loader from "../../components/Loader";
 import { logoutHandler } from "../../utils/auth";
 import Myportfolio from "./myportfolio";
