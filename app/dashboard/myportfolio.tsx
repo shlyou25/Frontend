@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { Calendar } from 'lucide-react';
 import DomainStatus from './DomainStatus';
-import Subscribe from '@/utils/subscribe';
+import Subscribe from '../../utils/subscribe';
 import Confirmation from '../../components/Confirmation';
 
 type DateRange = 'all' | 'today' | '7days' | '30days' | 'custom';

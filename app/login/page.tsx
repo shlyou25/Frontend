@@ -1,7 +1,7 @@
 "use client";
 
-import NavbarComponenet from "@/components/NavbarComponenet";
-import Footer from "@/components/Footer";
+import NavbarComponenet from "../../components/NavbarComponenet";
+import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import Content from './content';
 import Loader from '../../components/Loader';
-import Table from '@/utils/Table';
+import Table from '../../utils/Table';
 import DomainTable from './DomainTable';
 import PlanTable, { PlansResponse } from './PlanTable';
 import Faq from './Faq';

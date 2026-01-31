@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 import { Suspense } from "react";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { stripePromise } from "@/utils/stripe";
+import { stripePromise } from "../../utils/stripe";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";

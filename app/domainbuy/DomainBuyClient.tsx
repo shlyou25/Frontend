@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import DomainTable from './DomainTable';
-import Footer from '@/components/Footer';
-import NavbarComponenet from '@/components/NavbarComponenet';
+import Footer from '../../components/Footer';
+import NavbarComponenet from '../../components/NavbarComponenet';
 
 export default function DomainBuyClient() {
   const [searchQuery, setSearchQuery] = useState('');

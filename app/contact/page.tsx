@@ -1,12 +1,12 @@
 'use client';
 
 import axios from 'axios';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import Footer from '@/components/Footer';
-import NavbarComponenet from '@/components/NavbarComponenet';
+import Footer from '../../components/Footer';
+import NavbarComponenet from '../../components/NavbarComponenet';
 import Loader from '../../components/Loader';
-import Subscribe from '@/utils/subscribe';
+import Subscribe from '../../utils/subscribe';
 
 interface UserMessageInterface {
   name: string;

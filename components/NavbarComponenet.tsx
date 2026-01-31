@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { handleAuthRedirect } from "@/utils/checkAuth";
+import { handleAuthRedirect } from "../utils/checkAuth";
 import { useRouter } from "next/navigation";
 
 

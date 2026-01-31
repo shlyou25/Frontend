@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import QuickConectCard from '@/components/cards/QuickConectCard';
-import Footer from '@/components/Footer';
-import NavbarComponenet from '@/components/NavbarComponenet';
+import QuickConectCard from '../../components/cards/QuickConectCard';
+import Footer from '../../components/Footer';
+import NavbarComponenet from '../../components/NavbarComponenet';
 import Loader from '../../components/Loader';
 
 const Portfolio = () => {

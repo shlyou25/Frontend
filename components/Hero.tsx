@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { checkAuth } from "@/utils/checkAuth";
+import { checkAuth } from "../utils/checkAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

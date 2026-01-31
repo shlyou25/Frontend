@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { handleAuthRedirect } from '@/utils/checkAuth'
+import { handleAuthRedirect } from '../utils/checkAuth'
 import { useRouter } from 'next/navigation'
 
 

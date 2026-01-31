@@ -1,8 +1,8 @@
 import React from 'react'
-import NavbarComponenet from '@/components/NavbarComponenet'
+import NavbarComponenet from '../../components/NavbarComponenet'
 import Plancard from './plancard'
 import OurCare from './OurCare'
-import Footer from '@/components/Footer'
+import Footer from '../../components/Footer'
 
 const packages = [
   { title: 'Starter', price: 0.99, per: 'Month', feature: 5 },

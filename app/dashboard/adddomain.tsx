@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import ExcelDropZone from "./ExcelDropZone";
-import { downloadDomainTemplate } from "@/utils/downloadDomainTemplate";
+import { downloadDomainTemplate } from "../../utils/downloadDomainTemplate";
 
 const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
   const [domainText, setDomainText] = useState("");

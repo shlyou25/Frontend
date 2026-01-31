@@ -3,15 +3,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Footer from "@/components/Footer";
-import NavbarComponenet from "@/components/NavbarComponenet";
-import PaymentSettingCard from "@/components/cards/profile/PaymentSettingCard";
+import Footer from "../../components/Footer";
+import NavbarComponenet from "../../components/NavbarComponenet";
+import PaymentSettingCard from "../../components/cards/profile/PaymentSettingCard";
 import SubscriptionManagementCard from "@/app/dashboard/SubscriptionManagementCard";
 import Loader from "../../components/Loader";
-import { logoutHandler } from "@/utils/auth";
+import { logoutHandler } from "../../utils/auth";
 import Myportfolio from "./myportfolio";
 import Profile from "./profile";
-import Pricing from "@/utils/Test";
+import Pricing from "../../utils/Test";
 
 const Page = () => {
   const router = useRouter();

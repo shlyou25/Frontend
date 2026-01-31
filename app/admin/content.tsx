@@ -2,7 +2,7 @@
 
 import React, { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
-import { logoutHandler } from "@/utils/auth";
+import { logoutHandler } from "../../utils/auth";
 
 
 export type AdminView = "dashboard" | "Users" | "domains" | "Plans" | "Plan Requests" | "Faq" | "Subscribers";
