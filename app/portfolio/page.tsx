@@ -5,7 +5,7 @@ import axios from 'axios';
 import QuickConectCard from '@/components/cards/QuickConectCard';
 import Footer from '@/components/Footer';
 import NavbarComponenet from '@/components/NavbarComponenet';
-import Loader from '@/components/Loader';
+import Loader from '../../components/Loader';
 
 const Portfolio = () => {
     const [loading, setLoading] = useState(true);

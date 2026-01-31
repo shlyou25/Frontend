@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { useRouter } from "next/navigation";
 import {  toast } from 'react-toastify';
-import Loader from '@/components/Loader';
+import Loader from '../../components/Loader';
 import Footer from '@/components/Footer';
 import NavbarComponenet from '@/components/NavbarComponenet';
 import Link from 'next/link';

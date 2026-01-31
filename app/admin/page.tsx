@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from "react-toastify";
 import Content from './content';
-import Loader from '@/components/Loader';
+import Loader from '../../components/Loader';
 import Table from '@/utils/Table';
 import DomainTable from './DomainTable';
 import PlanTable, { PlansResponse } from './PlanTable';
