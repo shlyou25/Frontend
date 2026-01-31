@@ -8,8 +8,7 @@ import { handleAuthRedirect } from "@/utils/checkAuth"
 
 
 const AboutDomz = () => {
-    const router=useRouter();
-    
+    const router=useRouter()
   return (
     <section className="relative min-h-225 overflow-hidden bg-white">
 
