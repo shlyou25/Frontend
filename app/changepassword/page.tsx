@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useMemo, ChangeEvent } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Loader from "@/components/Loader";
+import Loader from "../../components/Loader";
 
 type PasswordForm = {
   newPassword: string;

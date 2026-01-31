@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Loader from "@/components/Loader";
+import Loader from "../../components/Loader";
 
 interface PromotionProps {
     domainPromotion: {

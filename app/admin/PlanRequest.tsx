@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 import Modal from "@/components/model";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Loader from "@/components/Loader";
+import Loader from "../../components/Loader";
 import { PlanRequestItem } from "./page";
 import { Trash2 } from "lucide-react";
 import Confirmation from "@/components/Confirmation";

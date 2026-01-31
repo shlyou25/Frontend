@@ -5,7 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Footer from '@/components/Footer';
 import NavbarComponenet from '@/components/NavbarComponenet';
-import Loader from '@/components/Loader';
+import Loader from '../../components/Loader';
 import Subscribe from '@/utils/subscribe';
 
 interface UserMessageInterface {

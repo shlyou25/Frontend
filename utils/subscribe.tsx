@@ -1,4 +1,4 @@
-import Loader from "@/components/Loader";
+import Loader from "../components/Loader";
 import Modal from "@/components/model";
 import axios from "axios";
 import { useEffect, useState } from "react";

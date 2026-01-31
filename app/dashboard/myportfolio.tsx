@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import QuickConectCard from '@/components/cards/QuickConectCard';
-import Loader from '@/components/Loader';
+import Loader from '../../components/Loader';
 import Modal from '@/components/model';
 import AddDomainsCard from './adddomain';
 import { toast } from 'react-toastify';
