@@ -1,6 +1,6 @@
 "use client";
 
-import Confirmation from "@/components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 import axios from "axios";
 import { Trash2 } from "lucide-react";
 import { useState, useMemo } from "react";

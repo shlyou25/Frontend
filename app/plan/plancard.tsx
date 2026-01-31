@@ -1,9 +1,9 @@
 "use client";
 import Image from 'next/image'
-import Modal from '@/components/model';
+import Modal from '../../components/model';
 import { useState } from 'react';
 import PlanRequest from './PlanRequest';
-import Test from '@/utils/Test';
+
 
 export interface PlanCardInterface {
     title: string;

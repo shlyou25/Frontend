@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 import { toast } from "react-toastify";
 import { UserInterface } from "./page";
 import axios from "axios";
-import Modal from "@/components/model";
+import Modal from "../../components/model";
 import AddPlan from "./AddPlan";
 
 interface UserTableProps {

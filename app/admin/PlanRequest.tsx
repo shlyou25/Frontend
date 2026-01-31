@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import Modal from "@/components/model";
+import Modal from "../../components/model";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Send } from 'lucide-react';
-import Modal from '@/components/model';
+import Modal from '../../components/model';
 import EmailTemplate from '@/components/EmailTemplate';
 import { toast } from 'react-toastify';
 import Link from 'next/link';

@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
-import Confirmation from "@/components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 
 interface PromotedDomain {
     domainId: string;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { PlanCardInterface } from '../plan/plancard';
 import Pricing from '@/utils/Test';
-import Modal from '@/components/model';
+import Modal from '../../components/model';
 
 const SubscriptionManagementCard = () => {
   const [planInfo, setPlanInfo] = useState<PlanCardInterface>();

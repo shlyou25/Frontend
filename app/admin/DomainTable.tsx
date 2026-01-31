@@ -3,11 +3,11 @@
 import React, { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import Modal from "@/components/model";
+import Modal from "../../components/model";
 import Promotion from "./Promotion";
 import { Trash } from "lucide-react";
 import ChangeDomainStatus from "./ChangeDomainStatus";
-import Confirmation from "@/components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PromotedDomainTable from "./PromotedDomainTable";

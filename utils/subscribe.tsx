@@ -1,5 +1,5 @@
 import Loader from "../components/Loader";
-import Modal from "@/components/model";
+import Modal from "../components/model";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

@@ -2,16 +2,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import QuickConectCard from '@/components/cards/QuickConectCard';
 import Loader from '../../components/Loader';
-import Modal from '@/components/model';
+import Modal from '../../components/model';
 import AddDomainsCard from './adddomain';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { Calendar } from 'lucide-react';
 import DomainStatus from './DomainStatus';
 import Subscribe from '@/utils/subscribe';
-import Confirmation from '@/components/Confirmation';
+import Confirmation from '../../components/Confirmation';
 
 type DateRange = 'all' | 'today' | '7days' | '30days' | 'custom';
 

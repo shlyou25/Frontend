@@ -2,9 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Trash2, SquarePen } from "lucide-react";
 import { toast } from "react-toastify";
-import Modal from "@/components/model";
+import Modal from "../../components/model";
 import EditFaq from "./EditFaq";
-import Confirmation from "@/components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 
 
 interface FaqItem {
