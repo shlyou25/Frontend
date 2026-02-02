@@ -16,10 +16,10 @@ const page = () => {
     <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
       <div className="min-h-full bg-cover bg-center rounded-4xl"
         style={{ backgroundImage: `url(${backgroundImg.src})` }}>
-        <Navbar />
-        <section id="hero">
-          <Hero />
+        <section id="navbar">
+          <Navbar />
         </section>
+        <Hero />
       </div>
       <ConnectedBrands />
       <BrowseDomain />
