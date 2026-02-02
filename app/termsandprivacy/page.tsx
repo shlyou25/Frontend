@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "../../components/Navbar";
 
 export const metadata = {
@@ -215,6 +216,7 @@ export default function TermsPage() {
 
       </div>
     </main>
+    <Footer/>
         </>
   );
 }
