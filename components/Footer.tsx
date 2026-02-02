@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -9,12 +9,24 @@ import { handleAuthRedirect } from '../utils/checkAuth'
 
 const Footer = () => {
   const router = useRouter()
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  // 👇 Show button only after scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 150)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <>
       <footer className="bg-white">
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+
             {/* Brand */}
             <div>
               <Link href="/" className="flex items-center gap-2">
@@ -81,22 +93,22 @@ const Footer = () => {
         </div>
       </footer>
 
-      {/* 🔝 Scroll to Top Button */}
-      <a
-        href="#navbar"
-        aria-label="Scroll to top"
-        className="
-        animate-bounce
-          fixed bottom-6 right-6 z-50
-          flex h-12 w-12 items-center justify-center
-          rounded-full bg-gray-900 text-white
-          shadow-lg transition-all
-          hover:bg-gray-700 hover:scale-105
-          focus:outline-none focus:ring-2 focus:ring-gray-400
-        "
-      >
-        <ArrowUp size={20} />
-      </a>
+      {showScrollTop && (
+        <a
+          href="#navbar"
+          aria-label="Scroll to top"
+          className="
+            fixed bottom-6 right-6 z-50
+            flex h-12 w-12 items-center justify-center
+            rounded-full bg-gray-900 text-white
+            shadow-lg transition-all
+            hover:bg-gray-700 hover:scale-105
+            focus:outline-none focus:ring-2 focus:ring-gray-400
+          "
+        >
+          <ArrowUp size={20} />
+        </a>
+      )}
     </>
   )
 }
