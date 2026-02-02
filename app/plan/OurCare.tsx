@@ -32,9 +32,9 @@ const OurCare = () => {
             <h2 className="text-3xl font-bold leading-[1.15] mb-3">
                 <span className="text-blue-700">The Platform</span> <span className="text-black">Designed for Your Bottom Line</span>
             </h2>
-            <p className="text-gray-700">
+            {/* <p className="text-gray-700">
                 Built to help you sell more and keep more, Domz puts profit back in your pocket. Most marketplaces take a commission on every sale—so the more you earn, the more you lose. Domz takes a different approach. We use a simple, fixed subscription fee, so you keep 100% of every deal. No percentage cuts. No hidden charges. Just predictable costs and maximum return.
-            </p>
+            </p> */}
         </div>
     )
 }
