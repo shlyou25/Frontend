@@ -27,7 +27,7 @@ const page = () => (
         />
       ))}
     </div>
-    <div className="w-full text-center text-base text-[#1C1E21] mt-3">
+    <div className="w-full text-center text-base text-[#1C1E21] mt-3 mb-2">
       For portfolios of <span className="text-[#2865E8] font-medium">5,000+ domains</span>, <a className="underline text-[#2865E8]" href="/contact">contact us</a> to discuss special pricing.
     </div>
     <OurCare />
