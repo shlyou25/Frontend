@@ -7,20 +7,20 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    title: "Discovery, Not Owned",
-    desc: "This isn’t a marketplace — rather, an open, neutral catalog where you list your domains, link to your own landing pages, and connect directly with buyers. We exist to help make those connections easier, not to get in the way.",
+    title: "About Domz",
+    desc: "Domz is a decentralized domain directory designed to facilitate direct connections between buyers and sellers. The platform functions as a discovery layer rather than a transactional intermediary, allowing both parties to maintain full autonomy.",
   },
   {
-    title: "Control, Not Interference",
-    desc: "Whether you’re selling, brokering, or promoting, you stay in full control. Your names, your negotiations, your terms — always. No middlemen, and no third-party communication breakdowns.",
+    title: "Direct Communication",
+    desc: "Every listing links to a seller-authorized landing page. A dedicated messaging system enables direct communication between buyers and sellers, ensuring that all negotiation, payment, and transfer terms remain strictly between the two parties.",
   },
   {
-    title: "Direct, Not Filtered",
-    desc: "Built on principles of openness and ownership, Domz.com removes gatekeeping — giving buyers direct, transparent access to sellers. Anyone can browse, and every inquiry goes straight to the source.",
+    title: "Portfolio Management",
+    desc: "Built for high-volume scale, Domz allows sellers to upload portfolios in seconds by entering domain URLs—no DNS configuration or nameserver changes required. The directory synchronizes with the seller’s off-site landing pages, ensuring that updates to pricing or status are reflected automatically.",
   },
   {
-    title: "Profit, Not Payouts",
-    desc: "This is domain discovery reimagined: open, transparent, and peer-to-peer. You own the domain, and you own the deal. Real pricing, no lock-ins, and absolutely zero commissions.",
+    title: "Economic Model",
+    desc: "Domz replaces the traditional commission-based structure with a fixed listing fee. By removing the 10–30% success fees typical of major marketplaces, the platform enables sellers to scale their reach while preserving full profit margins.",
   },
 ];
 
