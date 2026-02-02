@@ -24,12 +24,11 @@ export type NavbarTextProp =
     onSearch?: (value: string) => void; // ✅ ADD
   };
 
-
 const NavbarComponenet = (props: NavbarTextProp) => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="w-full px-4 sm:px-6 lg:px-10">
+    <header className="w-full px-4 sm:px-6 lg:px-10" id="navbar">
       <div className="relative rounded-3xl bg-linear-to-br from-white via-blue-50 to-blue-100 overflow-hidden">
         <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6 ">
           {/* Logo */}
