@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { handleAuthRedirect } from "../utils/checkAuth";
+import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-
 
 export type NavbarTextProp =
   | {
@@ -14,23 +14,24 @@ export type NavbarTextProp =
     IsParaText: true;
     ParaText?: string;
     searchbarStatus?: boolean;
-    onSearch?: (value: string) => void; // ✅ ADD
+    onSearch?: (value: string) => void;
   }
   | {
     colorText: string;
     plainText: string;
     IsParaText: false;
     searchbarStatus?: boolean;
-    onSearch?: (value: string) => void; // ✅ ADD
+    onSearch?: (value: string) => void;
   };
 
 const NavbarComponenet = (props: NavbarTextProp) => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10" id="navbar">
       <div className="relative rounded-3xl bg-linear-to-br from-white via-blue-50 to-blue-100 overflow-hidden pt-3.5">
-        <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6 ">
+        <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
@@ -45,16 +46,59 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           {/* Desktop Menu */}
           <div className="hidden md:flex">
             <ul className="flex items-center gap-8 bg-white px-8 py-3 rounded-full shadow-sm text-gray-900 text-[15px]">
-              <Link href="/" className="hover:text-blue-600">Home</Link>
-              <Link href={'/domainbuy'} className="hover:text-blue-600 cursor-pointer">Buy</Link>
+
+              {/* HOME WITH DROPDOWN */}
+              <li className="relative group cursor-pointer">
+                <span className="flex items-center gap-1 hover:text-blue-600 transition">
+                  Home
+                  <ChevronDown
+                    size={16}
+                    className="text-gray-500 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+                  />
+                </span>
+                {/* Dropdown */}
+                <div
+                  className="absolute left-0 top-full mt-3 w-44 rounded-xl bg-white shadow-lg border border-gray-200
+                  opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                  transition-all duration-200"
+                >
+                  <ul className="py-2 text-sm text-gray-700">
+                    <Link
+                      href="#faq"
+                      className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
+                    >
+                      FAQ
+                    </Link>
+                    <Link
+                      href="#demo"
+                      className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
+                    >
+                      Demo
+                    </Link>
+                    <Link
+                      href="#about"
+                      className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
+                    >
+                      About
+                    </Link>
+                  </ul>
+                </div>
+              </li>
+
+              <Link href="/domainbuy" className="hover:text-blue-600 cursor-pointer">
+                Buy
+              </Link>
+
               <li
                 onClick={() => handleAuthRedirect(router)}
                 className="hover:text-blue-600 transition cursor-pointer"
               >
                 Sell
               </li>
-              <Link href={'/contact'} className="hover:text-blue-600 cursor-pointer">Contact</Link>
-              {/* <Link href="/about" className="hover:text-blue-600 transition cursor-pointer">About</Link> */}
+
+              <Link href="/contact" className="hover:text-blue-600 cursor-pointer">
+                Contact
+              </Link>
             </ul>
           </div>
 
@@ -80,14 +124,14 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           </button>
         </nav>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Dropdown (UNCHANGED) */}
         {menuOpen && (
           <div className="md:hidden bg-white rounded-xl mx-4 mt-2 shadow-lg p-4">
             <ul className="space-y-4 text-gray-800">
-              <Link href={'/'}>Home</Link>
-              <Link href={'/domainbuy'}>Buy</Link>
-              <li>Sell</li>
-              <Link href={'/contact'}>Contact</Link>
+              <Link href="/">Home</Link>
+              <Link href="/domainbuy">Buy</Link>
+              <li onClick={() => handleAuthRedirect(router)}>Sell</li>
+              <Link href="/contact">Contact</Link>
               <Link href="/portfolio">
                 <button className="w-full mt-3 bg-linear-to-r from-blue-500 to-blue-600 text-white py-2 rounded-full">
                   My Domz
@@ -100,72 +144,32 @@ const NavbarComponenet = (props: NavbarTextProp) => {
         {/* HEADING */}
         <div className="flex flex-col items-center justify-center text-center py-20 relative z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold flex gap-1">
-            {/* Colored first letter */}
             <span className="text-blue-600">{props.colorText}</span>
-            <span className="bg-linear-to-r from-blue-500 via-gray-800 to-black
-                   bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-500 via-gray-800 to-black bg-clip-text text-transparent">
               {props.plainText}
             </span>
           </h1>
+
           {props.IsParaText && (
             <p className="mt-4 max-w-xl text-gray-700">
               {props.ParaText}
             </p>
           )}
-          {/* SEARCH BAR */}
+
           {props.searchbarStatus && (
             <div className="mt-8 w-full flex justify-center px-4">
-              <div
-                className="
-        w-full max-w-2xl
-        bg-white
-        rounded-full
-        shadow-md
-        flex items-center
-        px-4 py-3
-      "
-              >
+              <div className="w-full max-w-2xl bg-white rounded-full shadow-md flex items-center px-4 py-3">
                 <input
                   type="text"
                   placeholder="Search"
                   onChange={(e) => props.onSearch?.(e.target.value)}
                   className="w-full text-gray-700 placeholder-gray-400 focus:outline-none"
                 />
-
-
-                <button
-                  className="
-          ml-3
-          flex items-center justify-center
-          w-10 h-10
-          rounded-full
-          bg-white
-          hover:bg-gray-100
-          transition
-        "
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 text-gray-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
           )}
-
         </div>
 
-        {/* Decorative dots */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#ffffff80_1px,transparent_0)] bg-size-[16px_16px] opacity-40" />
       </div>
     </header>

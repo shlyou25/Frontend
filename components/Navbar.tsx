@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { handleAuthRedirect } from "../utils/checkAuth"
+import { ChevronDown } from "lucide-react"
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -29,9 +30,17 @@ const Navbar = () => {
       <div className="hidden md:flex bg-white/70 backdrop-blur-lg shadow-sm px-6 py-2 rounded-full border border-gray-200">
         <ul className="flex items-center space-x-8 text-gray-800 font-medium">
           <li className="relative group">
-            <Link href="/" className="hover:text-blue-600 transition cursor-pointer">
+            <Link
+              href="/"
+              className="flex items-center gap-1 hover:text-blue-600 transition cursor-pointer"
+            >
               Home
+              <ChevronDown
+                size={16}
+                className="text-gray-500 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+              />
             </Link>
+
             <div className="absolute left-0 top-full mt-3 w-44 rounded-xl bg-white shadow-lg border border-gray-200 
                   opacity-0 invisible group-hover:opacity-100 group-hover:visible 
                   transition-all duration-200">
@@ -71,9 +80,6 @@ const Navbar = () => {
           <Link href="/contact" className="hover:text-blue-600 transition cursor-pointer">
             Contact
           </Link>
-          {/* <Link href="/about" className="hover:text-blue-600 transition cursor-pointer">
-            About
-          </Link> */}
         </ul>
       </div>
 
