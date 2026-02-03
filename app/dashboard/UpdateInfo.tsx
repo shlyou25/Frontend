@@ -1,105 +1,148 @@
-import React, { ChangeEvent, useState } from 'react'
-import { toast } from 'react-toastify';
-import { backendUserData } from './profile'
-import axios from 'axios'
-
+import React, { ChangeEvent, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { backendUserData } from "./profile";
+import { Lock } from "lucide-react";
 
 interface UpdateInfoProps extends backendUserData {
-    setUpdateInfoStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateInfoStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UpdateInfo = (props: UpdateInfoProps) => {
-    const PHONE_REGEX = /^\+[1-9]\d{7,14}$/;
-    const [errors, setErrors] = useState<{ phoneNumber?: string }>({});
-    const [updateInfo, setUpdateInfo] = useState<backendUserData>({
-        name: props?.name,
-        email: props?.email,
-        phoneNumber: props?.phoneNumber,
-    })
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        
-        const { name, value } = e.target;
-        
-        setUpdateInfo((prev) => ({
-            ...prev,
-            [name]: value
-        }));
+const PHONE_REGEX = /^\+[1-9]\d{7,14}$/;
 
-        if (name === "phoneNumber") {
-            if (!PHONE_REGEX.test(value)) {
-                setErrors({ phoneNumber: "Enter a valid phone number including country code" });
-            } else {
-                setErrors({});
-            }
+const UpdateInfo = ({ setUpdateInfoStatus, ...props }: UpdateInfoProps) => {
+  const [data, setData] = useState<backendUserData>(props);
+  const [error, setError] = useState<string | null>(null);
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name === "phoneNumber" && value && !PHONE_REGEX.test(value)) {
+      setError("Use international format (e.g. +91XXXXXXXXXX)");
+    } else {
+      setError(null);
+    }
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (error) return;
+
+    try {
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_apiLink}user/updateuserinfo`,
+        data,
+        { withCredentials: true }
+      );
+
+      toast.success(res.data.message);
+      setUpdateInfoStatus(false);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Update failed");
+    }
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-5">
+      <Field
+        label="Name"
+        name="name"
+        value={data.name ?? ""}
+        onChange={onChange}
+      />
+
+      <Field
+        label="Primary Email"
+        value={data.email ?? ""}
+        disabled
+        hint="Used for login"
+        badge={
+          <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+            <Lock size={12} /> Locked
+          </span>
         }
-    };
-    const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!PHONE_REGEX.test(updateInfo.phoneNumber || "")) {
-            toast.error("Invalid phone number");
-            return;
+      />
+
+      <Field
+        label="Phone Number"
+        name="phoneNumber"
+        value={data.phoneNumber ?? ""}
+        onChange={onChange}
+        error={error}
+        hint="Include country code"
+      />
+
+      <Field
+        label="Secondary Email"
+        name="secondaryEmail"
+        value={data.secondaryEmail ?? ""}
+        onChange={onChange}
+        hint="Optional · Must differ from primary email"
+        badge={
+          <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+            <Lock size={12} /> Used for sales & chat
+          </span>
         }
-        try {
-            const res = await axios.put(
-                `${process.env.NEXT_PUBLIC_apiLink}user/updateuserinfo`,
-                updateInfo,
-                { withCredentials: true }
-            );
+      />
 
-            toast.success(res?.data?.message);
-            props.setUpdateInfoStatus(false);
+      <div className="flex justify-end gap-3 pt-4">
+        <button
+          type="button"
+          onClick={() => setUpdateInfoStatus(false)}
+          className="px-4 py-2 text-sm border rounded-md text-gray-600 hover:bg-gray-50"
+        >
+          Cancel
+        </button>
 
-        } catch (error: any) {
-            toast.error(error?.response?.data?.message || "An unexpected Error Occured", {
-                position: "top-right",
-            });
-        }
-    };
+        <button
+          type="submit"
+          className="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        >
+          Save Changes
+        </button>
+      </div>
+    </form>
+  );
+};
 
-    return (
-        <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-            <h2 className="text-lg font-semibold text-gray-700 capitalize">Update Profile Information</h2>
-            <form onSubmit={onSubmitHandler}>
-                <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                    <div>
-                        <label className="text-gray-700" >Name</label>
-                        <input type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md"
-                            value={updateInfo.name ?? ''}
-                            onChange={onChangeHandler}
-                            name='name'
-                        />
-                    </div>
-                    <div>
-                        <label className="text-gray-700" >Email</label>
-                        <input type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md"
-                            value={updateInfo.email ?? ''}
-                            onChange={onChangeHandler}
-                            name='email'
-                        />
-                    </div>
-                    <div>
-                        <label className="text-gray-700">Phone Number - with country code</label>
-                        <input
-                            type="text"
-                            className={`block w-full px-4 py-2 mt-2 bg-white border rounded-md ${errors.phoneNumber ? "border-red-500" : "border-gray-200"
-                                }`}
-                            value={updateInfo.phoneNumber ?? ""}
-                            onChange={onChangeHandler}
-                            name="phoneNumber"
-                        />
-                        {errors.phoneNumber && (
-                            <p className="mt-1 text-sm text-red-500">{errors.phoneNumber}</p>
-                        )}
-                    </div>
-
-                </div>
-                <div className="flex justify-end mt-6">
-                    <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Update</button>
-                </div>
-            </form>
-
-        </section>
-    )
+interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  hint?: string;
+  error?: string | null;
+  badge?: React.ReactNode;
 }
 
-export default UpdateInfo
+const Field = ({ label, hint, error, badge, ...props }: FieldProps) => {
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <label className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+        {badge && <span>{badge}</span>}
+      </div>
+
+      <input
+        {...props}
+        className={`mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-200 focus:outline-none ${
+          error ? "border-red-500" : "border-gray-300"
+        } ${props.disabled ? "bg-gray-100 text-gray-500" : ""}`}
+      />
+
+      {hint && !error && (
+        <p className="mt-1 text-xs text-gray-400">{hint}</p>
+      )}
+
+      {error && (
+        <p className="mt-1 text-xs text-red-500">{error}</p>
+      )}
+    </div>
+  );
+};
+
+export default UpdateInfo;

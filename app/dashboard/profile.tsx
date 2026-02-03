@@ -1,55 +1,88 @@
-import React, { useEffect, useState } from 'react'
-import UpdateInfo from './UpdateInfo';
-import ProfileInfo from './ProfileInfo';
-import axios from 'axios';
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ProfileInfo from "./ProfileInfo";
+import UpdateInfo from "./UpdateInfo";
 
 export interface backendUserData {
   name?: string;
   email?: string;
   phoneNumber?: string;
+  secondaryEmail?: string;
 }
-
 
 const Profile = () => {
-     const [userData, setUserData] = useState<backendUserData>()
-       const [updateInfoStatus, setUpdateInfoStatus] = useState(false);
-       useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_apiLink}user/getuserbyid`,
-          { withCredentials: true }
-        );
-        setUserData(res.data.user)
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const [userData, setUserData] = useState<backendUserData>();
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUser = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_apiLink}user/getuserbyid`,
+        { withCredentials: true }
+      );
+      setUserData(res.data.user);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchUser();
-  }, [updateInfoStatus]);
-    return (
-        <section className="max-w-2xl mx-auto bg-gray-50 rounded-lg shadow p-6 mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
-                <h2 className="text-xl font-semibold">Profile information</h2>
-                {!updateInfoStatus && (
-                    <button
-                        onClick={() => setUpdateInfoStatus(!updateInfoStatus)}
-                        data-twe-ripple-init
-                        data-twe-ripple-color="light"
-                        className="inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none"
-                    >
-                        Update
-                    </button>
-                )}
+  }, [isEditing]);
 
-            </div>
-            {updateInfoStatus ? (
-                <UpdateInfo name={userData?.name} email={userData?.email} phoneNumber={userData?.phoneNumber} setUpdateInfoStatus={setUpdateInfoStatus} />
-            ) : (
-                <ProfileInfo name={userData?.name} email={userData?.email} phoneNumber={userData?.phoneNumber} />
-            )}
-        </section>
-    )
-}
+  return (
+    <section className="max-w-3xl mx-auto">
+      <div className="bg-white rounded-xl border shadow-sm overflow-hidden transition-all duration-300">
+        <div className="px-6 py-5 border-b flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800">
+              Profile Information
+            </h2>
+            <p className="text-sm text-gray-500">
+              Manage your personal and contact details
+            </p>
+          </div>
 
-export default Profile
+          {!isEditing && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            >
+              Edit
+            </button>
+          )}
+        </div>
+
+        <div className="p-6">
+          {loading ? (
+            <Skeleton />
+          ) : isEditing ? (
+            <UpdateInfo
+              {...userData}
+              setUpdateInfoStatus={setIsEditing}
+            />
+          ) : (
+            <ProfileInfo
+              {...userData}
+            />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Skeleton = () => (
+  <div className="space-y-4 animate-pulse">
+    {[...Array(4)].map((_, i) => (
+      <div key={i} className="h-4 bg-gray-200 rounded w-3/4" />
+    ))}
+  </div>
+);
+
+export default Profile;
