@@ -299,7 +299,7 @@ const DomainTable = ({ searchQuery }: Props) => {
             domainId={selectedDomain.domainId}
             domain={selectedDomain.domain}
             onClose={() => setOpen(false)}
-            sellerEmail={selectedDomain.user.email}
+            // sellerEmail={selectedDomain.user.email}
           />
         )}
       </Modal>
