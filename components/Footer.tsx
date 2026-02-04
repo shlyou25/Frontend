@@ -51,7 +51,7 @@ const Footer = () => {
                 <p className="font-medium text-gray-900">Company</p>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li><Link href="/" className="hover:opacity-75">Home</Link></li>
-                  <li><Link href="/about" className="hover:opacity-75">About</Link></li>
+                  <li><Link href="/#about" className="hover:opacity-75">About</Link></li>
                   <li><Link href="/plan" className="hover:opacity-75">Plan</Link></li>
                   <li><Link href="/contact" className="hover:opacity-75">Contact</Link></li>
                 </ul>
