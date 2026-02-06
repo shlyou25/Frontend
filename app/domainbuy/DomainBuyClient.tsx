@@ -28,7 +28,7 @@ return (
         onSearch={setSearchQuery}
       />
 
-      <DomainTable searchQuery={searchQuery} />
+      <DomainTable searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
 
       {/* <div className="w-full px-2 py-12 bg-blue-50 flex flex-col items-center rounded-3xl">
         <h2 className="text-2xl md:text-3xl font-light text-center mb-2 mt-2">
