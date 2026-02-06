@@ -8,7 +8,7 @@ import EmailTemplate from '../../components/EmailTemplate'
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import FilterDomain, { DomainFilters } from '../../components/FilterDashboard';
-import { Filter, XCircle } from 'lucide-react';
+import { Filter, RotateCcw } from 'lucide-react';
 
 
 interface Domain {
@@ -170,39 +170,50 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   return (
     <div className="w-full mt-10">
       <div className="flex items-center justify-between px-4 py-3 border rounded-t-xl bg-white">
-        {/* LEFT: Filters */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowFilter(v => !v)}
-            className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white
-                 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="
+    inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white
+    hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+  "
           >
-            {showFilter ? 'Close Filter' : 'Filter'}
+            <Filter size={16} />
+            {showFilter ? 'Hide filters' : 'Filters'}
           </button>
 
-          <button
-            onClick={() => {
-              setFilters({ extensions: [] });
-              setSearchQuery('');
-              setPage(1);
-              setLimit(10);
-            }}
-            disabled={
-              !filters.extensions.length &&
-              !filters.startsWith &&
-              !filters.endsWith &&
-              !filters.contains &&
-              !filters.exact &&
-              !filters.minLength &&
-              !filters.maxLength &&
-              !filters.sellerName &&
-              !searchQuery
-            }
-            className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium
-                 text-gray-600 hover:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            Clear all
-          </button>
+          {hasActiveFilters &&
+            <button
+              onClick={() => {
+                setFilters({ extensions: [] });
+                setSearchQuery('');
+                setPage(1);
+                setLimit(10);
+              }}
+              disabled={
+                !filters.extensions.length &&
+                !filters.startsWith &&
+                !filters.endsWith &&
+                !filters.contains &&
+                !filters.exact &&
+                !filters.minLength &&
+                !filters.maxLength &&
+                !filters.sellerName &&
+                !searchQuery
+              }
+              title="Reset all filters and search"
+              className="
+    inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium
+    text-gray-600 hover:bg-gray-100
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+    disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent
+  "
+            >
+              <RotateCcw size={16} />
+              Reset filters
+            </button>
+          }
+
         </div>
 
         {/* RIGHT: Show dropdown */}
