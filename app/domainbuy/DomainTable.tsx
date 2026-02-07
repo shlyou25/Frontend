@@ -246,25 +246,31 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
           </aside>
         )}
         <div className="flex-1 overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-blue-50">
-              <tr>
-                <th className="px-6 py-4 text-left">Domain</th>
-                <th className="px-6 py-4 text-center">Connect</th>
-                <th className="px-6 py-4 text-left">Seller</th>
+          <table className="min-w-full border-separate border-spacing-y-1 text-sm">
+            <thead className="sticky top-0 bg-white z-10">
+              <tr className="text-xs font-semibold text-slate-600 tracking-wide">
+                <th className="px-6 py-3 text-left">Domain</th>
+                <th className="px-6 py-3 text-center">Contact</th>
+                <th className="px-6 py-3 text-left">Seller</th>
               </tr>
             </thead>
+
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={3} className="py-10 text-center text-gray-500">
+                  <td colSpan={3} className="py-10 text-center text-sm text-slate-500">
+
                     Loading domains...
                   </td>
                 </tr>
               ) : (
                 filteredDomains.map(d => (
-                  <tr key={d.domainId} className="border-t">
-                    <td className="px-6 py-4">
+                  <tr
+                    key={d.domainId}
+                    className="bg-slate-50 hover:bg-blue-50 transition"
+                  >
+                    <td className="px-6 py-3 text-blue-600 break-all">
+
                       {d.finalUrl ? (
                         <Link href={d.finalUrl} target="_blank" className="text-blue-600 hover:underline">
                           {d.domain}
@@ -272,7 +278,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
                       ) : d.domain}
                     </td>
 
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-3 text-center">
                       <button
                         disabled={!d.isChatActive}
                         onClick={() => {
@@ -289,7 +295,8 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
                       </button>
                     </td>
 
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3 text-blue-600 break-all">
+
                       {d.user?.name ? (
                         <button
                           onClick={() => {
@@ -312,6 +319,16 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
                 ))
               )}
             </tbody>
+            <tbody>
+              {filteredDomains.length === 0 && !loading && (
+                <tr>
+                  <td colSpan={3} className="p-6 text-center text-sm text-slate-500">
+                    No domains found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+
           </table>
         </div>
       </div>
