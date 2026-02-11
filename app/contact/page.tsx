@@ -36,7 +36,6 @@ const [loaderStatus, setLoaderStatus] = useState(false);
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoaderStatus(true);
-
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}email/sendemail`,
@@ -52,7 +51,7 @@ const [loaderStatus, setLoaderStatus] = useState(false);
       setLoaderStatus(false);
     }
   };
-    if (loaderStatus) return <Loader />;
+if (loaderStatus) return <Loader />;
   return (
     <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <NavbarComponenet
