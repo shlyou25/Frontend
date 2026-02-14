@@ -25,13 +25,12 @@ export default function MessagesPage() {
   const [domains, setDomains] = useState<DomainGroup[]>([]);
   const [activeDomain, setActiveDomain] = useState<DomainGroup | null>(null);
   const [activeConversation, setActiveConversation] =
-    useState<Conversation | null>(null);
+  useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [reply, setReply] = useState("");
 
   const API = process.env.NEXT_PUBLIC_apiLink;
 
-  /* ---------------- LOAD INBOX ---------------- */
   useEffect(() => {
     const loadInbox = async () => {
       try {
@@ -52,8 +51,6 @@ export default function MessagesPage() {
 
     loadInbox();
   }, [API]);
-
-  /* ---------------- LOAD MESSAGES ---------------- */
   useEffect(() => {
     if (!activeConversation) return;
 
@@ -72,8 +69,6 @@ export default function MessagesPage() {
     loadMessages();
   }, [activeConversation, API]);
 
-
-  /* ---------------- SEND REPLY ---------------- */
   const sendReply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reply.trim() || !activeConversation) return;
@@ -96,8 +91,7 @@ export default function MessagesPage() {
   };
 
   return (
-    <div className="h-screen flex bg-gray-100">
-
+    <div className="h-auto flex bg-gray-100">
       <aside className="w-64 bg-white border-r overflow-y-auto">
         <div className="p-4 font-semibold border-b">Domains</div>
         {domains.map(d => (
@@ -115,8 +109,6 @@ export default function MessagesPage() {
           </button>
         ))}
       </aside>
-
-      {/* ---------------- CONVERSATIONS ---------------- */}
       <aside className="w-72 bg-white border-r overflow-y-auto">
         <div className="p-4 font-semibold border-b">Conversations</div>
         {activeDomain?.conversations.map(c => (
@@ -133,11 +125,7 @@ export default function MessagesPage() {
           </button>
         ))}
       </aside>
-
-      {/* ---------------- CHAT ---------------- */}
       <main className="flex-1 flex flex-col bg-gray-50">
-
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
           {messages.map(m => (
             <div
@@ -166,26 +154,81 @@ export default function MessagesPage() {
               </div>
             </div>
           ))}
-
         </div>
+<div className="bg-white border-t px-3 py-3 shrink-0">
+  <form
+    onSubmit={sendReply}
+    className="flex items-end gap-2 max-w-full"
+  >
+    {/* Textarea wrapper */}
+    <div className="flex-1 relative">
+      <textarea
+        placeholder="Type your message…"
+        rows={1}
+        className="
+          w-full
+          px-4 py-2.5
+          border border-gray-300
+          rounded-2xl
+          resize-none
+          text-sm
+          leading-5
+          focus:outline-none
+          focus:ring-2 focus:ring-blue-500
+          focus:border-blue-500
+          transition
+          max-h-32
+        "
+        value={reply}
+        onChange={(e) => {
+          setReply(e.target.value);
+          e.target.style.height = "auto";
+          e.target.style.height = e.target.scrollHeight + "px";
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendReply();
+          }
+        }}
+      />
+    </div>
 
-        {/* Reply */}
-        <div className="bg-white border-t px-4 py-2 shrink-0">
-          <form onSubmit={sendReply} className="flex items-center gap-2">
-            <input
-              value={reply}
-              onChange={e => setReply(e.target.value)}
-              placeholder="Type your reply…"
-              className="flex-1 h-9 border rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="h-9 bg-blue-600 text-white px-4 rounded-md hover:bg-blue-700 text-sm"
-            >
-              Send
-            </button>
-          </form>
-        </div>
+    {/* Send Button */}
+    <button
+      type="submit"
+      disabled={!reply.trim()}
+      className="
+        h-10 w-10
+        flex items-center justify-center
+        rounded-full
+        bg-blue-600
+        text-white
+        hover:bg-blue-700
+        disabled:bg-gray-300
+        disabled:cursor-not-allowed
+        transition
+      "
+      aria-label="Send message"
+    >
+      {/* Send Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"
+        />
+      </svg>
+    </button>
+  </form>
+</div>
 
       </main>
     </div>
