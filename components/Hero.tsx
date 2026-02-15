@@ -46,9 +46,17 @@ const Hero = () => {
               >
                 TRANSPARENT BY DESIGN
               </span>
-              <div className="text-lg sm:text-xl font-semibold text-gray-900">
+              <div className="
+  font-extrabold text-gray-900
+  text-4xl
+  sm:text-5xl
+  md:text-6xl
+  lg:text-8xl
+  xl:text-6xl
+">
                 DOM<span className="text-blue-600">Z</span>
               </div>
+
               <h1
                 className="
                   text-3xl sm:text-4xl lg:text-5xl
