@@ -2,7 +2,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Footer from "../../components/Footer";
 import NavbarComponenet from "../../components/NavbarComponenet";
 import PaymentSettingCard from "../../components/cards/profile/PaymentSettingCard";
@@ -13,15 +12,7 @@ import Myportfolio from "./myportfolio";
 import Profile from "./profile";
 import Pricing from "../../utils/Test";
 import MessagesPage from "./MessagesPage";
-import {
-  User,
-  Briefcase,
-  CreditCard,
-  Layers,
-  MessageSquare,
-  LogOut,
-  Menu
-} from "lucide-react";
+import {User,Briefcase,CreditCard,Layers,MessageSquare,LogOut,Menu} from "lucide-react";
 
 
 const Page = () => {
@@ -29,8 +20,6 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("Profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-
   useEffect(() => {
     const checkAuth = async () => {
       try {

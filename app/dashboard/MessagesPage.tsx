@@ -25,7 +25,7 @@ export default function MessagesPage() {
   const [domains, setDomains] = useState<DomainGroup[]>([]);
   const [activeDomain, setActiveDomain] = useState<DomainGroup | null>(null);
   const [activeConversation, setActiveConversation] =
-  useState<Conversation | null>(null);
+    useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [reply, setReply] = useState("");
 
@@ -101,9 +101,8 @@ export default function MessagesPage() {
               setActiveDomain(d);
               setActiveConversation(d.conversations[0]);
             }}
-            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${
-              activeDomain?.domainId === d.domainId ? "bg-blue-50" : ""
-            }`}
+            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${activeDomain?.domainId === d.domainId ? "bg-blue-50" : ""
+              }`}
           >
             {d.domain}
           </button>
@@ -115,11 +114,10 @@ export default function MessagesPage() {
           <button
             key={c.conversationId}
             onClick={() => setActiveConversation(c)}
-            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${
-              activeConversation?.conversationId === c.conversationId
+            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${activeConversation?.conversationId === c.conversationId
                 ? "bg-blue-100"
                 : ""
-            }`}
+              }`}
           >
             <div className="font-medium">{c.user}</div>
           </button>
@@ -142,9 +140,8 @@ export default function MessagesPage() {
               >
                 <p className="whitespace-pre-wrap">{m.message}</p>
                 <div
-                  className={`text-xs mt-1 ${
-                    m.isMine ? "text-blue-100" : "text-gray-400"
-                  }`}
+                  className={`text-xs mt-1 ${m.isMine ? "text-blue-100" : "text-gray-400"
+                    }`}
                 >
                   {new Date(m.createdAt).toLocaleTimeString([], {
                     hour: "2-digit",
@@ -155,17 +152,17 @@ export default function MessagesPage() {
             </div>
           ))}
         </div>
-<div className="bg-white border-t px-3 py-3 shrink-0">
-  <form
-    onSubmit={sendReply}
-    className="flex items-end gap-2 max-w-full"
-  >
-    {/* Textarea wrapper */}
-    <div className="flex-1 relative">
-      <textarea
-        placeholder="Type your message…"
-        rows={1}
-        className="
+        <div className="bg-white border-t px-3 py-3 shrink-0">
+          <form
+            onSubmit={sendReply}
+            className="flex items-end gap-2 max-w-full"
+          >
+            {/* Textarea wrapper */}
+            <div className="flex-1 relative">
+              <textarea
+                placeholder="Type your message…"
+                rows={1}
+                className="
           w-full
           px-4 py-2.5
           border border-gray-300
@@ -179,26 +176,26 @@ export default function MessagesPage() {
           transition
           max-h-32
         "
-        value={reply}
-        onChange={(e) => {
-          setReply(e.target.value);
-          e.target.style.height = "auto";
-          e.target.style.height = e.target.scrollHeight + "px";
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendReply();
-          }
-        }}
-      />
-    </div>
+                value={reply}
+                onChange={(e) => {
+                  setReply(e.target.value);
+                  e.target.style.height = "auto";
+                  e.target.style.height = e.target.scrollHeight + "px";
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendReply();
+                  }
+                }}
+              />
+            </div>
 
-    {/* Send Button */}
-    <button
-      type="submit"
-      disabled={!reply.trim()}
-      className="
+            {/* Send Button */}
+            <button
+              type="submit"
+              disabled={!reply.trim()}
+              className="
         h-10 w-10
         flex items-center justify-center
         rounded-full
@@ -209,26 +206,26 @@ export default function MessagesPage() {
         disabled:cursor-not-allowed
         transition
       "
-      aria-label="Send message"
-    >
-      {/* Send Icon */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"
-        />
-      </svg>
-    </button>
-  </form>
-</div>
+              aria-label="Send message"
+            >
+              {/* Send Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"
+                />
+              </svg>
+            </button>
+          </form>
+        </div>
 
       </main>
     </div>

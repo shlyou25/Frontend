@@ -21,6 +21,7 @@ export interface DomainType {
   status: string;
   isHidden: boolean;
   isChatActive: boolean;
+  isMessageNotificationEnabled: boolean;
   clicks: number;
   finalUrl?: string;
   createdAt: string;
@@ -215,7 +216,30 @@ const Myportfolio = () => {
       setUserDomains(prev);
     }
   };
-  /* ---------- Data ---------- */
+  const toggleNotification = async (id: string, value: boolean) => {
+    const prev = [...userDomains];
+
+    setUserDomains((d) =>
+      d.map((x) =>
+        x.id === id
+          ? { ...x, isMessageNotificationEnabled: value }
+          : x
+      )
+    );
+
+    try {
+      const res = await axios.patch(
+        `${API}/${id}/toggle-message-notification`,
+        {},
+        { withCredentials: true }
+      );
+      toast.success(res?.data?.message);
+    } catch {
+      setUserDomains(prev);
+      toast.error("Failed to update notification setting");
+    }
+  };
+
   const fetchDomains = async () => {
     const res = await axios.get(`${API}/getdomainbyuser`, {
       withCredentials: true,
@@ -492,7 +516,8 @@ const Myportfolio = () => {
                   <th className="px-4 py-3 text-left">Domain</th>
                   <th className="px-4 py-3 text-center">Visibility</th>
                   <th className="px-4 py-3 text-center">Chat</th>
-                  <th className="px-4 py-3 text-center">Actions</th>
+                  <th className="px-4 py-3 text-center">Notification</th>
+                  <th className="px-4 py-3 text-center">Delete</th>
                   <th className="px-4 py-3 text-center">Added On</th>
                 </tr>
               </thead>
@@ -536,6 +561,14 @@ const Myportfolio = () => {
                           onChange={(val) => toggleChat(d.id, val)}
                         />
                       </td>
+                      <td className="px-4 py-2 text-center">
+                        <Toggle
+                          id={`notify-${d.id}`}
+                          checked={d.isMessageNotificationEnabled}
+                          onChange={(val) => toggleNotification(d.id, val)}
+                        />
+                      </td>
+
 
                       <td className="px-4 py-2 text-center">
                         <button
