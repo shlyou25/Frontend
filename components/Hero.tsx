@@ -4,26 +4,9 @@ import Image from "next/image";
 import { checkAuth } from "../utils/checkAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
 
 const Hero = () => {
   const router=useRouter()
-const [offsetX, setOffsetX] = useState(-120);
-
-useEffect(() => {
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const maxScroll = 400; // control how fast it settles
-
-    const progress = Math.min(scrollTop / maxScroll, 1);
-    setOffsetX(-120 + progress * 120);
-  };
-
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
-
   const handleAuthRedirect = async () => {
       const status = await checkAuth()
       router.push(status === "authenticated" ? "/dashboard" : "/login")
@@ -150,36 +133,25 @@ useEffect(() => {
             </div>
 
             {/* RIGHT: IMAGE */}
-<div
-  className="w-full lg:w-1/2 flex justify-center"
-  style={{ perspective: "1200px" }}
->
-  <Image
-  src="/assets/heroAnimation.png"
-  alt="Globe and Server Illustration"
-  width={600}
-  height={600}
-  priority
-  style={{
-    transform: `translateX(${offsetX}px)`,
-    transition: "transform 0.08s ease-out",
-  }}
-  className="
-    w-full
-    max-w-50        
-    sm:max-w-70     
-    md:max-w-90     
-    lg:max-w-130    
-    xl:max-w-150
-    h-auto
-    object-contain
-    will-change-transform
-  "
-/>
-
-</div>
-
-
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <Image
+                src="/assets/heroAnimation.png"
+                alt="Globe and Server Illustration"
+                width={600}
+                height={600}
+                priority
+                className="
+                  w-full
+                  max-w-50        
+                  sm:max-w-70     
+                  md:max-w-90     
+                  lg:max-w-130    
+                  xl:max-w-150
+                  h-auto
+                  object-contain
+                "
+              />
+            </div>
           </div>
         </div>
       </div>
