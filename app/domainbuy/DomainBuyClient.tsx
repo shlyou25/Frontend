@@ -28,7 +28,7 @@ return (
         onSearch={setSearchQuery}
       />
 
-      <DomainTable searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <DomainTable searchQuery={searchQuery}/>
     <Footer />
     </div>
   );
