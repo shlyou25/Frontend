@@ -46,17 +46,16 @@ const Hero = () => {
               >
                 TRANSPARENT BY DESIGN
               </span>
-
               <h1
                 className="
                   text-3xl sm:text-4xl lg:text-5xl
                   font-semibold leading-snug text-gray-900
+                  whitespace-nowrap
                 "
               >
                 List. Connect. Close.
               
               </h1>
-
               <p
                 className="
                   text-base sm:text-lg
