@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Hero = () => {
-  const router=useRouter()
+  const router = useRouter()
   const handleAuthRedirect = async () => {
-      const status = await checkAuth()
-      router.push(status === "authenticated" ? "/dashboard" : "/login")
-    }
+    const status = await checkAuth()
+    router.push(status === "authenticated" ? "/dashboard" : "/login")
+  }
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10 pt-6">
       {/* Outer Background */}
@@ -46,6 +46,9 @@ const Hero = () => {
               >
                 TRANSPARENT BY DESIGN
               </span>
+              <div className="text-lg sm:text-xl font-semibold text-gray-900">
+                DOM<span className="text-blue-600">Z</span>
+              </div>
               <h1
                 className="
                   text-3xl sm:text-4xl lg:text-5xl
@@ -54,7 +57,7 @@ const Hero = () => {
                 "
               >
                 List. Connect. Close.
-              
+
               </h1>
               <p
                 className="
@@ -82,7 +85,7 @@ const Hero = () => {
                   Buy
                 </Link>
                 <button
-                 onClick={handleAuthRedirect}
+                  onClick={handleAuthRedirect}
                   className="
                     border border-blue-600 text-blue-600 px-6 py-3
                     rounded-full font-medium hover:bg-blue-100 transition
