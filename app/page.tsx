@@ -14,12 +14,13 @@ import DemoVideo from '../components/DemoVideo'
 const page = () => {
   return (
     <div className='lg:pl-[10%] lg:pr-[10%] lg:pt-9'>
-      <div className="min-h-full bg-cover bg-center rounded-4xl"
-        style={{ backgroundImage: `url(${backgroundImg.src})` }}>
+      {/* <Hero/> */}
+      <div className="min-h-full bg-cover bg-center bg-linear-to-b from-blue-100 via-blue-50 to-white rounded-2xl">
         <section id="navbar">
           <Navbar />
         </section>
         <Hero />
+         {/* <Hero/> */}
       </div>
       <ConnectedBrands />
       <BrowseDomain />
