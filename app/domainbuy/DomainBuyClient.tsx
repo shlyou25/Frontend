@@ -27,7 +27,6 @@ return (
         searchbarStatus={true}
         onSearch={setSearchQuery}
       />
-
       <DomainTable searchQuery={searchQuery}/>
     <Footer />
     </div>

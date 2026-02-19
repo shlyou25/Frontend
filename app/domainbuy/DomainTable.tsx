@@ -53,6 +53,8 @@ const DomainTable = ({ searchQuery }: Props) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<number | 'all'>(10);
   const [total, setTotal] = useState(0);
+  const [authPopupOpen, setAuthPopupOpen] = useState(false);
+
 
   const [loading, setLoading] = useState(false);
 
@@ -280,20 +282,38 @@ const DomainTable = ({ searchQuery }: Props) => {
                     </td>
 
                     <td className="px-6 py-4 text-center">
-                      <button
-                        disabled={!d.isChatActive}
-                        onClick={async () => {
-                          const status = await checkAuth();
-                          if (status === 'unauthenticated') {
-                            router.push('/login');
-                            return;
-                          }
-                          setSelectedDomain(d);
-                          setOpen(true);
-                        }}
-                      >
-                        <Send size={16} />
-                      </button>
+                     <div className="relative group inline-flex justify-center">
+  <button
+    type="button"
+    onClick={async () => {
+      const status = await checkAuth();
+
+      if (status === 'unauthenticated') {
+        setAuthPopupOpen(true); // ✅ open info popup
+        return;
+      }
+
+      setSelectedDomain(d);
+      setOpen(true);
+    }}
+    className={`p-2 rounded-md transition-all duration-150
+      ${d.isChatActive
+        ? 'text-blue-600 hover:bg-blue-50'
+        : 'text-gray-400 cursor-not-allowed'}
+    `}
+    aria-label="Message seller"
+  >
+    <Send size={16} />
+  </button>
+
+  {/* Tooltip */}
+  <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
+    <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg text-center whitespace-nowrap">
+      Verified users only — log in to message the seller.
+    </div>
+  </div>
+</div>
+
                     </td>
 
                     <td className="px-6 py-4">
@@ -338,7 +358,42 @@ const DomainTable = ({ searchQuery }: Props) => {
         </div>
       )}
 
-      {/* ✉️ MODAL */}
+
+<Modal
+  isOpen={authPopupOpen}
+  onClose={() => setAuthPopupOpen(false)}
+  title="Message Seller"
+>
+  <div className="relative space-y-4 text-sm text-gray-700">
+    <p className="text-gray-600 leading-relaxed">
+      Please sign up or log in to message the seller.
+      Creating an account is completely free — no subscription required.
+      <br />
+      Email verification helps keep the marketplace secure and prevent spam.
+    </p>
+
+    <div className="flex flex-col sm:flex-row gap-3 pt-3">
+      <Link
+        href="/signup"
+        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2.5 rounded-lg font-medium transition"
+      >
+        Create Free Account
+      </Link>
+
+      <Link
+        href="/login"
+        className="flex-1 border border-gray-300 hover:bg-gray-100 text-center px-4 py-2.5 rounded-lg font-medium transition"
+      >
+        Log In
+      </Link>
+    </div>
+
+    <p className="text-xs text-gray-500 text-center pt-2">
+      Takes less than a minute to get started
+    </p>
+  </div>
+</Modal>
+
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Contact Seller">
         {selectedDomain && (
           <DomainReplyEmail
