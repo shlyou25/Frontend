@@ -93,17 +93,17 @@ const DiscoveryPartner: React.FC = () => (
     <div className="max-w-7xl w-full mx-auto py-12 px-6 rounded-3xl bg-transparent">
 
       <h1 className="text-3xl md:text-5xl font-normal mb-4 text-gray-900">
-       The Future of Domain Discovery
+        We’re not just another domain platform.
       </h1>
 
       <h2 className="text-4xl md:text-6xl font-bold mb-8">
-        <span className="text-blue-600">Here is</span>
-        <span className="ml-2 text-gray-900">Here is how we built a better way forward:</span>
+        <span className="text-blue-600">We are</span>
+        <span className="ml-2 text-gray-900">your discovery partner.</span>
       </h2>
 
-      {/* <p className="mb-8 text-lg text-gray-700">
+      <p className="mb-8 text-lg text-gray-700">
         Here is how we built a better way forward:
-      </p> */}
+      </p>
 
       <motion.div
         variants={containerVariants}
