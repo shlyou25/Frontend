@@ -92,13 +92,13 @@ const DiscoveryPartner: React.FC = () => (
   <main className="flex items-center justify-center bg-linear-to-b from-blue-100 via-blue-50 to-white px-2 pb-20 rounded-2xl" id='about'>
     <div className="max-w-7xl w-full mx-auto py-12 px-6 rounded-3xl bg-transparent">
 
-      <h1 className="text-3xl md:text-5xl font-normal mb-4 text-gray-900">
+      {/* <h1 className="text-3xl md:text-5xl font-normal mb-4 text-gray-900">
         We’re not just another domain platform.
-      </h1>
+      </h1> */}
 
       <h2 className="text-4xl md:text-6xl font-bold mb-8">
-        <span className="text-blue-600">We are</span>
-        <span className="ml-2 text-gray-900">your discovery partner.</span>
+        {/* <span className="text-blue-600">We are</span> */}
+        <span className="ml-2 text-gray-900">The Future of Domain Discovery</span>
       </h2>
 
       <p className="mb-8 text-lg text-gray-700">
