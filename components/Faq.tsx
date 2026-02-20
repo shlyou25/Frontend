@@ -63,7 +63,7 @@ const Faq = () => {
   return (
     <section id="faq" className="bg-white py-20 ">
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-semibold text-center text-gray-900 mb-14">
+        <h2 className="text-4xl md:text-5xl font-semibold text-center  mb-14 bg-linear-to-r from-blue-600 to-black bg-clip-text text-transparent">
           Got Questions? We’ve Got Answers.
         </h2>
 
