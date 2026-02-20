@@ -22,10 +22,11 @@ const page = () => {
         <Hero />
          {/* <Hero/> */}
       </div>
-      <ConnectedBrands />
+    
       <BrowseDomain />
       <Features />
       <DiscoveryPartner />
+        <ConnectedBrands />
       <DemoVideo />
       <Faq />
       <GetStarted />
