@@ -32,7 +32,7 @@ const BrowseDomain = () => {
   return (
     <div className="bg-linear-to-b from-blue-100 via-blue-50 to-white py-10 px-[2%] rounded-2xl">
       <div className="max-w-4xl w-full mx-auto text-center">
-        <h2 className="text-slate-900 text-3xl md:text-5xl font-semibold mb-4">
+        <h2 className=" text-3xl md:text-5xl font-semibold mb-4 bg-linear-to-r from-blue-600 to-black bg-clip-text text-transparent">
           Find Your Perfect Domain
         </h2>
         {/* <p className="text-base text-slate-600 mb-8">
