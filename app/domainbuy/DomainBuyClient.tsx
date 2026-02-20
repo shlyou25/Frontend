@@ -22,8 +22,8 @@ return (
       <NavbarComponenet
         colorText="Your Do"
         plainText="main Search Starts at Domz"
-        IsParaText={true}
-        ParaText="Browse a commission-free catalog and connect directly with domain owners."
+        IsParaText={false}
+        // ParaText="Browse a commission-free catalog and connect directly with domain owners."
         searchbarStatus={true}
         onSearch={setSearchQuery}
       />
