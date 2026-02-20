@@ -97,9 +97,10 @@ const DiscoveryPartner: React.FC = () => (
       </h1> */}
 
       <h2 className="text-4xl md:text-6xl font-bold mb-8">
-        {/* <span className="text-blue-600">We are</span> */}
-        <span className="ml-2 text-gray-900">The Future of Domain Discovery</span>
-      </h2>
+  <span className="ml-2 bg-linear-to-r from-blue-600 to-black bg-clip-text text-transparent">
+    The Future of Domain Discovery
+  </span>
+</h2>
 
       <p className="mb-8 text-lg text-gray-700">
         Here is how we built a better way forward:
