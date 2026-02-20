@@ -24,10 +24,10 @@ const page = () => {
       </div>
     
       <BrowseDomain />
-      <Features />
+      {/* <Features /> */}
       <DiscoveryPartner />
-        <ConnectedBrands />
-      <DemoVideo />
+        {/* <ConnectedBrands /> */}
+      {/* <DemoVideo /> */}
       <Faq />
       <GetStarted />
       <Footer />
