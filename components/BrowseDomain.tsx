@@ -39,7 +39,7 @@ const BrowseDomain = () => {
           Browse available domains and connect directly with sellers.
         </p> */}
 
-        <form className="max-w-md mx-auto" onSubmit={onSubmitHandler}>
+        <form className="max-w-md mx-auto py-1.5" onSubmit={onSubmitHandler}>
           <label className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
