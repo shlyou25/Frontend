@@ -52,13 +52,12 @@ const Footer = () => {
                 <ul className="mt-4 space-y-3 text-sm">
                   <li><Link href="/" className="hover:opacity-75">Home</Link></li>
                   <li><Link href="/#about" className="hover:opacity-75">About</Link></li>
-                  <li><Link href="/plan" className="hover:opacity-75">Plan</Link></li>
-                  <li><Link href="/contact" className="hover:opacity-75">Contact</Link></li>
+                  <li><Link href="/#faq" className="hover:opacity-75">FAQ</Link></li>
                 </ul>
               </div>
 
               <div>
-                <p className="font-medium text-gray-900">Resources</p>
+                <p className="font-medium text-gray-900">Domains</p>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li><Link href="/domainbuy" className="hover:opacity-75">Buy Domains</Link></li>
                   <li
@@ -69,7 +68,6 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-
               <div>
                 <p className="font-medium text-gray-900">Legal</p>
                 <ul className="mt-4 space-y-3 text-sm">
@@ -88,7 +86,7 @@ const Footer = () => {
           </div>
 
           <p className="text-xs text-gray-500">
-            © 2025 domz.com. All rights reserved.
+            © 2026 Domz.com LLC
           </p>
         </div>
       </footer>
