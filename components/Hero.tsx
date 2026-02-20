@@ -49,7 +49,7 @@ const Hero = () => {
           >
             List. Connect. Close.
           </h1>
-          <p
+          {/* <p
             className="
               text-base sm:text-lg
               text-slate-600 font-medium
@@ -57,7 +57,7 @@ const Hero = () => {
             "
           >
             The Decentralized Future of Domain Discovery
-          </p>
+          </p> */}
 
           {/* CTA */}
           <div className="flex gap-4 justify-center">
