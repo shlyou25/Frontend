@@ -46,10 +46,10 @@ const Navbar = () => {
                   transition-all duration-200">
               <ul className="py-2 text-sm text-gray-700">
                 <Link
-                  href="/#faq"
+                  href="/#about"
                   className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
                 >
-                  FAQ
+                  About
                 </Link>
                 <Link
                   href="/#demo"
@@ -58,10 +58,10 @@ const Navbar = () => {
                   Demo
                 </Link>
                 <Link
-                  href="/#about"
+                  href="/#faq"
                   className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
                 >
-                  About
+                  Faq
                 </Link>
               </ul>
             </div>
