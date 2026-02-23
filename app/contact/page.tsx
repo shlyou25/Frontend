@@ -55,8 +55,7 @@ if (loaderStatus) return <Loader />;
   return (
     <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <NavbarComponenet
-        colorText="Let's Star"
-        plainText="t the conversation"
+      text="Let's Start the conversation"
         IsParaText
         ParaText="As a user-centric platform, we value your feedback."
         searchbarStatus={false}
