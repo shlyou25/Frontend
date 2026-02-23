@@ -11,9 +11,9 @@ interface QuickConectCardInterface {
 const QuickConectCard = (props: QuickConectCardInterface) => {
   return (
     <section className="relative py-24 px-4 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      {/* <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 -top-50 -translate-x-1/2 w-225 h-225 bg-blue-300/30 blur-[140px] rounded-full" />
-      </div>
+      </div> */}
       <div
         className="
           relative
