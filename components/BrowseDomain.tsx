@@ -30,27 +30,32 @@ const BrowseDomain = () => {
     router.push(`/domainbuy?filter=${encodeURIComponent(filter)}`);
   };
   return (
-    <div className="bg-linear-to-b from-blue-100 via-blue-50 to-white py-10 px-[2%] rounded-2xl">
-      <div className="max-w-4xl w-full mx-auto text-center">
-        <h2 className=" text-3xl md:text-5xl font-semibold mb-4 bg-linear-to-r from-blue-600 to-black bg-clip-text text-transparent">
-          Find Your Perfect Domain
-        </h2>
-        {/* <p className="text-base text-slate-600 mb-8">
-          Browse available domains and connect directly with sellers.
-        </p> */}
+    <section className="py-20 px-6">
 
-        <form className="max-w-md mx-auto py-1.5" onSubmit={onSubmitHandler}>
-          <label className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
+      <div className="max-w-5xl mx-auto text-center">
+        <h2 className="text-slate-900 text-3xl md:text-5xl font-semibold mb-4">
+          Find Your Perfect Domain, Instantly
+        </h2>
+        <p className="text-base text-slate-600 mb-8">
+          Browse available domains and connect directly with sellers.
+        </p>
+
+        <form className="max-w-xl mx-auto mt-8" onSubmit={onSubmitHandler}>
           <div className="relative">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-            </div>
-            <input type="search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search Domains..." required
+            <input
+              type="search"
+              placeholder="Search Domains..."
+              required
               onChange={(e) => setFilter(e.target.value)}
+              className="w-full h-14 pl-12 pr-32 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 ">Search</button>
+
+            <button
+              type="submit"
+              className="absolute right-2 top-2 bottom-2 px-6 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+            >
+              Search
+            </button>
           </div>
         </form>
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-6 w-full">
@@ -60,7 +65,7 @@ const BrowseDomain = () => {
         </div>
 
       </div>
-    </div>
+    </section>
   )
 }
 
