@@ -20,8 +20,7 @@ export default function DomainBuyClient() {
 return (
     <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <NavbarComponenet
-        colorText="Your Do"
-        plainText="main Search Starts at Domz"
+      text='Your Domain Search Starts at Domz'
         IsParaText={false}
         // ParaText="Browse a commission-free catalog and connect directly with domain owners."
         searchbarStatus={true}
