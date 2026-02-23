@@ -89,20 +89,29 @@ const descVariants: Variants = {
 };
 
 const DiscoveryPartner: React.FC = () => (
-  <main className="flex items-center justify-center bg-linear-to-b from-blue-100 via-blue-50 to-white px-2 pb-20 rounded-2xl" id='about'>
-    <div className="max-w-7xl w-full mx-auto py-12 px-6 rounded-3xl bg-transparent">
+  <main
+    id="about"
+    className="
+    relative
+    py-28
+    px-4
+    overflow-hidden
+    bg-linear-to-b from-blue-50 via-white to-white
+  "
+  >
+    <div className="max-w-6xl mx-auto">
 
       {/* <h1 className="text-3xl md:text-5xl font-normal mb-4 text-gray-900">
         We’re not just another domain platform.
       </h1> */}
 
-      <h2 className="text-4xl md:text-6xl font-bold mb-8">
-  <span className="ml-2 bg-linear-to-r from-blue-600 to-black bg-clip-text text-transparent">
-    The Future of Domain Discovery
-  </span>
-</h2>
+      <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
+        <span className="bg-linear-to-r from-blue-600 to-blue-900 bg-clip-text text-transparent">
+          The Future of Domain Discovery
+        </span>
+      </h2>
 
-      <p className="mb-8 text-lg text-gray-700">
+      <p className="mb-14 text-lg text-gray-600 max-w-2xl">
         Here is how we built a better way forward:
       </p>
 
@@ -117,7 +126,21 @@ const DiscoveryPartner: React.FC = () => (
           <motion.div
             key={f.title}
             variants={cardVariants}
-            className="bg-white rounded-2xl px-7 py-6 shadow border border-blue-100"
+            className="
+group
+relative
+bg-white/80
+backdrop-blur-sm
+rounded-2xl
+px-7
+py-7
+border border-gray-100
+shadow-sm
+hover:shadow-xl
+hover:-translate-y-1
+transition-all
+duration-300
+"
           >
             <motion.h3
               variants={titleVariants}

@@ -12,7 +12,6 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
 
-  // 🔐 Detect verification type (user vs admin)
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("verify_email_user_domz");
     if (storedEmail) {
@@ -20,11 +19,7 @@ const Page = () => {
     }
   }, []);
 
-  
 
-  // -----------------------------
-  // VERIFY OTP
-  // -----------------------------
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -64,9 +59,6 @@ const Page = () => {
     }
   };
 
-  // -----------------------------
-  // RESEND OTP (USER ONLY)
-  // -----------------------------
   const handleResendOtp = async () => {
     if (!email) return;
 

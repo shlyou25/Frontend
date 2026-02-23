@@ -45,7 +45,6 @@ const BrowseDomain = () => {
             <input
               type="search"
               placeholder="Search Domains..."
-              required
               onChange={(e) => setFilter(e.target.value)}
               className="w-full h-14 pl-12 pr-32 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

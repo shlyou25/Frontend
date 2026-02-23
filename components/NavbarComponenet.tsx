@@ -7,25 +7,18 @@ import { handleAuthRedirect } from "../utils/checkAuth";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export type NavbarTextProp =
-  | {
-    text: string;
-    IsParaText: true;
-    ParaText?: string;
-    searchbarStatus?: boolean;
-    onSearch?: (value: string) => void;
-  }
-  | {
-    text: string;
-    IsParaText: false;
-    searchbarStatus?: boolean;
-    onSearch?: (value: string) => void;
-  };
+export type NavbarTextProp = {
+  text: string;
+  IsParaText: boolean;
+  ParaText?: string;
+  searchbarStatus?: boolean;
+  onSearch?: (value: string) => void;
+  searchValue?: string; // ✅ ADD THIS
+};
 
 const NavbarComponenet = (props: NavbarTextProp) => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
 
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10" id="navbar">
@@ -64,12 +57,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
                     >
                       FAQ
                     </Link>
-                    <Link
-                      href="/#demo"
-                      className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
-                    >
-                      Demo
-                    </Link>
+
                     <Link
                       href="/#about"
                       className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
@@ -143,20 +131,16 @@ const NavbarComponenet = (props: NavbarTextProp) => {
               <div className="bg-white/90 backdrop-blur rounded-full shadow-sm border border-gray-200 flex items-center px-5 py-3 relative">
                 <input
                   type="text"
-                  value={searchValue}
+                  value={props.searchValue || ''}
                   placeholder="Search"
-                  onChange={(e) => {
-                    setSearchValue(e.target.value);
-                    props.onSearch?.(e.target.value);
-                  }}
+                  onChange={(e) => props.onSearch?.(e.target.value)}
                   className="w-full text-gray-700 placeholder-gray-400 focus:outline-none pr-10 bg-transparent"
                 />
 
-                {searchValue && (
+                {props.searchValue && (
                   <button
                     type="button"
                     onClick={() => {
-                      setSearchValue("");
                       props.onSearch?.("");
                     }}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"

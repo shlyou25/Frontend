@@ -12,10 +12,10 @@ const Domain: React.FC<DomainProps> = ({ name }) => {
 
   return (
     <div
-  onClick={() =>
-    router.push(`/domainbuy?filter=${encodeURIComponent(name)}`)
-  }
-  className="
+      onClick={() =>
+        router.push(`/domainbuy?filter=${encodeURIComponent(name)}`)
+      }
+      className="
     group
     rounded-2xl
     bg-white
@@ -29,12 +29,12 @@ const Domain: React.FC<DomainProps> = ({ name }) => {
     hover:-translate-y-1
     hover:shadow-[0_14px_40px_rgba(37,99,235,0.15)]
   "
->
-  <h5 className="text-2xl font-semibold text-gray-900 mb-1 tracking-tight">
-    {name}
-  </h5>
+    >
+      <h5 className="text-2xl font-semibold text-gray-900 mb-1 tracking-tight">
+        {name}
+      </h5>
 
-  <p className="
+      <p className="
     text-xs
     font-medium
     text-gray-400
@@ -42,9 +42,9 @@ const Domain: React.FC<DomainProps> = ({ name }) => {
     transition
     tracking-wide
   ">
-    Promoted
-  </p>
-</div>
+        Promoted
+      </p>
+    </div>
   );
 };
 

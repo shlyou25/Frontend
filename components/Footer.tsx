@@ -79,7 +79,30 @@ const Footer = () => {
               <div>
                 <p className="font-medium text-gray-900">Support</p>
                 <ul className="mt-4 space-y-3 text-sm">
-                  <li><Link href="/contact" className="hover:opacity-75">Help Center</Link></li>
+                  <li className="group relative inline-block">
+                    <a
+                      href="mailto:media@domz.com"
+                      onClick={(e) => e.stopPropagation()}
+                      className="hover:opacity-75 transition"
+                    >
+                      Help Center
+                    </a>
+
+                    {/* tooltip */}
+                    <div
+                      className="
+        pointer-events-none
+        absolute left-1/2 -translate-x-1/2 top-full mt-2
+        opacity-0 group-hover:opacity-100
+        transition
+        z-20
+      "
+                    >
+                      <div className="bg-gray-900 text-white text-xs px-3 py-1.5 rounded-md shadow-lg whitespace-nowrap">
+                        media@domz.com
+                      </div>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>

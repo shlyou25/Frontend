@@ -52,12 +52,6 @@ const Navbar = () => {
                   About
                 </Link>
                 <Link
-                  href="/#demo"
-                  className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
-                >
-                  Demo
-                </Link>
-                <Link
                   href="/#faq"
                   className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"
                 >

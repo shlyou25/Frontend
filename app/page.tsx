@@ -14,13 +14,11 @@ const page = () => {
         <Navbar />
         <Hero />
         <BrowseDomain />
-
       </main>
       <DiscoveryPartner />
       <Faq />
       <GetStarted />
       <Footer/>
-
     </div>
   )
 }
