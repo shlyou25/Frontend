@@ -21,9 +21,7 @@ interface Domain {
 interface Props {
   searchQuery: string;
 }
-
-type SortOption = | 'az'| 'za'| 'length_asc'| 'length_desc'| 'newest'| 'oldest';
-
+type SortOption = | 'az' | 'za' | 'length_asc' | 'length_desc' | 'newest' | 'oldest';
 
 const DEFAULT_FILTERS: DomainFilters = {
   extensions: [],
@@ -76,9 +74,7 @@ const DomainTable = ({ searchQuery }: Props) => {
     const fetchDomains = async () => {
       try {
         setLoading(true);
-
         let res;
-
         if (searchQuery) {
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/search`,
@@ -89,13 +85,11 @@ const DomainTable = ({ searchQuery }: Props) => {
         } else {
           const params: any = { page };
           limit === 'all' ? (params.all = true) : (params.limit = limit);
-
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
             { params }
           );
         }
-
         setDomains(res.data.domains);
         setTotal(res.data.total ?? res.data.domains.length);
       } catch {
@@ -107,7 +101,6 @@ const DomainTable = ({ searchQuery }: Props) => {
 
     fetchDomains();
   }, [page, limit, searchQuery]);
-
   const filteredDomains = domains
     .filter(d => {
       const full = d.domain.toLowerCase();
@@ -127,7 +120,6 @@ const DomainTable = ({ searchQuery }: Props) => {
         if (filters.endsWith && !name.endsWith(filters.endsWith.toLowerCase())) return false;
         if (filters.contains && !name.includes(filters.contains.toLowerCase())) return false;
       }
-
       if (filters.minLength && name.length < filters.minLength) return false;
       if (filters.maxLength && name.length > filters.maxLength) return false;
 
@@ -145,7 +137,7 @@ const DomainTable = ({ searchQuery }: Props) => {
       switch (sortBy) {
         case 'az': return a.domain.localeCompare(b.domain);
         case 'za': return b.domain.localeCompare(a.domain);
-        case 'length_asc': return nameA.length - nameB.length; 
+        case 'length_asc': return nameA.length - nameB.length;
         case 'length_desc': return nameB.length - nameA.length;
         case 'newest': return +new Date(b.createdAt) - +new Date(a.createdAt);
         case 'oldest': return +new Date(a.createdAt) - +new Date(b.createdAt);
@@ -253,7 +245,6 @@ border-b border-gray-200/70">
                   <th className="px-6 py-4 text-left font-semibold">Seller</th>
                 </tr>
               </thead>
-
               <tbody>
                 {loading ? (
                   <tr>
