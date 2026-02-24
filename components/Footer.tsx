@@ -28,7 +28,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
             {/* Brand */}
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start pt-1">
               <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/assets/logo.jpg"
@@ -43,14 +43,18 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="
-      mt-4 inline-flex items-center justify-center
-      px-5 py-2.5
-      rounded-full
-      bg-blue-600 text-white text-sm font-semibold
-      shadow-sm hover:shadow-md
-      hover:bg-blue-700 active:scale-[0.98]
-      transition-all duration-200
-      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+     mt-6
+  inline-flex items-center justify-center
+  px-6 py-3
+  rounded-full
+  bg-linear-to-r from-blue-600 to-blue-500
+  text-white text-sm font-semibold
+  shadow-[0_6px_18px_rgba(37,99,235,0.35)]
+  hover:shadow-[0_10px_26px_rgba(37,99,235,0.45)]
+  hover:from-blue-700 hover:to-blue-600
+  active:scale-[0.97]
+  transition-all duration-200
+  focus:outline-none focus:ring-2 focus:ring-blue-500/40
     "
               >
                 Support Domz
