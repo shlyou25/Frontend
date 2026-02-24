@@ -26,7 +26,7 @@ const Footer = () => {
       <footer className="bg-white">
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="flex flex-col items-start pt-1">
+            <div className="flex flex-col items-start pt-1 w-fit">
               <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/assets/logo.jpg"
@@ -41,7 +41,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="
-     mt-10
+  mt-6
   inline-flex items-center justify-center
   px-6 py-3
   rounded-full
@@ -53,7 +53,8 @@ const Footer = () => {
   active:scale-[0.97]
   transition-all duration-200
   focus:outline-none focus:ring-2 focus:ring-blue-500/40
-    "
+  self-start
+"
               >
                 Support Domz
               </a>
