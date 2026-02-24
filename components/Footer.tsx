@@ -79,14 +79,14 @@ const Footer = () => {
               <div>
                 <p className="font-medium text-gray-900">Support</p>
                 <ul className="mt-4 space-y-3 text-sm">
-                   <li><Link href="/contact" className="hover:opacity-75">Contact</Link></li>
+                  <li><Link href="/contact" className="hover:opacity-75">Contact</Link></li>
                   <li className="group relative inline-block">
                     <a
                       href="mailto:media@domz.com"
                       onClick={(e) => e.stopPropagation()}
                       className="hover:opacity-75 transition"
                     >
-                     Advertise
+                      Advertise
                     </a>
                     <div
                       className="
@@ -102,10 +102,35 @@ const Footer = () => {
                       </div>
                     </div>
                   </li>
-                   
+
                 </ul>
               </div>
             </div>
+          </div>
+          {/* Support Domz */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4
+                rounded-xl border border-gray-200 bg-gray-50/70
+                px-4 py-4">
+            <p className="text-sm text-gray-700 text-center sm:text-left">
+              Help keep <span className="font-semibold">Domz</span> independent and commission-free.
+            </p>
+
+            <a
+              href={"https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+      inline-flex items-center justify-center
+      px-4 py-2 rounded-lg
+      bg-blue-600 text-white text-sm font-semibold
+      shadow-sm hover:shadow-md
+      hover:bg-blue-700 active:scale-[0.98]
+      transition-all duration-200
+      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+    "
+            >
+              Support Domz
+            </a>
           </div>
 
           <p className="text-xs text-gray-500">
