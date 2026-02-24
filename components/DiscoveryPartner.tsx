@@ -97,6 +97,7 @@ const DiscoveryPartner: React.FC = () => (
     px-4
     overflow-hidden
     bg-linear-to-b from-blue-50 via-white to-white
+    rounded-4xl
   "
   >
     <div className="max-w-6xl mx-auto">

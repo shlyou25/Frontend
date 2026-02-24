@@ -48,6 +48,7 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
             <Link href="/plan">
               <button
                 className="
+                cursor-pointer
                   group
                   relative
                   bg-white

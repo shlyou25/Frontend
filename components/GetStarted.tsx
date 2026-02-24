@@ -5,7 +5,7 @@ const GetStarted = () => {
   return (
     <>
       <QuickConectCard
-        title="Ready to list?" description="Choose the plan that fits you best — flexible, seller-first pricing."
+        title="List With Domz" description="Partner with us and showcase your portfolio."
         mainButton="Get Started"
         subButton={true}
       />

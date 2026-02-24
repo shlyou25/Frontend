@@ -48,11 +48,17 @@ const UpdateInfo = ({ setUpdateInfoStatus, ...props }: UpdateInfoProps) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-5"> 
       <Field
         label="Name"
         name="name"
         value={data.name ?? ""}
+        onChange={onChange}
+      />
+      <Field
+        label="User Name"
+        name="userName"
+        value={data.userName ?? ""}
         onChange={onChange}
       />
 
@@ -76,20 +82,6 @@ const UpdateInfo = ({ setUpdateInfoStatus, ...props }: UpdateInfoProps) => {
         error={error}
         hint="Include country code"
       />
-
-      <Field
-        label="Secondary Email"
-        name="secondaryEmail"
-        value={data.secondaryEmail ?? ""}
-        onChange={onChange}
-        hint="Optional · Must differ from primary email"
-        badge={
-          <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
-            <Lock size={12} /> Used for sales & chat
-          </span>
-        }
-      />
-
       <div className="flex justify-end gap-3 pt-4">
         <button
           type="button"

@@ -8,7 +8,7 @@ export interface backendUserData {
   name?: string;
   email?: string;
   phoneNumber?: string;
-  secondaryEmail?: string;
+  userName?: string;
 }
 
 const Profile = () => {

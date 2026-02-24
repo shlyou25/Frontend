@@ -6,12 +6,12 @@ const ProfileInfo = ({
   name,
   email,
   phoneNumber,
-  secondaryEmail,
+  userName,
 }: backendUserData) => {
   return (
     <div className="space-y-5">
       <InfoRow icon={<User size={18} />} label="Name" value={name || "—"} />
-
+      <InfoRow icon={<User size={18} />} label="User Name" value={userName || "—"} />
       <InfoRow
         icon={<Phone size={18} />}
         label="Phone Number"
@@ -20,16 +20,9 @@ const ProfileInfo = ({
 
       <InfoRow
         icon={<Mail size={18} />}
-        label="Primary Email"
+        label="Email"
         value={email || "—"}
-        badge="Primary · Used for login & sales"
-      />
-
-      <InfoRow
-        icon={<Mail size={18} />}
-        label="Secondary Email"
-        value={secondaryEmail || "Not provided"}
-        hint="Optional · Must be different from primary email"
+        badge="Used for login"
       />
     </div>
   );
