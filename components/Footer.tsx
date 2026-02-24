@@ -27,23 +27,42 @@ const Footer = () => {
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
-            {/* Brand */}
-            <div>
-              <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src="/assets/logo.jpg"
-                  alt="DOMZ"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
-              </Link>
+{/* Brand */}
+<div className="flex flex-col items-start">
+  <Link href="/" className="flex items-center gap-2">
+    <Image
+      src="/assets/logo.jpg"
+      alt="DOMZ"
+      width={100}
+      height={100}
+      className="object-contain"
+    />
+  </Link>
 
-              <p className="mt-4 max-w-xs text-gray-600">
-                Learn more about our mission, features, and how we simplify domain
-                buying and selling.
-              </p>
-            </div>
+  {/* Support message */}
+  <p className="mt-4 max-w-xs text-sm text-gray-700">
+    Help keep <span className="font-semibold">Domz</span> independent and commission-free.
+  </p>
+
+  {/* Support button */}
+  <a
+    href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      mt-4 inline-flex items-center justify-center
+      px-5 py-2.5
+      rounded-full
+      bg-blue-600 text-white text-sm font-semibold
+      shadow-sm hover:shadow-md
+      hover:bg-blue-700 active:scale-[0.98]
+      transition-all duration-200
+      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+    "
+  >
+    Support Domz
+  </a>
+</div>
 
             {/* Links */}
             <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-4">
@@ -106,31 +125,6 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-          </div>
-          {/* Support Domz */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4
-                rounded-xl border border-gray-200 bg-gray-50/70
-                px-4 py-4">
-            <p className="text-sm text-gray-700 text-center sm:text-left">
-              Help keep <span className="font-semibold">Domz</span> independent and commission-free.
-            </p>
-
-            <a
-              href={"https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-      inline-flex items-center justify-center
-      px-4 py-2 rounded-lg
-      bg-blue-600 text-white text-sm font-semibold
-      shadow-sm hover:shadow-md
-      hover:bg-blue-700 active:scale-[0.98]
-      transition-all duration-200
-      focus:outline-none focus:ring-2 focus:ring-blue-500/40
-    "
-            >
-              Support Domz
-            </a>
           </div>
 
           <p className="text-xs text-gray-500">
