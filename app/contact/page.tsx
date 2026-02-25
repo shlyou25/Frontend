@@ -110,7 +110,7 @@ const page = () => {
           </button>
         </div>
       </form>
-      <Subscribe />
+      <Subscribe  buttonText="Get Started" heading="List With Domz" text="Partner with us and showcase your portfolio."/>
       <Footer />
     </div>
   );

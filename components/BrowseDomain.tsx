@@ -33,7 +33,7 @@ const BrowseDomain = () => {
     <section className="py-20 px-6">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-slate-900 text-3xl md:text-5xl font-semibold mb-4">
-          Find Your Perfect Domain, Instantly
+          Find Your Perfect Domain
         </h2>
         <p className="text-base text-slate-600 mb-8">
           Browse available domains and connect directly with sellers.

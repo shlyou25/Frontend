@@ -4,7 +4,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Subscribe = () => {
+interface subscribeProps{
+    buttonText:string,
+    heading:string,
+    text:string
+}
+
+const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
     const [loaderStatus, setLoaderStatus] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [authChecked, setAuthChecked] = useState(false);
@@ -87,9 +93,9 @@ const Subscribe = () => {
         <>
             <div className="mx-auto my-20 max-w-6xl px-4 text-center">
                 <div className="rounded-4xl bg-blue-600 px-10 py-20 text-white shadow-2xl">
-                    <h2 className="text-[2.6rem] font-bold mb-4">List With Domz</h2>
+                    <h2 className="text-[2.6rem] font-bold mb-4">{heading}</h2>
                     <p className="mb-8">
-                        Partner with us and showcase your portfolio.
+                        {text}
                     </p>
 
                     <button
@@ -97,7 +103,7 @@ const Subscribe = () => {
                         onClick={handleSubscribeClick}
                         className="px-8 py-3 rounded-full bg-white text-blue-600 font-semibold hover:bg-gray-100"
                     >
-                        Get Started
+                        {buttonText}
                     </button>
                 </div>
             </div>
