@@ -1,5 +1,5 @@
 "use client";
-import Subscribe from "@/utils/subscribe";
+// import Subscribe from "@/utils/subscribe";
 import QuickConectCard from "./cards/QuickConectCard";
 
 const GetStarted = () => {
