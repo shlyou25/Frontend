@@ -667,7 +667,8 @@ const Myportfolio = () => {
             </table>
           </div>
         )}
-        <Subscribe />
+        
+        <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter"/>
       </div>
       <ActionConfirmation
         open={confirmOpen}
