@@ -68,16 +68,16 @@ const ExcelDropZone = ({
     >
       <span className="text-3xl text-slate-400">+</span>
 
-      {/* ✅ Label → input = guaranteed click behavior */}
       <input
         ref={inputRef}
         type="file"
         accept=".xlsx,.xls"
         hidden
+        placeholder="Drag & drop file here or click to upload"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) processFile(file);
-          e.target.value = ""; // allow re-select same file
+          e.target.value = ""; 
         }}
       />
     </label>

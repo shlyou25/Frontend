@@ -1,6 +1,4 @@
-
-
-import Footer from '@/components/Footer';
+ import Footer from '@/components/Footer';
 import { LegalTemplate, LegalSection } from '@/components/legal/LegalTemplate';
 import Navbar from '@/components/Navbar';
 
