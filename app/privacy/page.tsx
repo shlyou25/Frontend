@@ -1,9 +1,13 @@
 
 
+import Footer from '@/components/Footer';
 import { LegalTemplate, LegalSection } from '@/components/legal/LegalTemplate';
+import Navbar from '@/components/Navbar';
 
 const PrivacyPolicyPage=()=> {
   return (
+     <>
+     <Navbar/>
     <LegalTemplate title="Privacy Policy" lastUpdated="December 25, 2025">
       <LegalSection title="Overview">
         <p>
@@ -67,6 +71,8 @@ const PrivacyPolicyPage=()=> {
         </p>
       </LegalSection>
     </LegalTemplate>
+    <Footer/>
+   </>
   );
 }
 

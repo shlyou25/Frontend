@@ -1,8 +1,12 @@
 
+import Footer from '@/components/Footer';
 import { LegalTemplate, LegalSection } from '@/components/legal/LegalTemplate';
+import Navbar from '@/components/Navbar';
 
 const TermsOfServicePage=()=>{
   return (
+    <>
+    <Navbar/>
     <LegalTemplate title="Terms of Service" lastUpdated="December 25, 2025">
       <LegalSection title="Agreement to Terms">
         <p>
@@ -96,6 +100,8 @@ const TermsOfServicePage=()=>{
         <p>support@domz.com</p>
       </LegalSection>
     </LegalTemplate>
+    <Footer/>
+    </>
   );
 }
 
