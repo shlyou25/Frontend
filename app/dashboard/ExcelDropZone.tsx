@@ -45,10 +45,9 @@ const ExcelDropZone = ({
     <label
       className={`mx-auto flex h-24 w-64 items-center justify-center
         rounded-lg border-2 border-dashed cursor-pointer transition
-        ${
-          dragActive
-            ? "border-blue-600 bg-blue-50"
-            : "border-slate-300 bg-white hover:bg-slate-50"
+        ${dragActive
+          ? "border-blue-600 bg-blue-50"
+          : "border-slate-300 bg-white hover:bg-slate-50"
         }`}
       onDragEnter={(e) => {
         e.preventDefault();
@@ -66,18 +65,22 @@ const ExcelDropZone = ({
         if (file) processFile(file);
       }}
     >
-      <span className="text-3xl text-slate-400">+</span>
+      <div className="flex flex-col items-center justify-center text-center px-3">
+        <span className="text-3xl text-slate-400">+</span>
+        <span className="mt-1 text-xs text-slate-500">
+          Drag & drop file here or click to upload
+        </span>
+      </div>
 
       <input
         ref={inputRef}
         type="file"
         accept=".xlsx,.xls"
         hidden
-        placeholder="Drag & drop file here or click to upload"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) processFile(file);
-          e.target.value = ""; 
+          e.target.value = "";
         }}
       />
     </label>

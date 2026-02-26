@@ -103,7 +103,7 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
               toast.success("Excel domains added to textarea");
             }}
           />
-          <div className="text-left">
+          <div className="text-center">
             <button
               type="button"
               onClick={downloadDomainTemplate}
