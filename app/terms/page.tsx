@@ -10,10 +10,10 @@ const TermsOfServicePage = () => {
 
         <LegalSection title="Agreement to Terms">
           <p>
-            These Terms of Service (“Terms”) govern your access to and use of Domz (the “Platform”),
-            operated by Domz.com LLC, a limited liability company organized under the laws of the
-            State of New Jersey (“Domz,” “we,” “us,” or “our”). By accessing or using the Platform,
-            you agree to be bound by these Terms. If you do not agree, you may not access or use the Platform.
+           These Terms of Service (“Terms”) govern your access to and use of Domz (the “Platform”), 
+           operated by Domz.com LLC, a limited liability company organized under the laws of the State of New Jersey 
+           (“Domz,” “we,” “us,” or “our”). By accessing or using the Platform, you agree to be bound by these Terms. 
+           If you do not agree, you may not access or use the Platform.
           </p>
         </LegalSection>
 
