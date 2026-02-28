@@ -10,7 +10,7 @@ const PrivacyPolicyPage = () => {
 
         <LegalSection title="Overview">
           <p>
-            This Privacy Policy describes how Domz.com LLC, a limited liability company organized under
+             Privacy Policy describes how Domz.com LLC, a limited liability company organized under
             the laws of the State of New Jersey (“Domz,” “we,” “us,” or “our”), collects, uses, and protects
             information in connection with your access to and use of the Domz platform (the “Platform”).
           </p>
