@@ -137,7 +137,7 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
             }}
             className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700"
           >
-            Delete selected
+            Delete 
           </button>
 
         </div>

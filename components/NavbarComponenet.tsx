@@ -10,10 +10,11 @@ import { useRouter } from "next/navigation";
 export type NavbarTextProp = {
   text: string;
   IsParaText: boolean;
- ParaText?: React.ReactNode;
+  ParaText?: React.ReactNode;
   searchbarStatus?: boolean;
   onSearch?: (value: string) => void;
-  searchValue?: string; 
+  searchValue?: string;
+  email?: string; // ✅ new optional prop
 };
 
 const NavbarComponenet = (props: NavbarTextProp) => {
@@ -123,7 +124,21 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           </h1>
           {props.IsParaText && (
             <p className="mt-4 max-w-xl text-gray-700">
-              {props.ParaText}
+              {props.email ? (
+                <>
+                  As a user-centric platform, your feedback matters.
+                  <br />
+                  Reach out via the contact form or email{" "}
+                  <a
+                    href={`mailto:${props.email}`}
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    {props.email}
+                  </a>
+                </>
+              ) : (
+                props.ParaText
+              )}
             </p>
           )}
           {props.searchbarStatus && (

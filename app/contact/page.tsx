@@ -65,6 +65,7 @@ const page = () => {
           </>
         }
         searchbarStatus={false}
+        email="info@domz.com"
       />
       <form
         onSubmit={onSubmitHandler}
