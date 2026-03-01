@@ -61,7 +61,7 @@ const page = () => {
           <>
             As a user-centric platform, your feedback matters.
             <br />
-            Reach out via the contact form or email info@domz.com
+            Reach out via the contact form or email, info@domz.com
           </>
         }
         searchbarStatus={false}
