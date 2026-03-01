@@ -143,7 +143,7 @@ example.com, https://www.LanderHost.com/parked/example.com`}
               <span className="text-slate-700">
                 I agree to the listing{" "}
                 <Link href="/terms" className="text-blue-600 hover:underline font-medium">
-                  terms
+                  terms.
                 </Link>
               </span>
             </label>
