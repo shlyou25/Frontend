@@ -134,7 +134,7 @@ example.com, https://www.LanderHost.com/parked/example.com`}
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" required className="mt-0.5 w-5 h-5 rounded" />
               <span className="text-slate-700">
-                I confirm that I own these domains.
+                I confirm I am the registrant of the domain(s).
               </span>
             </label>
 
