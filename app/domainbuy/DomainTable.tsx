@@ -255,9 +255,9 @@ border-b border-gray-200/70">
             <table className="min-w-full border-separate border-spacing-y-1 text-sm">
               <thead className="sticky top-0 bg-white z-10">
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
-                  <th className="px-4 py-3 text-left">Domain</th>
-                  <th className="px-4 py-3 text-center">Chat</th>
-                  <th className="px-4 py-3 text-center">Seller</th>
+                  <th className="px-4 py-3 text-left"><h4 className="font-semibold mb-3">Domain </h4></th>
+                  <th className="px-4 py-3 text-center"><h4 className="font-semibold mb-3">Chat </h4></th>
+                  <th className="px-4 py-3 text-center"><h4 className="font-semibold mb-3">Seller </h4></th>
                 </tr>
               </thead>
 
