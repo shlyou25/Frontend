@@ -493,7 +493,6 @@ const Myportfolio = () => {
     <div className="lg:px-[10%] lg:pt-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 flex items-center gap-4">
-          {/* Left Toggle */}
           <button
             onClick={() => setDomainStatus(false)}
             className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200
@@ -554,7 +553,7 @@ const Myportfolio = () => {
             <DomainStatus data={dateFilteredDomains} onDeleteSuccess={fetchDomains} />
           </>
         ) : (
-          <div className="rounded-xl border bg-white shadow-sm overflow-x-auto max-h-130 overflow-y-auto">
+          <div className="rounded-xl border bg-white shadow-sm max-h-130 overflow-auto relative">
             <div className="mb-3 flex items-center justify-between">
               <div className="flex gap-2">
                 <button
@@ -578,8 +577,6 @@ const Myportfolio = () => {
             {bulkMode && (
               <div className="px-4 pb-3 border-b bg-slate-50/60">
                 <div className="flex items-center gap-2 flex-nowrap overflow-x-auto">
-
-                  {/* selected count */}
                   <div className="flex items-center gap-2 mr-2 shrink-0">
                     <div className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-xs font-semibold">
                       {selectedDomains.length}
@@ -588,8 +585,6 @@ const Myportfolio = () => {
                       selected
                     </span>
                   </div>
-
-                  {/* Hide */}
                   <button
                     onClick={() => {
                       setBulkAction({ type: 'hide', value: true });
@@ -682,8 +677,6 @@ const Myportfolio = () => {
                     <Bell size={14} />
                     Enable Email Notification
                   </button>
-
-                  {/* Delete */}
                   <div className="ml-auto shrink-0">
                     <button
                       onClick={() => {
@@ -703,7 +696,7 @@ const Myportfolio = () => {
             )}
 
             <table className="min-w-full border-separate border-spacing-y-1">
-              <thead className="sticky top-0 bg-white">
+              <thead className="sticky top-0 z-10 bg-gray-400">
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
 
                   {/* ✅ Select all checkbox */}
@@ -717,7 +710,6 @@ const Myportfolio = () => {
                       />
                     </th>
                   )}
-
                   <th className="px-4 py-3 text-left">Domain</th>
                   <th className="px-4 py-3 text-center">Visibility</th>
                   <th className="px-4 py-3 text-center">Chat</th>
