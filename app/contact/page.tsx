@@ -71,8 +71,9 @@ const page = () => {
         className="max-w-170 mx-auto pt-6 px-4 md:px-0"
       >
         <h2 className="text-center text-[2rem] font-bold mb-3">
-          <span className="text-blue-600">Your questions</span> and feedback
-          matter.
+          <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">Your questions and feedback
+            matter.
+          </span>
         </h2>
 
         <input
@@ -110,7 +111,7 @@ const page = () => {
           </button>
         </div>
       </form>
-      <Subscribe  buttonText="Get Started" heading="List With Domz" text="Partner with us and showcase your portfolio."/>
+      <Subscribe buttonText="Subscribe Now" heading="Stay Updated" text="Get news, announcements, and highlighted names when our newsletter launches." />
       <Footer />
     </div>
   );

@@ -69,7 +69,12 @@ export default function ChangeDomainStatus({
         `${process.env.NEXT_PUBLIC_apiLink}domain/changedomainstatus`,
         {
           domainId,
-          status: nextStatus === "pass" ? "Pass" : "Fail",
+          status:
+            nextStatus === "pass"
+              ? "Pass"
+              : nextStatus === "fail"
+                ? "Fail"
+                : "Manual Review",
           ...(url ? { finalUrl: url } : {}),
         },
         { withCredentials: true }
@@ -89,12 +94,20 @@ export default function ChangeDomainStatus({
     }
   }
 
-  const handlePassClick = () => {
-  if (safeStatus !== "pass") {
-    setAskFinalUrl(true)
-  }
-}
 
+  const handlePassClick = () => {
+    // ✅ Manual Review → Pass (no URL needed)
+    if (safeStatus === "manual_review") {
+      submitChange("pass")
+      return
+    }
+
+    // ✅ Fail → Pass (ask URL)
+    if (safeStatus === "fail") {
+      setFinalUrl("")
+      setAskFinalUrl(true)
+    }
+  }
   const handleFinalUrlSubmit = () => {
     if (!finalUrl.trim()) {
       toast.error("Final URL is required")

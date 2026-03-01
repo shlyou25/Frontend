@@ -115,7 +115,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
             </ul>
           </div>
         )}
-        <div className="flex flex-col items-center justify-center text-center pt-14 pb-10 relative z-10">
+        <div className="flex flex-col items-center justify-center text-center pt-14 pb-1.5 relative z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
             <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">
               {props.text}
@@ -136,7 +136,6 @@ const NavbarComponenet = (props: NavbarTextProp) => {
                   onChange={(e) => props.onSearch?.(e.target.value)}
                   className="w-full text-gray-700 placeholder-gray-400 focus:outline-none pr-10 bg-transparent"
                 />
-
                 {props.searchValue && (
                   <button
                     type="button"

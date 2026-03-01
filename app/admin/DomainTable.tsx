@@ -17,7 +17,7 @@ export interface DomainItem {
   domainId: string;
   domain: string;
   status: string;
-  finalUrl: string | null;   // ✅ FIXED
+  finalUrl: string | null;
   createdAt: string;
   owner: {
     name: string;
@@ -180,7 +180,20 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
             {filteredData.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50 transition">
                 <td className="px-6 py-4">{index + 1}</td>
-                <td className="px-6 py-4 text-blue-600 font-medium">{item.domain}</td>
+                <td className="px-6 py-4 font-medium">
+                  {item.finalUrl ? (
+                    <a
+                      href={item.finalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline break-all"
+                    >
+                      {item.domain}
+                    </a>
+                  ) : (
+                    <span className="text-gray-800">{item.domain}</span>
+                  )}
+                </td>
                 <td className="px-6 py-4">{item?.owner?.name}</td>
                 <td className="px-6 py-4">{item?.owner?.email}</td>
                 <ChangeDomainStatus

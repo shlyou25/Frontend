@@ -66,7 +66,7 @@ const Page = () => {
   if (loading) return <Loader />;
   return (
     <div className="flex flex-col bg-white">
-      <NavbarComponenet text="Profile" IsParaText={false} searchbarStatus={false}
+      <NavbarComponenet text="My Domz" IsParaText={false} searchbarStatus={false}
       />
       <div className="flex sm:hidden justify-between items-center px-4 py-3 border-b">
         <h2 className="text-lg font-semibold">Dashboard</h2>

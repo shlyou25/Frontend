@@ -55,8 +55,6 @@ export default function Pricing() {
           Choose the plan that fits your scale. Upgrade anytime.
         </p>
       </div>
-
-      {/* CARDS */}
       <div className="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {packages.map((pkg) => {
           const isLoading = loadingPlan === pkg.title
@@ -95,7 +93,7 @@ export default function Pricing() {
                 domains.
               </p>
 
-              <ul className="mt-6 space-y-3 text-sm text-gray-600">
+              {/* <ul className="mt-6 space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-x-3">
                   <CheckIcon className="h-5 w-5 text-indigo-600" />
                   {pkg.feature} domains included
@@ -108,7 +106,7 @@ export default function Pricing() {
                   <CheckIcon className="h-5 w-5 text-indigo-600" />
                   Email support
                 </li>
-              </ul>
+              </ul> */}
 
               <button
                 disabled={isLoading}

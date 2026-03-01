@@ -7,13 +7,24 @@ import Modal from '../../components/model';
 import AddDomainsCard from './adddomain';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { Calendar } from 'lucide-react';
 import DomainStatus from './DomainStatus';
 import Subscribe from '../../utils/subscribe';
 import ActionConfirmation from './ActionConfirmation';
 import SearchBox from '@/utils/SearchBox';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import {
+  Calendar,
+  Eye,
+  EyeOff,
+  MessageSquare,
+  MessageSquareOff,
+  UserX,
+  UserCheck,
+  BellOff,
+  Bell,
+  Trash2
+} from "lucide-react";
 
 
 type DateRange = 'all' | 'today' | '7days' | '30days' | 'custom';
@@ -40,22 +51,38 @@ const Toggle = ({
   onChange: (val: boolean) => void;
   id: string;
 }) => (
-  <div className="relative inline-block w-11 h-5">
+  <label
+    htmlFor={id}
+    className="relative inline-flex items-center cursor-pointer select-none"
+  >
     <input
       id={id}
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
-      className="peer appearance-none w-11 h-5 bg-slate-200 rounded-full
-      checked:bg-slate-800 cursor-pointer transition-colors duration-300"
+      className="sr-only peer"
     />
-    <label
-      htmlFor={id}
-      className="absolute top-0 left-0 w-5 h-5 bg-white rounded-full
-      border border-slate-300 shadow-sm transition-transform duration-300
-      peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer"
+
+    {/* Track */}
+    <div
+      className="
+        w-11 h-6 rounded-full transition-colors duration-200
+        bg-slate-300
+        peer-checked:bg-emerald-500
+        peer-focus:ring-2 peer-focus:ring-emerald-300
+      "
     />
-  </div>
+
+    {/* Thumb */}
+    <div
+      className="
+        absolute left-0.5 top-0.5
+        w-5 h-5 bg-white rounded-full shadow-sm
+        transition-transform duration-200
+        peer-checked:translate-x-5
+      "
+    />
+  </label>
 );
 
 const StatusHeader = ({
@@ -148,6 +175,8 @@ const Myportfolio = () => {
   type BulkAction =
     | { type: 'hide'; value: boolean }
     | { type: 'chat'; value: boolean }
+    | { type: 'username'; value: boolean }
+    | { type: 'notification'; value: boolean }
     | { type: 'delete' }
     | null;
 
@@ -348,7 +377,48 @@ const Myportfolio = () => {
           bulkAction.value ? 'Chat enabled' : 'Chat disabled'
         );
       }
+      // ✅ Username visibility bulk
+      if (bulkAction.type === 'username') {
+        setUserDomains(d =>
+          d.map(x =>
+            ids.includes(x.id)
+              ? { ...x, isUserNameVisible: bulkAction.value }
+              : x
+          )
+        );
 
+        await axios.patch(
+          `${API}/bulk-toggle-username`,
+          { ids, value: bulkAction.value },
+          { withCredentials: true }
+        );
+
+        toast.success(
+          bulkAction.value ? 'Username shown' : 'Username hidden'
+        );
+      }
+
+      if (bulkAction.type === 'notification') {
+        setUserDomains(d =>
+          d.map(x =>
+            ids.includes(x.id)
+              ? { ...x, isMessageNotificationEnabled: bulkAction.value }
+              : x
+          )
+        );
+
+        await axios.patch(
+          `${API}/bulk-toggle-message-notification`,
+          { ids, value: bulkAction.value },
+          { withCredentials: true }
+        );
+
+        toast.success(
+          bulkAction.value
+            ? 'Email notification enabled'
+            : 'Email notification disabled'
+        );
+      }
       if (bulkAction.type === 'delete') {
         await axios.delete(`${API}/bulk-delete`, {
           data: { ids },
@@ -506,78 +576,148 @@ const Myportfolio = () => {
               </div>
             </div>
             {bulkMode && (
-              <div className="sticky top-0 z-30 mb-3">
-                <div className="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 shadow-sm">
-                  <span className="text-sm font-medium text-slate-700">
-                    {selectedDomains.length} selected
-                  </span>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      onClick={() => {
-                        setBulkAction({ type: 'hide', value: true });
-                        setConfirmOpen(true);
-                      }}
-                      className="px-3 py-1.5 text-xs rounded-md bg-slate-700 text-white hover:bg-slate-800 cursor-pointer"
-                    >
-                      Hide
-                    </button>
+              <div className="px-4 pb-3 border-b bg-slate-50/60">
+                <div className="flex items-center gap-2 flex-nowrap overflow-x-auto">
 
-                    <button
-                      onClick={() => {
-                        setBulkAction({ type: 'hide', value: false });
-                        setConfirmOpen(true);
-                      }}
-                      className="px-3 py-1.5 text-xs rounded-md bg-slate-200 hover:bg-slate-300 cursor-pointer"
-                    >
-                      Unhide
-                    </button>
+                  {/* selected count */}
+                  <div className="flex items-center gap-2 mr-2 shrink-0">
+                    <div className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-xs font-semibold">
+                      {selectedDomains.length}
+                    </div>
+                    <span className="text-xs text-slate-600 whitespace-nowrap">
+                      selected
+                    </span>
+                  </div>
 
-                    <button
-                      onClick={() => {
-                        setBulkAction({ type: 'chat', value: true });
-                        setConfirmOpen(true);
-                      }}
-                      className="px-3 py-1.5 text-xs rounded-md bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-                    >
-                      Enable Chat
-                    </button>
+                  {/* Hide */}
+                  <button
+                    onClick={() => {
+                      setBulkAction({ type: 'hide', value: true });
+                      setConfirmOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
+        bg-slate-100 text-slate-700 text-xs font-medium
+        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                  >
+                    <EyeOff size={14} />
+                    Hide
+                  </button>
 
-                    <button
-                      onClick={() => {
-                        setBulkAction({ type: 'chat', value: false });
-                        setConfirmOpen(true);
-                      }}
-                      className="px-3 py-1.5 text-xs rounded-md bg-blue-100 hover:bg-blue-200 cursor-pointer"
-                    >
-                      Disable Chat
-                    </button>
+                  <button
+                    onClick={() => {
+                      setBulkAction({ type: 'hide', value: false });
+                      setConfirmOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
+        bg-slate-100 text-slate-700 text-xs font-medium
+        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                  >
+                    <Eye size={14} />
+                    Unhide
+                  </button>
 
+                  {/* Chat */}
+                  <button
+                    onClick={() => {
+                      setBulkAction({ type: 'chat', value: true });
+                      setConfirmOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
+        bg-blue-600 text-white text-xs font-medium
+        hover:bg-blue-700 transition whitespace-nowrap shrink-0"
+                  >
+                    <MessageSquare size={14} />
+                    Enable Chat
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setBulkAction({ type: 'chat', value: false });
+                      setConfirmOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
+        bg-slate-100 text-slate-700 text-xs font-medium
+        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                  >
+                    <MessageSquareOff size={14} />
+                    Disable Chat
+                  </button>
+
+                  {/* Username */}
+                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                    onClick={() => {
+                      setBulkAction({ type: 'username', value: false });
+                      setConfirmOpen(true);
+                    }}
+                  >
+                    <UserX size={14} />
+                    Hide Username
+                  </button>
+
+                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                    onClick={() => {
+                      setBulkAction({ type: 'username', value: true });
+                      setConfirmOpen(true);
+                    }}
+                  >
+                    <UserCheck size={14} />
+                    Unhide Username
+                  </button>
+                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                    onClick={() => {
+                      setBulkAction({ type: 'notification', value: false });
+                      setConfirmOpen(true);
+                    }}
+                  >
+                    <BellOff size={14} />
+                    Disable Email Notification
+                  </button>
+
+                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
+                    onClick={() => {
+                      setBulkAction({ type: 'notification', value: true });
+                      setConfirmOpen(true);
+                    }}
+                  >
+                    <Bell size={14} />
+                    Enable Email Notification
+                  </button>
+
+                  {/* Delete */}
+                  <div className="ml-auto shrink-0">
                     <button
                       onClick={() => {
                         setBulkAction({ type: 'delete' });
                         setConfirmOpen(true);
                       }}
-                      className="px-3 py-1.5 text-xs rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg
+          bg-red-600 text-white text-xs font-semibold
+          hover:bg-red-700 transition whitespace-nowrap"
                     >
+                      <Trash2 size={14} />
                       Delete
                     </button>
                   </div>
                 </div>
               </div>
             )}
+
             <table className="min-w-full border-separate border-spacing-y-1">
               <thead className="sticky top-0 bg-white">
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
+
+                  {/* ✅ Select all checkbox */}
                   {bulkMode && (
-                    <th className="px-4 py-3 text-center">
+                    <th className="px-4 py-3 text-center w-10">
                       <input
                         type="checkbox"
                         checked={isAllSelected}
                         onChange={toggleSelectAll}
-                        className="h-4 w-4"
+                        className="h-4 w-4 rounded border-slate-300 cursor-pointer"
                       />
                     </th>
                   )}
+
                   <th className="px-4 py-3 text-left">Domain</th>
                   <th className="px-4 py-3 text-center">Visibility</th>
                   <th className="px-4 py-3 text-center">Chat</th>
@@ -592,17 +732,17 @@ const Myportfolio = () => {
                   .filter((d) => d.status === 'Pass')
                   .map((d) => (
                     <tr key={d.id} className="bg-slate-50 hover:bg-blue-50">
+
                       {bulkMode && (
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center w-10">
                           <input
                             type="checkbox"
                             checked={isSelected(d.id)}
                             onChange={() => toggleRow(d)}
-                            className="h-4 w-4"
+                            className="h-4 w-4 rounded border-slate-300 text-blue-600 cursor-pointer"
                           />
                         </td>
                       )}
-
                       <td className="px-4 py-2 text-blue-600 break-all">
                         {d.finalUrl ? (
                           <Link href={d.finalUrl} target="_blank" className="hover:underline">
@@ -615,8 +755,8 @@ const Myportfolio = () => {
                       <td className="px-4 py-2 text-center">
                         <Toggle
                           id={`hide-${d.id}`}
-                          checked={d.isHidden}
-                          onChange={(val) => toggleHide(d.id, val)}
+                          checked={!d.isHidden}
+                          onChange={(val) => toggleHide(d.id, !val)}
                         />
                       </td>
 
@@ -667,8 +807,8 @@ const Myportfolio = () => {
             </table>
           </div>
         )}
-        
-        <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter"/>
+
+        <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter" />
       </div>
       <ActionConfirmation
         open={confirmOpen}
@@ -683,7 +823,15 @@ const Myportfolio = () => {
                 ? bulkAction.value
                   ? 'Enable chat'
                   : 'Disable chat'
-                : ''
+                : bulkAction?.type === 'username'
+                  ? bulkAction.value
+                    ? 'Show usernames'
+                    : 'Hide usernames'
+                  : bulkAction?.type === 'notification'
+                    ? bulkAction.value
+                      ? 'Enable email notifications'
+                      : 'Disable email notifications'
+                    : ''
         }
         description={
           bulkAction?.type === 'delete'
@@ -696,20 +844,28 @@ const Myportfolio = () => {
                 ? bulkAction.value
                   ? 'Chat will be enabled for selected domains.\nBuyers can contact you.'
                   : 'Chat will be disabled for selected domains.'
-                : ''
+                : bulkAction?.type === 'username'
+                  ? bulkAction.value
+                    ? 'Usernames will be visible to buyers.'
+                    : 'Usernames will be hidden from buyers.'
+                  : bulkAction?.type === 'notification'
+                    ? bulkAction.value
+                      ? 'Email notifications will be enabled.'
+                      : 'Email notifications will be disabled.'
+                    : ''
         }
         confirmText={
           bulkAction?.type === 'delete'
             ? 'Delete'
             : bulkAction?.type === 'hide'
-              ? bulkAction.value
-                ? 'Hide'
-                : 'Unhide'
+              ? bulkAction.value ? 'Hide' : 'Unhide'
               : bulkAction?.type === 'chat'
-                ? bulkAction.value
-                  ? 'Enable'
-                  : 'Disable'
-                : 'Confirm'
+                ? bulkAction.value ? 'Enable' : 'Disable'
+                : bulkAction?.type === 'username'
+                  ? bulkAction.value ? 'Show' : 'Hide'
+                  : bulkAction?.type === 'notification'
+                    ? bulkAction.value ? 'Enable' : 'Disable'
+                    : 'Confirm'
         }
         variant={
           bulkAction?.type === 'delete'

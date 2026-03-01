@@ -25,8 +25,6 @@ const Navbar = () => {
           />
         </div>
       </Link>
-
-      {/* Desktop Menu */}
       <div className="hidden md:flex bg-white/60 backdrop-blur-xl px-6 py-2 rounded-full border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
         <ul className="flex items-center space-x-8 text-gray-800 font-medium">
           <li className="relative group">

@@ -15,7 +15,10 @@ interface Domain {
   domain: string;
   isChatActive: boolean;
   createdAt: string;
-  user: { userName: string; email: string };
+  user: {
+    id?: string;
+    userName?: string;
+  };
 }
 
 interface Props {
@@ -86,7 +89,18 @@ const DomainTable = ({ searchQuery }: Props) => {
             { params }
           );
         }
-        setDomains(res.data.domains);
+        setDomains(
+          (res.data.domains || []).map((d: Domain) => ({
+            ...d,
+            user: {
+              ...d.user,
+              userName:
+                d.user?.userName === "Anonymous"
+                  ? null
+                  : d.user?.userName ?? null
+            }
+          }))
+        );
         setTotal(res.data.total ?? res.data.domains.length);
       } catch {
         toast.error('Failed to load domains');
@@ -119,10 +133,10 @@ const DomainTable = ({ searchQuery }: Props) => {
       if (filters.minLength && name.length < filters.minLength) return false;
       if (filters.maxLength && name.length > filters.maxLength) return false;
 
-      if (
-        filters.sellerName &&
-        !d.user?.userName?.toLowerCase().includes(filters.sellerName.toLowerCase())
-      ) return false;
+      if (filters.sellerName) {
+        const seller = d.user?.userName?.toLowerCase() || '';
+        if (!seller.includes(filters.sellerName.toLowerCase())) return false;
+      }
 
       return true;
     })
@@ -238,39 +252,50 @@ border-b border-gray-200/70">
             </aside>
           )}
           <div className="flex-1 overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50/80 backdrop-blur text-gray-600 text-xs uppercase tracking-wide">
-                <tr>
-                  <th className="px-6 py-4 text-left font-semibold">Domain</th>
-                  <th className="px-6 py-4 text-left font-semibold">Message</th>
-                  <th className="px-6 py-4 text-left font-semibold">Seller</th>
+            <table className="min-w-full border-separate border-spacing-y-1 text-sm">
+              <thead className="sticky top-0 bg-white z-10">
+                <tr className="text-xs font-semibold text-slate-600 tracking-wide">
+                  <th className="px-4 py-3 text-left">Domain</th>
+                  <th className="px-4 py-3 text-center">Message</th>
+                  <th className="px-4 py-3 text-center">Seller</th>
                 </tr>
               </thead>
+
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={3} className="py-10 text-center text-gray-500">
+                    <td colSpan={3} className="py-12 text-center text-gray-500">
                       Loading domains...
                     </td>
                   </tr>
                 ) : (
-                  filteredDomains.map(d => (
+                  filteredDomains.map((d) => (
                     <tr
                       key={d.domainId}
                       className="
-    border-t border-gray-100
-    hover:bg-blue-50/40
-    transition-colors
-  "
+            bg-slate-50
+            hover:bg-blue-50
+            transition-colors
+            rounded-lg
+          "
                     >
-                      <td className="px-6 py-4">
+                      {/* ✅ DOMAIN */}
+                      <td className="px-4 py-3 text-blue-600 break-all font-medium">
                         {d.finalUrl ? (
-                          <Link href={d.finalUrl} target="_blank" className="text-blue-600 hover:underline">
+                          <Link
+                            href={d.finalUrl}
+                            target="_blank"
+                            className="hover:underline"
+                          >
                             {d.domain}
                           </Link>
-                        ) : d.domain}
+                        ) : (
+                          d.domain
+                        )}
                       </td>
-                      <td className="px-6 py-4 text-left">
+
+                      {/* ✅ MESSAGE */}
+                      <td className="px-4 py-3 text-center">
                         <div className="relative group inline-flex justify-center">
                           <button
                             type="button"
@@ -286,38 +311,41 @@ border-b border-gray-200/70">
                               setOpen(true);
                             }}
                             className={`
-    p-2 rounded-md transition-all duration-150
-    ${!d.isChatActive
+                  p-2 rounded-lg transition-all duration-150
+                  ${!d.isChatActive
                                 ? 'text-gray-400 cursor-not-allowed'
                                 : isAuthenticated
                                   ? 'text-blue-600 hover:bg-blue-100 hover:scale-105'
-                                  : 'text-gray-500 hover:bg-gray-100'}
-  `}
+                                  : 'text-gray-500 hover:bg-gray-100'
+                              }
+                `}
                             aria-label="Message seller"
                           >
                             <Send size={16} />
                           </button>
+
+                          {/* ✅ TOOLTIP */}
                           <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
                             <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                               {!d.isChatActive
-                                ? 'Messaging is disabled for this domain'
+                                ? 'Chat disabled — contact seller via the lander'
                                 : isAuthenticated
                                   ? 'Message seller'
-                                  : 'Log in to message the seller'}
+                                  : 'Log in to chat — or contact via lander'}
                             </div>
                           </div>
                         </div>
-
                       </td>
 
-                      <td className="px-6 py-4">
+                      {/* ✅ SELLER */}
+                      <td className="px-4 py-3 text-center">
                         {d.user?.userName ? (
                           <button
                             onClick={() => {
                               setShowFilter(true);
-                              setFilters(prev => ({
+                              setFilters((prev) => ({
                                 ...prev,
-                                sellerName: d.user.userName
+                                sellerName: d.user.userName,
                               }));
                               setPage(1);
                             }}
@@ -325,7 +353,9 @@ border-b border-gray-200/70">
                           >
                             {d.user.userName}
                           </button>
-                        ) : 'Anonymous'}
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
                       </td>
                     </tr>
                   ))

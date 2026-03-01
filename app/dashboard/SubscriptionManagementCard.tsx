@@ -56,11 +56,11 @@ const SubscriptionManagementCard = () => {
               onClick={() => setUpgradeOpen(true)}
               className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition"
             >
-              Upgrade Plan
+              Change Plan
             </button>
-            <div className="flex space-x-3 text-gray-800 text-base">
+            {/* <div className="flex space-x-3 text-gray-800 text-base">
               <span className="cursor-pointer hover:underline">Monthly</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

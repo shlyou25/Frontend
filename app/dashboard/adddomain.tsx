@@ -14,8 +14,7 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-
+   toast.success('Domains submitted for addition to your portfolio. You will be notified once they are added.')
     try {
       // Normalize textarea → lines
       const domains = domainText
@@ -80,12 +79,6 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <>
-      {loading && (
-        <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-50">
-          <Loader />
-        </div>
-      )}
-
       <form onSubmit={onSubmitHandler} className="relative">
 
         {/* Header helper */}

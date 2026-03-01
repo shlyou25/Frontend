@@ -93,8 +93,6 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
       {/* Top controls */}
       <div className="p-4 border-b flex items-center justify-between gap-4">
 
-
-        {/* Bulk toggle */}
         <button
           onClick={() => {
             setBulkMode((prev) => !prev);
@@ -107,7 +105,7 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
             }
   `}
         >
-          {bulkMode ? "Cancel bulk actions" : "Bulk actions"}
+          {bulkMode ? "Cancel bulk Delete" : "Bulk Delete"}
         </button>
 
         {/* Filter */}

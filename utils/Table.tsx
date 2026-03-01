@@ -65,12 +65,24 @@ const Table = () => {
       </div>
       {/* Search & Filters */}
       <div className="flex flex-col lg:flex-row gap-4 mt-6">
-        <input
-          placeholder="Search a user"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full lg:w-72 px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="relative w-full lg:w-72">
+          <input
+            placeholder="Search a user"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-4 py-2 pr-10 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+              aria-label="Clear search"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
       <div className="mt-6 overflow-hidden border border-slate-200 rounded-xl text-left">
         <div className="max-h-96 overflow-y-auto">
