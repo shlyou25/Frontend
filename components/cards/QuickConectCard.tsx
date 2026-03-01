@@ -39,8 +39,6 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
           <p className="text-blue-100 text-base md:text-lg mb-10 max-w-2xl mx-auto">
             {props?.description}
           </p>
-
-          {/* main button */}
           {props?.mainButton && (
             <Link href="/plan">
               <button
@@ -67,7 +65,7 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
           )}
 
           {/* feature pills */}
-          {props?.subButton && (
+          {/* {props?.subButton && (
             <div className="flex justify-center items-center gap-6 md:gap-10 mt-12 flex-wrap">
               {[
                 {
@@ -113,7 +111,7 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </section>
