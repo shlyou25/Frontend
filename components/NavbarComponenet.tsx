@@ -128,7 +128,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
                 <>
                   As a user-centric platform, your feedback matters.
                   <br />
-                  Reach out via the contact form or email{" "}
+                  Reach out via the contact form or email,{" "}
                   <a
                     href={`mailto:${props.email}`}
                     className="text-blue-600 hover:underline font-medium"
