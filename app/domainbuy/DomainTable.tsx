@@ -256,7 +256,7 @@ border-b border-gray-200/70">
               <thead className="sticky top-0 bg-white z-10">
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
                   <th className="px-4 py-3 text-left">Domain</th>
-                  <th className="px-4 py-3 text-center">Message</th>
+                  <th className="px-4 py-3 text-center">Chat</th>
                   <th className="px-4 py-3 text-center">Seller</th>
                 </tr>
               </thead>
