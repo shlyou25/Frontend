@@ -1,8 +1,9 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function SubscriptionVerifiedPage() {
+function VerifyContent() {
   const params = useSearchParams();
   const status = params.get('status');
 
@@ -50,5 +51,13 @@ export default function SubscriptionVerifiedPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SubscriptionVerifiedPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <VerifyContent />
+    </Suspense>
   );
 }
