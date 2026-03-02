@@ -22,7 +22,6 @@ const ProfileInfo = ({
         icon={<Mail size={18} />}
         label="Email"
         value={email || "—"}
-        badge="Used for login"
       />
     </div>
   );
