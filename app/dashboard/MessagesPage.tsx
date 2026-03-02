@@ -226,13 +226,17 @@ useEffect(() => {
       console.error("❌ Failed to send reply", err);
     }
   };
-  return (
-    <div className="h-auto flex bg-gray-100">
-      <aside className="w-64 bg-white border-r overflow-y-auto">
-        <div className="p-4 font-semibold border-b">Domains</div>
+ return (
+  <div className="h-[calc(100vh-64px)] flex bg-gray-100">
+    {/* ================= LEFT: DOMAINS ================= */}
+    <aside className="w-64 bg-white border-r flex flex-col">
+      <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
+        Domains
+      </div>
 
+      <div className="overflow-y-auto">
         {domains.length === 0 && (
-          <div className="p-4 text-sm text-gray-400">
+          <div className="p-6 text-sm text-gray-400 text-center">
             No conversations yet
           </div>
         )}
@@ -244,76 +248,150 @@ useEffect(() => {
               setActiveDomain(d);
               setActiveConversation(d.conversations?.[0] || null);
             }}
-            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${activeDomain?.domainId === d.domainId ? "bg-blue-50" : ""
+            className={`w-full text-left px-5 py-3 border-b transition-all
+              hover:bg-gray-50
+              ${
+                activeDomain?.domainId === d.domainId
+                  ? "bg-blue-50 border-l-4 border-l-blue-600"
+                  : ""
               }`}
           >
-            {d.domain}
+            <div className="font-medium text-sm text-gray-900 truncate">
+              {d.domain}
+            </div>
+            <div className="text-xs text-gray-400">
+              {d.conversations?.length || 0} chats
+            </div>
           </button>
         ))}
-      </aside>
+      </div>
+    </aside>
 
-      <aside className="w-72 bg-white border-r overflow-y-auto">
-        <div className="p-4 font-semibold border-b">Conversations</div>
+    {/* ================= MIDDLE: CONVERSATIONS ================= */}
+    <aside className="w-72 bg-white border-r flex flex-col">
+      <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
+        Conversations
+      </div>
 
+      <div className="overflow-y-auto">
         {activeDomain?.conversations?.map((c) => (
           <button
             key={c.conversationId}
             onClick={() => setActiveConversation(c)}
-            className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${activeConversation?.conversationId === c.conversationId
-                ? "bg-blue-100"
-                : ""
+            className={`w-full text-left px-5 py-3 border-b flex items-center gap-3
+              transition-all hover:bg-gray-50
+              ${
+                activeConversation?.conversationId === c.conversationId
+                  ? "bg-blue-50"
+                  : ""
               }`}
           >
-            <div className="font-medium">{c.user}</div>
+            {/* Avatar */}
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center text-sm font-semibold">
+              {c.user?.charAt(0)?.toUpperCase()}
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-sm text-gray-900 truncate">
+                {c.user}
+              </div>
+              <div className="text-xs text-gray-400">Active chat</div>
+            </div>
           </button>
         ))}
-      </aside>
-      <main className="flex-1 flex flex-col bg-gray-50">
-        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-          {messages.map((m) => (
+      </div>
+    </aside>
+
+    {/* ================= RIGHT: CHAT ================= */}
+    <main className="flex-1 flex flex-col bg-gray-50">
+      {/* ===== Chat Header ===== */}
+      <div className="px-6 py-4 bg-white border-b flex items-center gap-3 sticky top-0 z-10">
+        {activeConversation ? (
+          <>
+            <div className="h-10 w-10 rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center font-semibold">
+              {activeConversation.user?.charAt(0)?.toUpperCase()}
+            </div>
+
+            <div>
+              <div className="font-semibold text-gray-900">
+                {activeConversation.user}
+              </div>
+             
+            </div>
+          </>
+        ) : (
+          <div className="text-sm text-gray-400">
+            Select a conversation
+          </div>
+        )}
+      </div>
+
+      {/* ===== Messages ===== */}
+      <div
+        id="messages-container"
+        className="flex-1 overflow-y-auto px-6 py-6 space-y-4"
+      >
+        {messages.length === 0 && (
+          <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+            No messages yet
+          </div>
+        )}
+
+        {messages.map((m) => (
+          <div
+            key={m._id}
+            className={`flex ${
+              m.isMine ? "justify-end" : "justify-start"
+            }`}
+          >
             <div
-              key={m._id}
-              className={`flex ${m.isMine ? "justify-end" : "justify-start"
-                }`}
-            >
-              <div
-                className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow-sm ${m.isMine
+              className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm shadow-sm
+                ${
+                  m.isMine
                     ? "bg-blue-600 text-white rounded-br-sm"
                     : "bg-white text-gray-900 border rounded-bl-sm"
-                  }`}
+                }`}
+            >
+              <p className="whitespace-pre-wrap leading-relaxed">
+                {m.message}
+              </p>
+              <div
+                className={`text-[11px] mt-1 ${
+                  m.isMine ? "text-blue-100" : "text-gray-400"
+                }`}
               >
-                <p className="whitespace-pre-wrap">{m.message}</p>
-                <div
-                  className={`text-xs mt-1 ${m.isMine ? "text-blue-100" : "text-gray-400"
-                    }`}
-                >
-                  {new Date(m.createdAt).toLocaleString()}
-                </div>
+                {new Date(m.createdAt).toLocaleString()}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Input */}
-        <div className="bg-white border-t px-3 py-3 shrink-0">
-          <form onSubmit={sendReply} className="flex items-end gap-2">
-            <textarea
-              placeholder="Type your message…"
-              rows={1}
-              className="flex-1 px-4 py-2.5 border border-gray-300 rounded-2xl resize-none text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-            />
-            <button
-              type="submit"
-              disabled={!reply.trim()}
-              className="h-10 w-10 flex items-center justify-center rounded-full bg-blue-600 text-white disabled:bg-gray-300"
-            >
-              ➤
-            </button>
-          </form>
-        </div>
-      </main>
-    </div>
-  );
+      {/* ===== Input ===== */}
+      <div className="bg-white border-t px-4 py-3">
+        <form onSubmit={sendReply} className="flex items-end gap-3">
+          <textarea
+            placeholder="Type a message..."
+            rows={1}
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl resize-none text-sm
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+              max-h-32"
+            value={reply}
+            onChange={(e) => setReply(e.target.value)}
+          />
+
+          <button
+            type="submit"
+            disabled={!reply.trim()}
+            className="h-11 w-11 flex items-center justify-center rounded-full
+              bg-blue-600 text-white disabled:bg-gray-300
+              hover:bg-blue-700 transition-all shadow-sm"
+          >
+            ➤
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+);
 }
