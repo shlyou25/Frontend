@@ -31,7 +31,7 @@ const DEFAULT_FILTERS: DomainFilters = {
 };
 
 const DomainTable = ({ searchQuery }: Props) => {
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const [open, setOpen] = useState(false);
   const [domains, setDomains] = useState<Domain[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
@@ -53,6 +53,20 @@ const DomainTable = ({ searchQuery }: Props) => {
     filters.maxLength ||
     filters.sellerName;
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setShowFilter(true);
+      } else {
+        setShowFilter(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   useEffect(() => {
     (async () => {
       const status = await checkAuth();
@@ -252,15 +266,19 @@ border-b border-gray-200/70">
             </aside>
           )}
           <div className="flex-1 overflow-x-auto">
-            <table className="min-w-full border-separate border-spacing-y-1 text-sm">
-              <thead className="sticky top-0 bg-white z-10">
-                <tr className="text-xs font-semibold text-slate-600 tracking-wide">
-                  <th className="px-4 py-3 text-left"><h4 className="font-semibold mb-3">Domain </h4></th>
-                  <th className="px-4 py-3 text-center"><h4 className="font-semibold mb-3">Chat </h4></th>
-                  <th className="px-4 py-3 text-center"><h4 className="font-semibold mb-3">Seller </h4></th>
+            <table className="min-w-full border-b border-gray-100 hover:bg-blue-50/60 transition-all text-sm table-fixed">
+              <colgroup>
+                <col className="w-20" />
+                <col className="w-64" />
+                <col className="w-64" />
+              </colgroup>
+              <thead className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-200">
+                <tr className="text-xs text-gray-700 uppercase font-semibold tracking-wide">
+                  <th className="px-5 py-3 text-left">Domain</th>
+                  <th className="px-4 py-3 text-center">Chat</th>
+                  <th className="px-4 py-3 text-center">Seller</th>
                 </tr>
               </thead>
-
               <tbody>
                 {loading ? (
                   <tr>
@@ -268,34 +286,49 @@ border-b border-gray-200/70">
                       Loading domains...
                     </td>
                   </tr>
+                ) : filteredDomains.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="py-12 text-center text-gray-400">
+                      No domains found
+                    </td>
+                  </tr>
                 ) : (
                   filteredDomains.map((d) => (
                     <tr
                       key={d.domainId}
                       className="
-            bg-slate-50
-            hover:bg-blue-50
-            transition-colors
-            rounded-lg
+            bg-white
+            hover:bg-blue-50/60
+            transition-all
+            rounded-xl
+            shadow-sm hover:shadow-md
+            hover:-translate-y-px
           "
                     >
-                      {/* ✅ DOMAIN */}
-                      <td className="px-4 py-3 text-blue-600 break-all font-medium">
-                        {d.finalUrl ? (
-                          <Link
-                            href={d.finalUrl}
-                            target="_blank"
-                            className="hover:underline"
-                          >
-                            {d.domain}
-                          </Link>
-                        ) : (
-                          d.domain
-                        )}
+                      <td className="px-5 py-4 font-medium">
+                        <div className="w-full max-w-130 truncate">
+                          {d.finalUrl ? (
+                            <Link
+                              href={d.finalUrl}
+                              target="_blank"
+                              title={d.domain}
+                              className="text-blue-600 hover:text-blue-700 hover:underline text-lg"
+                            >
+                              {d.domain}
+                            </Link>
+                          ) : (
+                            <span
+                              title={d.domain}
+                              className="text-blue-600 font-semibold"
+                            >
+                              {d.domain}
+                            </span>
+                          )}
+                        </div>
                       </td>
 
-                      {/* ✅ MESSAGE */}
-                      <td className="px-4 py-3 text-center">
+                      {/* ✅ CHAT */}
+                      <td className="px-4 py-4 text-center align-middle">
                         <div className="relative group inline-flex justify-center">
                           <button
                             type="button"
@@ -324,7 +357,7 @@ border-b border-gray-200/70">
                             <Send size={16} />
                           </button>
 
-                          {/* ✅ TOOLTIP */}
+                          {/* tooltip */}
                           <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
                             <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                               {!d.isChatActive
@@ -338,7 +371,7 @@ border-b border-gray-200/70">
                       </td>
 
                       {/* ✅ SELLER */}
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-4 py-4 text-center align-middle">
                         {d.user?.userName ? (
                           <button
                             onClick={() => {
@@ -349,7 +382,7 @@ border-b border-gray-200/70">
                               }));
                               setPage(1);
                             }}
-                            className="text-blue-600 hover:underline font-medium"
+                            className="text-blue-600 hover:text-blue-700 hover:underline font-semibold whitespace-nowrap"
                           >
                             {d.user.userName}
                           </button>
