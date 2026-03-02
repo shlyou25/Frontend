@@ -13,6 +13,7 @@ import ActionConfirmation from './ActionConfirmation';
 import SearchBox from '@/utils/SearchBox';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { Download, Layers, X } from "lucide-react";
 import {
   Calendar,
   Eye,
@@ -46,19 +47,26 @@ const Toggle = ({
   checked,
   onChange,
   id,
+  disabled = false,
 }: {
   checked: boolean;
   onChange: (val: boolean) => void;
   id: string;
+  disabled?: boolean;
 }) => (
   <label
     htmlFor={id}
-    className="relative inline-flex items-center cursor-pointer select-none"
+    className={`
+      relative inline-flex items-center
+      ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
+      select-none
+    `}
   >
     <input
       id={id}
       type="checkbox"
       checked={checked}
+      disabled={disabled}
       onChange={(e) => onChange(e.target.checked)}
       className="sr-only peer"
     />
@@ -66,10 +74,13 @@ const Toggle = ({
     {/* Track */}
     <div
       className="
-        w-11 h-6 rounded-full transition-colors duration-200
+        h-5 w-9 rounded-full
         bg-slate-300
+        transition-all duration-200 ease-out
         peer-checked:bg-emerald-500
-        peer-focus:ring-2 peer-focus:ring-emerald-300
+        peer-focus-visible:ring-2
+        peer-focus-visible:ring-emerald-300
+        peer-disabled:bg-slate-200
       "
     />
 
@@ -77,9 +88,11 @@ const Toggle = ({
     <div
       className="
         absolute left-0.5 top-0.5
-        w-5 h-5 bg-white rounded-full shadow-sm
-        transition-transform duration-200
-        peer-checked:translate-x-5
+        h-4 w-4 rounded-full bg-white
+        shadow-[0_1px_2px_rgba(0,0,0,0.25)]
+        transition-all duration-200 ease-out
+        peer-checked:translate-x-4
+        peer-checked:shadow-[0_2px_6px_rgba(16,185,129,0.45)]
       "
     />
   </label>
@@ -555,21 +568,56 @@ const Myportfolio = () => {
         ) : (
           <div className="rounded-xl border bg-white shadow-sm max-h-130 overflow-auto relative">
             <div className="mb-3 flex items-center justify-between">
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                {/* Bulk actions */}
                 <button
                   onClick={() => {
                     setBulkMode(prev => !prev);
                     setSelectedDomains([]);
                   }}
-                  className="px-4 py-2 text-sm border rounded-md hover:bg-gray-50 cursor-pointer"
+                  className={`
+      inline-flex items-center gap-2
+      h-9 px-4 rounded-lg
+      text-sm font-medium
+      border transition-all duration-200
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400
+      active:scale-[0.98]
+      ${bulkMode
+                      ? "bg-slate-900 text-white border-slate-900 hover:bg-slate-800 shadow-sm"
+                      : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400"
+                    }
+    `}
                 >
-                  {bulkMode ? 'Cancel bulk actions' : 'Bulk actions'}
+                  {bulkMode ? (
+                    <>
+                      <X size={16} className="opacity-90" />
+                      Cancel bulk
+                    </>
+                  ) : (
+                    <>
+                      <Layers size={16} className="opacity-80" />
+                      Bulk actions
+                    </>
+                  )}
                 </button>
 
+                {/* Export Excel */}
                 <button
                   onClick={exportMyDomainsToExcel}
-                  className="px-4 py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
+                  className="
+      inline-flex items-center gap-2
+      h-9 px-4 rounded-lg
+      text-sm font-medium
+      bg-slate-700 text-white
+      hover:bg-slate-800
+      shadow-sm hover:shadow-md
+      transition-all duration-200
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400
+      active:scale-[0.98]
+      cursor-pointer
+    "
                 >
+                  <Download size={16} className="opacity-90" />
                   Export Excel
                 </button>
               </div>
