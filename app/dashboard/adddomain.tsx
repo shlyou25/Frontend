@@ -14,28 +14,51 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-   toast.success('Domains submitted for addition to your portfolio. You will be notified once they are added.')
+    toast.success('Domains submitted for addition to your portfolio. You will be notified once they are added.')
     try {
+      setLoading(true);
+      const isValidDomain = (domain: string) =>
+        /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(domain);
+
       // Normalize textarea → lines
-      const domains = domainText
+      const parsedDomains = domainText
         .split("\n")
         .map((line) => line.trim())
         .filter(Boolean)
         .map((line) => {
           const [domainName, url] = line.split(",").map((v) => v?.trim());
+
           return {
             domainName: domainName?.toLowerCase(),
             url: url || undefined,
+            rawLine: line,
           };
         });
 
-      // Deduplicate
+      // 🚨 VALIDATION (KEY FIX)
+      const invalidRows = parsedDomains.filter(
+        (d) => !d.domainName || !isValidDomain(d.domainName)
+      );
+
+      if (invalidRows.length) {
+        toast.error(
+          "Each line must start with a valid root domain (e.g., example.com). URL alone is not allowed."
+        );
+        setLoading(false);
+        return;
+      }
+
+      // ✅ clean objects
+      const domains = parsedDomains.map(({ rawLine, ...rest }) => rest);
+
+      // ✅ dedupe
       const uniqueDomains = Array.from(
         new Map(domains.map((d) => [d.domainName, d])).values()
       );
 
       if (!uniqueDomains.length) {
         toast.error("Please add at least one valid domain.");
+        setLoading(false);
         return;
       }
 
