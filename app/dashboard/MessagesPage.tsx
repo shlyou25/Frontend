@@ -227,8 +227,7 @@ useEffect(() => {
     }
   };
  return (
-  <div className="h-[calc(100vh-64px)] flex bg-gray-100">
-    {/* ================= LEFT: DOMAINS ================= */}
+  <div className="h-full flex bg-gray-100">
     <aside className="w-64 bg-white border-r flex flex-col">
       <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
         Domains
