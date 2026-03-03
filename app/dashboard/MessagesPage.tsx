@@ -35,9 +35,9 @@ export default function MessagesPage() {
   const hasConnectedRef = useRef(false);
 
   const API =
-    process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api/";
+    process.env.NEXT_PUBLIC_apiLink
   const SOCKET_URL =
-    process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8080";
+    process.env.NEXT_PUBLIC_SOCKET_URL
   useEffect(() => {
     const loadMe = async () => {
       try {
