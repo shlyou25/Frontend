@@ -58,7 +58,7 @@ const Toggle = ({
     htmlFor={id}
     className={`
       relative inline-flex items-center
-      ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
+      ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
       select-none
     `}
   >
@@ -68,19 +68,20 @@ const Toggle = ({
       checked={checked}
       disabled={disabled}
       onChange={(e) => onChange(e.target.checked)}
-      className="sr-only peer"
+      className="peer sr-only"
     />
 
     {/* Track */}
     <div
       className="
-        h-5 w-9 rounded-full
+        h-4 w-8 rounded-full
         bg-slate-300
         transition-all duration-200 ease-out
         peer-checked:bg-emerald-500
         peer-focus-visible:ring-2
         peer-focus-visible:ring-emerald-300
-        peer-disabled:bg-slate-200
+        peer-focus-visible:ring-offset-1
+        shadow-inner
       "
     />
 
@@ -88,11 +89,10 @@ const Toggle = ({
     <div
       className="
         absolute left-0.5 top-0.5
-        h-4 w-4 rounded-full bg-white
-        shadow-[0_1px_2px_rgba(0,0,0,0.25)]
+        h-3 w-3 rounded-full bg-white
+        shadow-sm
         transition-all duration-200 ease-out
         peer-checked:translate-x-4
-        peer-checked:shadow-[0_2px_6px_rgba(16,185,129,0.45)]
       "
     />
   </label>
