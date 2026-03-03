@@ -88,12 +88,12 @@ const descVariants: Variants = {
   },
 };
 
-const DiscoveryPartner: React.FC = () => (
+const DiscoveryPartner = () => (
   <main
     id="about"
     className="
     relative
-    py-28
+    py-12
     px-4
     overflow-hidden
     bg-linear-to-b from-blue-50 via-white to-white
@@ -112,7 +112,7 @@ const DiscoveryPartner: React.FC = () => (
         </span>
       </h2>
 
-      <p className="mb-14 text-lg text-gray-600 max-w-2xl">
+      <p className="mb-8 text-lg text-gray-600 max-w-2xl">
         Here is how we built a better way forward:
       </p>
 

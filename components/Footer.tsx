@@ -6,10 +6,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ArrowUp } from 'lucide-react'
 import { handleAuthRedirect } from '../utils/checkAuth'
+import Subscribe from "../utils/subscribe"; // adjust path if needed
 
 const Footer = () => {
   const router = useRouter()
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
 
   // 👇 Show button only after scrolling down
   useEffect(() => {
@@ -117,12 +119,16 @@ const Footer = () => {
                       </div>
                     </div>
                   </li>
-
+                  <li
+                    onClick={() => setSubscribeOpen(true)}
+                    className="hover:opacity-75 cursor-pointer"
+                  >
+                    Subscribe
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
-
           <p className="text-xs text-gray-500">
             © 2026 Domz.com LLC
           </p>
@@ -145,6 +151,10 @@ const Footer = () => {
           <ArrowUp size={20} />
         </a>
       )}
+      <Subscribe
+        forceOpen={subscribeOpen}
+        onCloseExternal={() => setSubscribeOpen(false)}
+      />
     </>
   )
 }

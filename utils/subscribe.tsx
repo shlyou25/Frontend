@@ -4,17 +4,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-interface subscribeProps{
-    buttonText:string,
-    heading:string,
-    text:string
+interface subscribeProps {
+    buttonText?: string,
+    heading?: string,
+    text?: string
+    forceOpen?: boolean;
+    onCloseExternal?: () => void;
 }
 
-const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
+const Subscribe = ({ buttonText, heading, text, forceOpen, onCloseExternal }: subscribeProps) => {
     const [loaderStatus, setLoaderStatus] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [authChecked, setAuthChecked] = useState(false);
-    const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
+    const isSubscribeModalOpen = forceOpen ?? internalOpen;
     const [subscribeEmail, setSubscribeEmail] = useState('');
 
     useEffect(() => {
@@ -34,7 +37,6 @@ const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
                 setAuthChecked(true);
             }
         };
-
         checkAuthStatus();
     }, []);
     const subscribeLoggedInUser = async () => {
@@ -72,7 +74,8 @@ const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
 
             toast.success(res?.data?.message || 'Subscribed successfully 🎉');
             setSubscribeEmail('');
-            setIsSubscribeModalOpen(false);
+            setInternalOpen(false);
+            onCloseExternal?.();
         } catch (err: any) {
             toast.error(
                 err?.response?.data?.message || 'Subscription failed'
@@ -86,30 +89,36 @@ const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
             await subscribeLoggedInUser();
             return;
         }
-        setIsSubscribeModalOpen(true);
+        setInternalOpen(true);
     };
-    if (!authChecked || loaderStatus) return <Loader />;
+    if (loaderStatus) return <Loader />;
     return (
         <>
-            <div className="mx-auto my-20 max-w-6xl px-4 text-center">
-                <div className="rounded-4xl bg-blue-600 px-10 py-20 text-white shadow-2xl">
-                    <h2 className="text-[2.6rem] font-bold mb-4">{heading}</h2>
-                    <p className="mb-8">
-                        {text}
-                    </p>
 
-                    <button
-                        type="button"
-                        onClick={handleSubscribeClick}
-                        className="px-8 py-3 rounded-full bg-white text-blue-600 font-semibold hover:bg-gray-100"
-                    >
-                        {buttonText}
-                    </button>
+            {buttonText &&
+                <div className="mx-auto my-20 max-w-6xl px-4 text-center">
+                    <div className="rounded-4xl bg-blue-600 px-10 py-20 text-white shadow-2xl">
+                        <h2 className="text-[2.6rem] font-bold mb-4">{heading}</h2>
+                        <p className="mb-8">
+                            {text}
+                        </p>
+
+                        <button
+                            type="button"
+                            onClick={handleSubscribeClick}
+                            className="px-8 py-3 rounded-full bg-white text-blue-600 font-semibold hover:bg-gray-100"
+                        >
+                            {buttonText}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
             <Modal
                 isOpen={isSubscribeModalOpen}
-                onClose={() => setIsSubscribeModalOpen(false)}
+                onClose={() => {
+                    setInternalOpen(false);
+                    onCloseExternal?.();
+                }}
                 title="Subscribe to Newsletter"
                 size="sm"
             >
@@ -124,7 +133,10 @@ const Subscribe = ({buttonText,heading,text}:subscribeProps) => {
 
                     <div className="flex justify-end gap-3">
                         <button
-                            onClick={() => setIsSubscribeModalOpen(false)}
+                            onClick={() => {
+                                setInternalOpen(false);
+                                onCloseExternal?.();
+                            }}
                             className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md"
                         >
                             Cancel
