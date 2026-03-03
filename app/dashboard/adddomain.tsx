@@ -12,8 +12,20 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
   const [domainText, setDomainText] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const AI_PROMPT = `Format each root domain into the following structure:
+<domain.com>, <https://www.NamePros.com/parked/domain.com>
+Output as a plain text list only.
+Domains:
+<domain1>
+<domain2>
+<domain3>`;
+
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (domainText.includes("Format each root domain")) {
+      toast.error("Please replace the template text with actual domains.");
+      return;
+    }
     toast.success('Domains submitted for addition to your portfolio. You will be notified once they are added.')
     try {
       setLoading(true);
@@ -128,7 +140,36 @@ const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
               Download template
             </button>
           </div>
+          <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="text-sm text-slate-700">
+                <p className="font-semibold text-blue-900 mb-1">
+                  💡 Pro tip
+                </p>
+                <p className="mb-3">
+                  Use an AI tool to convert root domains into properly formatted URLs.
+                  Copy and paste the prompt below.
+                </p>
 
+                <pre className="text-xs bg-white border border-blue-200 rounded-lg p-3 overflow-auto text-slate-700">
+                  {AI_PROMPT}
+                </pre>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(AI_PROMPT);
+                  toast.success("Prompt copied");
+                }}
+                className="shrink-0 inline-flex items-center h-8 px-3 rounded-md
+                 bg-blue-600 text-white text-xs font-medium
+                 hover:bg-blue-700 transition"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
           {/* Textarea */}
           <textarea
             value={domainText}
