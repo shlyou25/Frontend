@@ -10,10 +10,7 @@ const TermsOfServicePage = () => {
 
         <LegalSection title="Agreement to Terms">
           <p>
-           These Terms of Service (“Terms”) govern your access to and use of Domz (the “Platform”), 
-           operated by Domz.com LLC, a limited liability company organized under the laws of the State of New Jersey 
-           (“Domz,” “we,” “us,” or “our”). By accessing or using the Platform, you agree to be bound by these Terms. 
-           If you do not agree, you may not access or use the Platform.
+           These Terms of Service (“Terms”) govern your access to and use of Domz (the “Platform”), operated by Domz.com LLC, a limited liability company organized under the laws of the State of New Jersey (“Domz,” “we,” “us,” or “our”). By accessing or using the Platform, you agree to be bound by these Terms. If you do not agree, you may not access or use the Platform.
           </p>
         </LegalSection>
 
@@ -84,15 +81,12 @@ const TermsOfServicePage = () => {
 
         <LegalSection title="Prohibited Conduct">
           <p>
-            You agree not to use the Platform to engage in fraud, phishing, deception, or malicious
-            activity; impersonate another individual or entity; list domain names you do not own or
-            control; introduce malware, scripts, or harmful code; scrape, harvest, or collect data from
-            the Platform for competitive or commercial use without authorization; or circumvent, disable,
-            or interfere with Platform security or functionality.
+            You agree not to use the Platform to engage in fraud, phishing, deception, or malicious activity; impersonate another individual or entity; list domain names you do not own or control; introduce malware, scripts, or harmful code; scrape, harvest, or collect data from the Platform for competitive or commercial use without authorization; or circumvent, disable, or interfere with Platform security or functionality.
+
           </p>
           <p>
-            Domz reserves the right to investigate violations and take appropriate action, including
-            suspension or termination of access.
+            Domz reserves the right to investigate violations and take appropriate action, including suspension or termination of access.
+
           </p>
         </LegalSection>
 

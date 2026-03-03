@@ -95,11 +95,14 @@ const PrivacyPolicyPage = () => {
 
         <LegalSection title="Data Security">
           <p>
-            We implement reasonable administrative, technical, and organizational measures designed to
-            protect information from unauthorized access, disclosure, or misuse.
+           We implement reasonable administrative, technical, and organizational measures designed to protect information from unauthorized access, disclosure, or misuse.
+
           </p>
           <p>
-            No system is perfectly secure. You acknowledge that use of the Platform is at your own risk.
+           Passwords and sensitive account data are stored using industry-standard encryption and security practices.
+          </p>
+           <p>
+           No system is perfectly secure. You acknowledge that use of the Platform is at your own risk.
           </p>
         </LegalSection>
 
