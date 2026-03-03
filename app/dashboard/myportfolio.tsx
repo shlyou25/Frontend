@@ -566,16 +566,17 @@ const Myportfolio = () => {
             <DomainStatus data={dateFilteredDomains} onDeleteSuccess={fetchDomains} />
           </>
         ) : (
-          <div className="rounded-xl border bg-white shadow-sm max-h-130 overflow-auto relative">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {/* Bulk actions */}
-                <button
-                  onClick={() => {
-                    setBulkMode(prev => !prev);
-                    setSelectedDomains([]);
-                  }}
-                  className={`
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm max-h-130 overflow-auto relative">
+            <div className="sticky top-0 z-30 bg-white border-b">
+              <div className="px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {/* Bulk actions */}
+                  <button
+                    onClick={() => {
+                      setBulkMode(prev => !prev);
+                      setSelectedDomains([]);
+                    }}
+                    className={`
       inline-flex items-center gap-2
       h-9 px-4 rounded-lg
       text-sm font-medium
@@ -583,28 +584,28 @@ const Myportfolio = () => {
       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400
       active:scale-[0.98]
       ${bulkMode
-                      ? "bg-slate-900 text-white border-slate-900 hover:bg-slate-800 shadow-sm"
-                      : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400"
-                    }
+                        ? "bg-slate-900 text-white border-slate-900 hover:bg-slate-800 shadow-sm"
+                        : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400"
+                      }
     `}
-                >
-                  {bulkMode ? (
-                    <>
-                      <X size={16} className="opacity-90" />
-                      Cancel bulk
-                    </>
-                  ) : (
-                    <>
-                      <Layers size={16} className="opacity-80" />
-                      Bulk actions
-                    </>
-                  )}
-                </button>
+                  >
+                    {bulkMode ? (
+                      <>
+                        <X size={16} className="opacity-90" />
+                        Cancel bulk
+                      </>
+                    ) : (
+                      <>
+                        <Layers size={16} className="opacity-80" />
+                        Bulk actions
+                      </>
+                    )}
+                  </button>
 
-                {/* Export Excel */}
-                <button
-                  onClick={exportMyDomainsToExcel}
-                  className="
+                  {/* Export Excel */}
+                  <button
+                    onClick={exportMyDomainsToExcel}
+                    className="
       inline-flex items-center gap-2
       h-9 px-4 rounded-lg
       text-sm font-medium
@@ -616,14 +617,15 @@ const Myportfolio = () => {
       active:scale-[0.98]
       cursor-pointer
     "
-                >
-                  <Download size={16} className="opacity-90" />
-                  Export Excel
-                </button>
+                  >
+                    <Download size={16} className="opacity-90" />
+                    Export Excel
+                  </button>
+                </div>
               </div>
             </div>
             {bulkMode && (
-              <div className="px-4 pb-3 border-b bg-slate-50/60">
+              <div className="sticky top-14 z-20 px-4 py-2 border-b bg-slate-50/95 backdrop-blur">
                 <div className="flex items-center gap-2 flex-nowrap overflow-x-auto">
                   <div className="flex items-center gap-2 mr-2 shrink-0">
                     <div className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-xs font-semibold">
@@ -743,13 +745,17 @@ const Myportfolio = () => {
               </div>
             )}
 
-            <table className="min-w-full border-separate border-spacing-y-1">
-              <thead className="sticky top-0 z-10 bg-gray-400">
+            <table className="min-w-full border-collapse">
+             <thead
+  className={`sticky z-10 bg-gray-400 ${
+    bulkMode ? 'top-26' : 'top-14'
+  }`}
+>
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
 
                   {/* ✅ Select all checkbox */}
                   {bulkMode && (
-                    <th className="px-4 py-3 text-center w-10">
+                    <th className="px-4  text-center w-10">
                       <input
                         type="checkbox"
                         checked={isAllSelected}
