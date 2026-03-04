@@ -854,7 +854,7 @@ const Myportfolio = () => {
           </div>
         )}
 
-        <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter" />
+        {/* <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter" /> */}
       </div>
       <ActionConfirmation
         open={confirmOpen}

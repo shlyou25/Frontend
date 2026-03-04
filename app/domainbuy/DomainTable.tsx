@@ -404,7 +404,7 @@ border-b border-gray-200/70">
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={page === i + 1 ? 'bg-blue-600 text-white px-3 py-1 rounded' : ''}
+                className={page === i + 1 ? 'bg-blue-600 text-white px-3 py-1 rounded cursor-pointer' : ''}
               >
                 {i + 1}
               </button>

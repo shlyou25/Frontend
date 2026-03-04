@@ -22,7 +22,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full px-4 sm:px-6 lg:px-10" id="navbar">
+    <header className="w-full px-4 sm:px-6 lg:px-10 py-3" id="navbar">
       <div className="relative rounded-3xl bg-linear-to-br from-white via-blue-50 to-blue-100 overflow-hidden pt-4 pb-6">
         <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6">
           <Link href="/" className="flex items-center">
