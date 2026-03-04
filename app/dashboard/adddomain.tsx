@@ -138,8 +138,7 @@ Domains:
             value={domainText}
             onChange={(e) => setDomainText(e.target.value)}
             placeholder={`Enter the root domain as it should appear in the Buy section — one per line.
-To redirect the link to a different URL, enter the domain followed by a comma and the redirect URL.
-
+To redirect the link, enter the root domain followed by a comma and the destination URL.
 Sample:
 example.com
 example.com, https://www.LanderHost.com/parked/example.com`}
