@@ -115,16 +115,10 @@ Domains:
   return (
     <>
       <form onSubmit={onSubmitHandler} className="relative">
-
-        {/* Header helper */}
         <p className="text-center text-sm text-slate-600 mb-6">
           Add domains by uploading a spreadsheet or entering them below.
         </p>
-
-        {/* Content container (KEY FIX) */}
         <div className="max-w-2xl mx-auto space-y-6">
-
-          {/* Excel Upload */}
           <ExcelDropZone
             onTextExtracted={(text) => {
               setDomainText(prev => (prev ? `${prev}\n${text}` : text));
@@ -140,7 +134,28 @@ Domains:
               Download template
             </button>
           </div>
-          <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4">
+          <textarea
+            value={domainText}
+            onChange={(e) => setDomainText(e.target.value)}
+            placeholder={`Enter the root domain as it should appear in the Buy section — one per line.
+To redirect the link to a different URL, enter the domain followed by a comma and the redirect URL.
+
+Sample:
+example.com
+example.com, https://www.LanderHost.com/parked/example.com`}
+            rows={7}
+            className="
+        w-full
+        border border-gray-300
+        rounded-xl
+        p-4
+        text-slate-700
+        placeholder:text-slate-400
+        focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500
+        transition
+      "
+          />
+           <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4">
             <div className="flex items-start justify-between gap-4">
               <div className="text-sm text-slate-700">
                 <p className="font-semibold text-blue-900 mb-1">
@@ -170,28 +185,6 @@ Domains:
               </button>
             </div>
           </div>
-          {/* Textarea */}
-          <textarea
-            value={domainText}
-            onChange={(e) => setDomainText(e.target.value)}
-            placeholder={`Enter the root domain as it should appear in the Buy section — one per line.
-To redirect the link to a different URL, enter the domain followed by a comma and the redirect URL.
-
-Sample:
-example.com
-example.com, https://www.LanderHost.com/parked/example.com`}
-            rows={7}
-            className="
-        w-full
-        border border-gray-300
-        rounded-xl
-        p-4
-        text-slate-700
-        placeholder:text-slate-400
-        focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500
-        transition
-      "
-          />
 
           {/* Confirmations */}
           <div className="space-y-4 text-sm">
