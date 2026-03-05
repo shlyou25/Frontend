@@ -14,14 +14,14 @@ const Navbar = () => {
   return (
     <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-6 relative z-50 max-w-7xl mx-auto">
       <Link href="/">
-        <div className="relative h-8 w-27.5 shrink-0">
+        <div className="relative h-8 w-[110px] shrink-0">
           <Image
             src="/assets/logo.jpg"
             alt="Domz Logo"
             fill
             priority
-            className="object-contain"
             sizes="110px"
+            className="object-contain"
           />
         </div>
       </Link>

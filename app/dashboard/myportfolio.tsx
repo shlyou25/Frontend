@@ -8,7 +8,6 @@ import AddDomainsCard from './adddomain';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import DomainStatus from './DomainStatus';
-import Subscribe from '../../utils/subscribe';
 import ActionConfirmation from './ActionConfirmation';
 import SearchBox from '@/utils/SearchBox';
 import * as XLSX from "xlsx";
@@ -70,8 +69,6 @@ const Toggle = ({
       onChange={(e) => onChange(e.target.checked)}
       className="peer sr-only"
     />
-
-    {/* Track */}
     <div
       className="
         h-4 w-8 rounded-full
@@ -853,8 +850,6 @@ const Myportfolio = () => {
             </table>
           </div>
         )}
-
-        {/* <Subscribe buttonText="Subscribe" heading="Stay Updated" text="Subscribe to newsletter" /> */}
       </div>
       <ActionConfirmation
         open={confirmOpen}

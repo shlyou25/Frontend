@@ -160,7 +160,7 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}domain/getalldomains`,
           { withCredentials: true }
         );
-        console.log(res.data);
+      
         
         setDomainsData(res.data); 
       } catch {

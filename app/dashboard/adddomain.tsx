@@ -41,7 +41,7 @@ Domains:
           const [domainName, url] = line.split(",").map((v) => v?.trim());
 
           return {
-            domainName: domainName?.toLowerCase(),
+            domainName: domainName?.trim(),
             url: url || undefined,
             rawLine: line,
           };

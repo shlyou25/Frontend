@@ -93,8 +93,7 @@ const Subscribe = ({ buttonText, heading, text, forceOpen, onCloseExternal }: su
     };
     if (loaderStatus) return <Loader />;
     return (
-        <>
-
+        <div id="subscribe">
             {buttonText &&
                 <div className="mx-auto my-20 max-w-6xl px-4 text-center">
                     <div className="rounded-4xl bg-blue-600 px-10 py-20 text-white shadow-2xl">
@@ -151,7 +150,7 @@ const Subscribe = ({ buttonText, heading, text, forceOpen, onCloseExternal }: su
                     </div>
                 </div>
             </Modal>
-        </>
+        </div>
     )
 }
 export default Subscribe;

@@ -23,6 +23,7 @@ interface Domain {
 
 interface Props {
   searchQuery: string;
+  setSearchQuery: (value: string) => void;
 }
 type SortOption = | 'az' | 'za' | 'length_asc' | 'length_desc' | 'newest' | 'oldest';
 
@@ -30,7 +31,7 @@ const DEFAULT_FILTERS: DomainFilters = {
   extensions: [],
 };
 
-const DomainTable = ({ searchQuery }: Props) => {
+const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [showFilter, setShowFilter] = useState(false);
   const [open, setOpen] = useState(false);
   const [domains, setDomains] = useState<Domain[]>([]);
@@ -204,18 +205,20 @@ border-b border-gray-200/70">
               )}
             </button>
             <button
-              disabled={!hasActiveFilters}
+              disabled={!hasActiveFilters && !searchQuery}
               onClick={() => {
                 setFilters(DEFAULT_FILTERS);
                 setPage(1);
+                setSearchQuery("");
               }}
               className={`
     inline-flex items-center gap-2
     px-4 py-2 rounded-xl text-sm font-medium
     border transition-all duration-200
-    ${hasActiveFilters
+    ${hasActiveFilters || searchQuery
                   ? 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 shadow-sm hover:shadow-md'
-                  : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'}
+                  : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
+                }
   `}
             >
               <RotateCcw size={16} />
@@ -361,10 +364,10 @@ border-b border-gray-200/70">
                           <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
                             <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                               {!d.isChatActive
-                                ? 'Chat disabled — contact seller via the lander'
+                                ? 'Chat for this domain is disabled; please contact seller via the lander.'
                                 : isAuthenticated
                                   ? 'Message seller'
-                                  : 'Log in to chat — or contact via lander'}
+                                  : 'Log in to use the chat feature, or contact seller via the lander.'}
                             </div>
                           </div>
                         </div>

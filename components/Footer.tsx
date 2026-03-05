@@ -6,7 +6,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ArrowUp } from 'lucide-react'
 import { handleAuthRedirect } from '../utils/checkAuth'
-import Subscribe from "../utils/subscribe"; // adjust path if needed
+import Subscribe from "../utils/subscribe";
+import logo from '../public/assets/logo.jpg'
 
 const Footer = () => {
   const router = useRouter()
@@ -27,16 +28,19 @@ const Footer = () => {
     <>
       <footer className="bg-white">
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="flex flex-col items-start pt-1 w-fit">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 items-start">
+            <div className="flex flex-col items-start">
               <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src="/assets/logo.jpg"
-                  alt="DOMZ"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
+                <div className="relative w-25 h-10">
+                  <Image
+                    src={logo}
+                    alt="DOMZ"
+                    fill
+                    priority
+                    sizes="100px"
+                    className="object-contain"
+                  />
+                </div>
               </Link>
               <a
                 href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401"
@@ -119,12 +123,7 @@ const Footer = () => {
                       </div>
                     </div>
                   </li>
-                  <li
-                    onClick={() => setSubscribeOpen(true)}
-                    className="hover:opacity-75 cursor-pointer"
-                  >
-                    Subscribe
-                  </li>
+                  <li><Link href="/contact/#subscribe" className="hover:opacity-75">Subscribe</Link></li>
                 </ul>
               </div>
             </div>

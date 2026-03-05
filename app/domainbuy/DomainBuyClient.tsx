@@ -19,7 +19,7 @@ export default function DomainBuyClient() {
         searchValue={searchQuery}
         onSearch={setSearchQuery}
       />
-      <DomainTable searchQuery={searchQuery} />
+      <DomainTable searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <Footer />
     </div>
   );

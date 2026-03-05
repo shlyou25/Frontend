@@ -10,7 +10,6 @@ const GetStarted = () => {
         mainButton="Get Started"
         subButton={true}
       />
-       {/* <Subscribe  buttonText="Get Started" heading="List With Domz" text="Partner with us and showcase your portfolio."/> */}
     </>
 
   );

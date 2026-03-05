@@ -108,7 +108,6 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
           {bulkMode ? "Cancel bulk Delete" : "Bulk Delete"}
         </button>
 
-        {/* Filter */}
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium text-gray-700">
             Filter by status:
@@ -137,7 +136,7 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
             }}
             className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700"
           >
-            Delete 
+            Delete
           </button>
 
         </div>
@@ -211,18 +210,25 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
                     {new Date(domain.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4 border-b text-sm text-gray-900">
-                    <Trash2
-                      onClick={() => {
-                        if (domain.status === "Pass") return; // hard stop
-                        setPendingDelete([domain]);
-                        setConfirmOpen(true);
-                      }}
-                      className={`
-      ${domain.status === "Pass"
-                          ? "text-gray-400  opacity-50 cursor-not-allowed"
-                          : "text-red-600 hover:text-red-700 cursor-pointer"
-                        }`}
-                    />
+                    <span
+                      title={
+                        domain.status === "Pass"
+                          ? "To delete this name from your portfolio go to 'My Domains'"
+                          : "Delete this name from your account"
+                      }
+                    >
+                      <Trash2
+                        onClick={() => {
+                          if (domain.status === "Pass") return;
+                          setPendingDelete([domain]);
+                          setConfirmOpen(true);
+                        }}
+                        className={`${domain.status === "Pass"
+                            ? "text-gray-400 opacity-50 cursor-not-allowed"
+                            : "text-red-600 hover:text-red-700 cursor-pointer"
+                          }`}
+                      />
+                    </span>
                   </td>
 
                 </tr>
