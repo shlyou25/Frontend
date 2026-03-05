@@ -275,7 +275,7 @@ border-b border-gray-200/70">
                 <col className="w-64" />
                 <col className="w-64" />
               </colgroup>
-              <thead className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-200">
+              <thead className="sticky top-0 bg-white/95 backdrop-blur border-b border-gray-200">
                 <tr className="text-xs text-gray-700 uppercase font-semibold tracking-wide">
                   <th className="px-5 py-3 text-left">Domain</th>
                   <th className="px-4 py-3 text-center">Chat</th>
@@ -361,7 +361,7 @@ border-b border-gray-200/70">
                           </button>
 
                           {/* tooltip */}
-                          <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block z-50">
                             <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                               {!d.isChatActive
                                 ? 'Chat for this domain is disabled; please contact seller via the lander.'
