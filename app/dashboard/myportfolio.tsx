@@ -322,7 +322,7 @@ const Myportfolio = () => {
     );
   }, [userDomains, searchQuery]);
   const visibleDomains = searchedDomains.filter(d => d.status === 'Pass');
-
+  const totalDomains = searchedDomains.filter(d => d.status === 'Pass').length;
   const isSelected = (id: string) =>
     selectedDomains.some(d => d.id === id);
 
@@ -566,8 +566,8 @@ const Myportfolio = () => {
           <div className="rounded-xl border border-slate-200 bg-white shadow-sm max-h-130 overflow-auto relative">
             <div className="sticky top-0 z-30 bg-white border-b">
               <div className="px-4 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {/* Bulk actions */}
+                <div className="flex items-center gap-3">
+
                   <button
                     onClick={() => {
                       setBulkMode(prev => !prev);
@@ -598,8 +598,6 @@ const Myportfolio = () => {
                       </>
                     )}
                   </button>
-
-                  {/* Export Excel */}
                   <button
                     onClick={exportMyDomainsToExcel}
                     className="
@@ -618,6 +616,9 @@ const Myportfolio = () => {
                     <Download size={16} className="opacity-90" />
                     Export Excel
                   </button>
+                  <div className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                    {totalDomains} Domains
+                  </div>
                 </div>
               </div>
             </div>
@@ -743,11 +744,10 @@ const Myportfolio = () => {
             )}
 
             <table className="min-w-full border-collapse">
-             <thead
-  className={`sticky z-10 bg-gray-400 ${
-    bulkMode ? 'top-26' : 'top-14'
-  }`}
->
+              <thead
+                className={`sticky z-10 bg-gray-400 ${bulkMode ? 'top-26' : 'top-14'
+                  }`}
+              >
                 <tr className="text-xs font-semibold text-slate-600 tracking-wide">
 
                   {/* ✅ Select all checkbox */}
@@ -786,6 +786,7 @@ const Myportfolio = () => {
                           />
                         </td>
                       )}
+
                       <td className="px-4 py-2 text-blue-600 break-all">
                         {d.finalUrl ? (
                           <Link href={d.finalUrl} target="_blank" className="hover:underline">
