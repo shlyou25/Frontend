@@ -189,12 +189,12 @@ const Myportfolio = () => {
     | { type: 'notification'; value: boolean }
     | { type: 'delete' }
     | null;
-const [bulkToggleState, setBulkToggleState] = useState({
-  hide: false,
-  chat: false,
-  username: false,
-  notification: false
-});
+  const [bulkToggleState, setBulkToggleState] = useState({
+    hide: false,
+    chat: false,
+    username: false,
+    notification: false
+  });
 
   const [loading, setLoading] = useState(true);
   const [userDomains, setUserDomains] = useState<DomainType[]>([]);
@@ -480,27 +480,27 @@ const [bulkToggleState, setBulkToggleState] = useState({
     );
   };
   const BulkToggle = ({
-  icon,
-  label,
-  checked,
-  onChange
-}: {
-  icon: React.ReactNode
-  label: string
-  checked: boolean
-  onChange: (val: boolean) => void
-}) => (
-  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-medium">
-    {icon}
-    <span>{label}</span>
+    icon,
+    label,
+    checked,
+    onChange
+  }: {
+    icon: React.ReactNode
+    label: string
+    checked: boolean
+    onChange: (val: boolean) => void
+  }) => (
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-medium">
+      {icon}
+      <span>{label}</span>
 
-    <Toggle
-      id={`bulk-${label}`}
-      checked={checked}
-      onChange={onChange}
-    />
-  </div>
-);
+      <Toggle
+        id={`bulk-${label}`}
+        checked={checked}
+        onChange={onChange}
+      />
+    </div>
+  );
   const dateFilteredDomains = useMemo(() => {
     if (dateRange === 'all') return searchedDomains;
     const now = new Date();
@@ -660,49 +660,49 @@ const [bulkToggleState, setBulkToggleState] = useState({
                       selected
                     </span>
                   </div>
-    <BulkToggle
-  icon={<Eye size={14} />}
-  label="Visibility"
-  checked={!bulkToggleState.hide}
-  onChange={(val) => {
-    setBulkToggleState(s => ({ ...s, hide: !val }));
-    setBulkAction({ type: "hide", value: !val });
-    setConfirmOpen(true);
-  }}
-/>
+                  <BulkToggle
+                    icon={<Eye size={14} />}
+                    label="Visibility"
+                    checked={!bulkToggleState.hide}
+                    onChange={(val) => {
+                      setBulkToggleState(s => ({ ...s, hide: !val }));
+                      setBulkAction({ type: "hide", value: !val });
+                      setConfirmOpen(true);
+                    }}
+                  />
 
-<BulkToggle
-  icon={<MessageSquare size={14} />}
-  label="Chat"
-  checked={bulkToggleState.chat}
-  onChange={(val) => {
-    setBulkToggleState(s => ({ ...s, chat: val }));
-    setBulkAction({ type: "chat", value: val });
-    setConfirmOpen(true);
-  }}
-/>
+                  <BulkToggle
+                    icon={<MessageSquare size={14} />}
+                    label="Chat"
+                    checked={bulkToggleState.chat}
+                    onChange={(val) => {
+                      setBulkToggleState(s => ({ ...s, chat: val }));
+                      setBulkAction({ type: "chat", value: val });
+                      setConfirmOpen(true);
+                    }}
+                  />
 
-<BulkToggle
-  icon={<UserCheck size={14} />}
-  label="Username"
-  checked={bulkToggleState.username}
-  onChange={(val) => {
-    setBulkToggleState(s => ({ ...s, username: val }));
-    setBulkAction({ type: "username", value: val });
-    setConfirmOpen(true);
-  }}
-/>
+                  <BulkToggle
+                    icon={<UserCheck size={14} />}
+                    label="Username"
+                    checked={bulkToggleState.username}
+                    onChange={(val) => {
+                      setBulkToggleState(s => ({ ...s, username: val }));
+                      setBulkAction({ type: "username", value: val });
+                      setConfirmOpen(true);
+                    }}
+                  />
 
-<BulkToggle
-  icon={<Bell size={14} />}
-  label="Notification"
-  checked={bulkToggleState.notification}
-  onChange={(val) => {
-    setBulkToggleState(s => ({ ...s, notification: val }));
-    setBulkAction({ type: "notification", value: val });
-    setConfirmOpen(true);
-  }}
-/>
+                  <BulkToggle
+                    icon={<Bell size={14} />}
+                    label="Notification"
+                    checked={bulkToggleState.notification}
+                    onChange={(val) => {
+                      setBulkToggleState(s => ({ ...s, notification: val }));
+                      setBulkAction({ type: "notification", value: val });
+                      setConfirmOpen(true);
+                    }}
+                  />
                   <div className="ml-auto shrink-0">
                     <button
                       onClick={() => {
