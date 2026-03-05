@@ -101,42 +101,60 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-md border-t md:hidden animate-slide-down">
-          <ul className="flex flex-col items-start p-4 space-y-4 text-gray-800 font-medium">
-            <li className="hover:text-blue-600 w-full" onClick={() => setMenuOpen(false)}>
-              Home
-            </li>
-            <Link
-              href="/domainbuy"
-              className="hover:text-blue-600 w-full"
-              onClick={() => setMenuOpen(false)}
-            >
-              Buy
-            </Link>
-            <li
-              className="hover:text-blue-600 w-full cursor-pointer"
-              onClick={() => {
-                setMenuOpen(false)
-                handleAuthRedirect(router)
-              }}
-            >
-              Sell
-            </li>
-            <li className="hover:text-blue-600 w-full" onClick={() => setMenuOpen(false)}>
-              Contact
-            </li>
-            <button
-              onClick={() => {
-                setMenuOpen(false)
-                handleAuthRedirect(router)
-              }}
-              className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold px-5 py-2 rounded-full shadow hover:from-blue-600 hover:to-blue-700 transition w-full"
-            >
-              My Domz
-            </button>
-          </ul>
-        </div>
-      )}
+  <div className="md:hidden absolute left-4 right-4 top-20 z-50">
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6">
+
+      <ul className="flex flex-col gap-5 text-lg text-gray-800 font-medium">
+
+        <Link
+          href="/"
+          onClick={() => setMenuOpen(false)}
+          className="block hover:text-blue-600 transition"
+        >
+          Home
+        </Link>
+
+        <Link
+          href="/domainbuy"
+          onClick={() => setMenuOpen(false)}
+          className="block hover:text-blue-600 transition"
+        >
+          Buy
+        </Link>
+
+        <button
+          onClick={() => {
+            handleAuthRedirect(router);
+            setMenuOpen(false);
+          }}
+          className="text-left hover:text-blue-600 transition"
+        >
+          Sell
+        </button>
+
+        <Link
+          href="/contact"
+          onClick={() => setMenuOpen(false)}
+          className="block hover:text-blue-600 transition"
+        >
+          Contact
+        </Link>
+
+      </ul>
+
+      <button
+        onClick={() => {
+          handleAuthRedirect(router);
+          setMenuOpen(false);
+        }}
+        className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-full font-semibold shadow hover:from-blue-600 hover:to-blue-700 transition"
+      >
+        My Domz
+      </button>
+
+    </div>
+  </div>
+)}
     </nav>
   )
 }

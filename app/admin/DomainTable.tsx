@@ -49,7 +49,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
   }
   const handleConfirmDelete = () => {
     if (!deleteId) return
-    handleDelete(deleteId) // ✅ YOUR EXISTING DELETE HANDLER
+    handleDelete(deleteId) 
     setIsConfirmOpen(false)
     setDeleteId(null)
   }

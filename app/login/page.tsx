@@ -22,10 +22,6 @@ const Page = () => {
     terms: false,
   });
   const [loaderStatus, setLoaderStatus] = useState(false);
-  const [siteUnlocked, setSiteUnlocked] = useState(false);
-  const [sitePassword, setSitePassword] = useState("");
-  const [siteError, setSiteError] = useState("");
-
   const router = useRouter();
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,30 +31,7 @@ const Page = () => {
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
-  useEffect(() => {
-    axios.get("/api/site-status")
-      .then(() => setSiteUnlocked(true))
-      .catch(() => setSiteUnlocked(false));
-  }, []);
-
-  const unlockSite = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoaderStatus(true);
-
-    try {
-      await axios.post("/api/site-login", {
-        password: sitePassword,
-      });
-
-      setSiteUnlocked(true);
-      toast.success("Site unlocked");
-    } catch {
-      setSiteError("Invalid site password");
-    } finally {
-      setLoaderStatus(false);
-    }
-  };
-
+  
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoaderStatus(true);
@@ -118,38 +91,7 @@ const Page = () => {
     }
   };
   // 🔒 SITE PASSWORD GATE
-  if (!siteUnlocked) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <form
-          onSubmit={unlockSite}
-          className="w-full max-w-md p-6 rounded-xl shadow-md space-y-4"
-        >
-          <h1 className="text-xl font-semibold text-center">🔒 Private Access</h1>
-
-          <input
-            type="password"
-            placeholder="Enter site password"
-            className="w-full rounded-xl bg-blue-50 px-5 py-3
-                     focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={(e) => setSitePassword(e.target.value)}
-            required
-          />
-
-          {siteError && <p className="text-red-500 text-sm">{siteError}</p>}
-
-          <button
-            type="submit"
-            className="w-full rounded-full py-3
-                     bg-linear-to-r from-blue-500 to-blue-600
-                     text-white font-semibold"
-          >
-            Enter Site
-          </button>
-        </form>
-      </div>
-    );
-  }
+  
 
   if (loaderStatus) return <Loader />
   return (

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { ArrowUp } from 'lucide-react'
 import { handleAuthRedirect } from '../utils/checkAuth'
@@ -13,6 +14,7 @@ const Footer = () => {
   const router = useRouter()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const pathname = usePathname()
 
   // 👇 Show button only after scrolling down
   useEffect(() => {
@@ -134,7 +136,7 @@ const Footer = () => {
         </div>
       </footer>
 
-      {showScrollTop && (
+   {pathname === "/" && showScrollTop && (
         <a
           href="#navbar"
           aria-label="Scroll to top"

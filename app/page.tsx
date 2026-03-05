@@ -5,7 +5,6 @@ import Faq from '../components/Faq'
 import GetStarted from '../components/GetStarted'
 import Footer from '../components/Footer'
 import DiscoveryPartner from '../components/DiscoveryPartner'
-import bg from '../public/assets/background.webp'
 
 
 const page = () => {

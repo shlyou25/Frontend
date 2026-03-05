@@ -101,21 +101,49 @@ const NavbarComponenet = (props: NavbarTextProp) => {
             </svg>
           </button>
         </nav>
-        {menuOpen && (
-          <div className="md:hidden bg-white rounded-xl mx-4 mt-2 shadow-lg p-4">
-            <ul className="space-y-4 text-gray-800">
-              <Link href="/">Home</Link>
-              <Link href="/domainbuy">Buy</Link>
-              <li onClick={() => handleAuthRedirect(router)}>Sell</li>
-              <Link href="/contact">Contact</Link>
-              <Link href="/portfolio">
-                <button className="w-full mt-3 bg-linear-to-r from-blue-500 to-blue-600 text-white py-2 rounded-full">
-                  My Domz
-                </button>
-              </Link>
-            </ul>
-          </div>
-        )}
+       {menuOpen && (
+  <div className="md:hidden fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/20 backdrop-blur-sm">
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6">
+
+      <ul className="flex flex-col gap-5 text-lg text-gray-800 font-medium">
+
+        <Link href="/" onClick={() => setMenuOpen(false)} className="block">
+          Home
+        </Link>
+
+        <Link href="/domainbuy" onClick={() => setMenuOpen(false)} className="block">
+          Buy
+        </Link>
+
+        <button
+          onClick={() => {
+            handleAuthRedirect(router);
+            setMenuOpen(false);
+          }}
+          className="text-left"
+        >
+          Sell
+        </button>
+
+        <Link href="/contact" onClick={() => setMenuOpen(false)} className="block">
+          Contact
+        </Link>
+
+      </ul>
+
+      <button
+        onClick={() => {
+          handleAuthRedirect(router);
+          setMenuOpen(false);
+        }}
+        className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-full font-semibold"
+      >
+        My Domz
+      </button>
+
+    </div>
+  </div>
+)}
         <div className="flex flex-col items-center justify-center text-center pt-14 pb-1.5 relative z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
             <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">
