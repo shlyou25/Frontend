@@ -189,7 +189,12 @@ const Myportfolio = () => {
     | { type: 'notification'; value: boolean }
     | { type: 'delete' }
     | null;
-
+const [bulkToggleState, setBulkToggleState] = useState({
+  hide: false,
+  chat: false,
+  username: false,
+  notification: false
+});
 
   const [loading, setLoading] = useState(true);
   const [userDomains, setUserDomains] = useState<DomainType[]>([]);
@@ -474,6 +479,28 @@ const Myportfolio = () => {
       "my-domains.xlsx"
     );
   };
+  const BulkToggle = ({
+  icon,
+  label,
+  checked,
+  onChange
+}: {
+  icon: React.ReactNode
+  label: string
+  checked: boolean
+  onChange: (val: boolean) => void
+}) => (
+  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-medium">
+    {icon}
+    <span>{label}</span>
+
+    <Toggle
+      id={`bulk-${label}`}
+      checked={checked}
+      onChange={onChange}
+    />
+  </div>
+);
   const dateFilteredDomains = useMemo(() => {
     if (dateRange === 'all') return searchedDomains;
     const now = new Date();
@@ -633,98 +660,49 @@ const Myportfolio = () => {
                       selected
                     </span>
                   </div>
-                  <button
-                    onClick={() => {
-                      setBulkAction({ type: 'hide', value: true });
-                      setConfirmOpen(true);
-                    }}
-                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
-        bg-slate-100 text-slate-700 text-xs font-medium
-        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                  >
-                    <EyeOff size={14} />
-                    Hide
-                  </button>
+    <BulkToggle
+  icon={<Eye size={14} />}
+  label="Visibility"
+  checked={!bulkToggleState.hide}
+  onChange={(val) => {
+    setBulkToggleState(s => ({ ...s, hide: !val }));
+    setBulkAction({ type: "hide", value: !val });
+    setConfirmOpen(true);
+  }}
+/>
 
-                  <button
-                    onClick={() => {
-                      setBulkAction({ type: 'hide', value: false });
-                      setConfirmOpen(true);
-                    }}
-                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
-        bg-slate-100 text-slate-700 text-xs font-medium
-        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                  >
-                    <Eye size={14} />
-                    Unhide
-                  </button>
+<BulkToggle
+  icon={<MessageSquare size={14} />}
+  label="Chat"
+  checked={bulkToggleState.chat}
+  onChange={(val) => {
+    setBulkToggleState(s => ({ ...s, chat: val }));
+    setBulkAction({ type: "chat", value: val });
+    setConfirmOpen(true);
+  }}
+/>
 
-                  {/* Chat */}
-                  <button
-                    onClick={() => {
-                      setBulkAction({ type: 'chat', value: true });
-                      setConfirmOpen(true);
-                    }}
-                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
-        bg-blue-600 text-white text-xs font-medium
-        hover:bg-blue-700 transition whitespace-nowrap shrink-0"
-                  >
-                    <MessageSquare size={14} />
-                    Enable Chat
-                  </button>
+<BulkToggle
+  icon={<UserCheck size={14} />}
+  label="Username"
+  checked={bulkToggleState.username}
+  onChange={(val) => {
+    setBulkToggleState(s => ({ ...s, username: val }));
+    setBulkAction({ type: "username", value: val });
+    setConfirmOpen(true);
+  }}
+/>
 
-                  <button
-                    onClick={() => {
-                      setBulkAction({ type: 'chat', value: false });
-                      setConfirmOpen(true);
-                    }}
-                    className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg
-        bg-slate-100 text-slate-700 text-xs font-medium
-        hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                  >
-                    <MessageSquareOff size={14} />
-                    Disable Chat
-                  </button>
-
-                  {/* Username */}
-                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                    onClick={() => {
-                      setBulkAction({ type: 'username', value: false });
-                      setConfirmOpen(true);
-                    }}
-                  >
-                    <UserX size={14} />
-                    Hide Username
-                  </button>
-
-                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                    onClick={() => {
-                      setBulkAction({ type: 'username', value: true });
-                      setConfirmOpen(true);
-                    }}
-                  >
-                    <UserCheck size={14} />
-                    Unhide Username
-                  </button>
-                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                    onClick={() => {
-                      setBulkAction({ type: 'notification', value: false });
-                      setConfirmOpen(true);
-                    }}
-                  >
-                    <BellOff size={14} />
-                    Disable Email Notification
-                  </button>
-
-                  <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition whitespace-nowrap shrink-0"
-                    onClick={() => {
-                      setBulkAction({ type: 'notification', value: true });
-                      setConfirmOpen(true);
-                    }}
-                  >
-                    <Bell size={14} />
-                    Enable Email Notification
-                  </button>
+<BulkToggle
+  icon={<Bell size={14} />}
+  label="Notification"
+  checked={bulkToggleState.notification}
+  onChange={(val) => {
+    setBulkToggleState(s => ({ ...s, notification: val }));
+    setBulkAction({ type: "notification", value: val });
+    setConfirmOpen(true);
+  }}
+/>
                   <div className="ml-auto shrink-0">
                     <button
                       onClick={() => {
