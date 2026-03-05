@@ -42,6 +42,9 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
   })
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [isPromotedDomain, setIsPromotedDomain] = useState<boolean>(false);
+  const [bulkMode, setBulkMode] = useState(false);
+  const [selectedDomains, setSelectedDomains] = useState<DomainItem[]>([]);
+  const [pendingBulkDelete, setPendingBulkDelete] = useState<DomainItem[]>([]);
 
   const openDeleteModal = (domainId: string) => {
     setDeleteId(domainId)
@@ -49,7 +52,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
   }
   const handleConfirmDelete = () => {
     if (!deleteId) return
-    handleDelete(deleteId) 
+    handleDelete(deleteId)
     setIsConfirmOpen(false)
     setDeleteId(null)
   }
@@ -65,6 +68,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
       toast.error(err?.response?.data?.message);
     }
   };
+
   const filteredData = useMemo(() => {
     return data.filter(item => {
       const searchValue = search.toLowerCase();
@@ -85,6 +89,50 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
       return matchesText && matchesDate && matchesStatus;
     });
   }, [data, search, dateFilter, statusFilter]);
+  const isSelected = (id: string) =>
+    selectedDomains.some((d) => d.domainId === id);
+
+  const isAllSelected =
+    filteredData.length > 0 &&
+    selectedDomains.length === filteredData.length;
+
+  const toggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedDomains([]);
+    } else {
+      setSelectedDomains(filteredData);
+    }
+  };
+
+  const toggleRow = (domain: DomainItem) => {
+    setSelectedDomains((prev) =>
+      prev.some((d) => d.domainId === domain.domainId)
+        ? prev.filter((d) => d.domainId !== domain.domainId)
+        : [...prev, domain]
+    );
+  };
+  const handleBulkDelete = async (domains: DomainItem[]) => {
+    if (!domains.length) return;
+    const ids = domains.map((d) => d.domainId);
+    try {
+      
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_apiLink}domain/admin/domain/bulk-delete`,
+        {
+          data: { domainIds: ids },
+          withCredentials: true,
+        }
+      );
+      toast.success(`${ids.length} domains deleted`);
+
+      setSelectedDomains([]);
+      setBulkMode(false);
+
+      onRequestUpdated();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Bulk delete failed");
+    }
+  };
 
   const exportToExcel = () => {
     const sheetData = filteredData.map((item, index) => ({
@@ -155,6 +203,15 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
             className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
+            onClick={() => {
+              setBulkMode((prev) => !prev);
+              setSelectedDomains([]);
+            }}
+            className="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50"
+          >
+            {bulkMode ? "Cancel Bulk Delete" : "Bulk Delete"}
+          </button>
+          <button
             onClick={exportToExcel}
             className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition"
           >
@@ -162,10 +219,40 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
           </button>
         </div>
       </div>
+
+      {/* BULK ACTION BAR */}
+      {bulkMode && selectedDomains.length > 0 && (
+        <div className="px-4 py-3 border-b bg-red-50 flex items-center justify-between">
+          <span className="text-sm text-red-700">
+            {selectedDomains.length} selected
+          </span>
+
+          <button
+            onClick={() => {
+              setPendingBulkDelete(selectedDomains);
+              setIsConfirmOpen(true);
+            }}
+            className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+
       <div className="overflow-x-auto max-h-150 overflow-y-auto">
         <table className="min-w-full text-sm border-collapse">
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs sticky top-0 z-20">
             <tr>
+              {bulkMode && (
+                <th className="px-6 py-3">
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    onChange={toggleSelectAll}
+                  />
+                </th>
+              )}
+
               <th className="px-6 py-3 text-left">S.No.</th>
               <th className="px-6 py-3 text-left">Domain</th>
               <th className="px-6 py-3 text-left">Owner</th>
@@ -179,6 +266,18 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
           <tbody className="divide-y">
             {filteredData.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50 transition">
+
+                {bulkMode && (
+                  <td className="px-6 py-4">
+                    <input
+                      type="checkbox"
+                      checked={isSelected(item.domainId)}
+                      onChange={() => toggleRow(item)}
+                    />
+                  </td>
+                )}
+
+                <td className="px-6 py-4">{index + 1}</td>
                 <td className="px-6 py-4">{index + 1}</td>
                 <td className="px-6 py-4 font-medium">
                   {item.finalUrl ? (
@@ -260,8 +359,20 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
       </Modal>
       <Confirmation
         open={isConfirmOpen}
-        onCancel={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setIsConfirmOpen(false);
+          setPendingBulkDelete([]);
+        }}
+        onConfirm={async () => {
+          if (pendingBulkDelete.length) {
+            await handleBulkDelete(pendingBulkDelete);
+            setPendingBulkDelete([]);
+          } else {
+            handleConfirmDelete(); // existing single delete
+          }
+
+          setIsConfirmOpen(false);
+        }}
       />
     </div>
   );
