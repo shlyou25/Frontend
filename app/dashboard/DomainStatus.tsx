@@ -210,26 +210,28 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
                     {new Date(domain.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4 border-b text-sm text-gray-900">
-                    <span
-                      title={
-                        domain.status === "Pass"
-                          ? "To delete this name from your portfolio go to 'My Domains'"
-                          : "Delete this name from your account"
-                      }
-                    >
-                      <Trash2
-                        onClick={() => {
-                          if (domain.status === "Pass") return;
-                          setPendingDelete([domain]);
-                          setConfirmOpen(true);
-                        }}
-                        className={`${domain.status === "Pass"
-                            ? "text-gray-400 opacity-50 cursor-not-allowed"
-                            : "text-red-600 hover:text-red-700 cursor-pointer"
-                          }`}
-                      />
-                    </span>
-                  </td>
+  <span
+    title={
+      domain.status === "Pass"
+        ? "To delete this name from your portfolio go to 'My Domains'"
+        : "Delete this name from your account"
+    }
+    className="inline-block"
+  >
+    <Trash2
+      onClick={() => {
+        if (domain.status === "Pass") return;
+        setPendingDelete([domain]);
+        setConfirmOpen(true);
+      }}
+      className={`${
+        domain.status === "Pass"
+          ? "text-gray-400 opacity-50 cursor-not-allowed"
+          : "text-red-600 hover:text-red-700 cursor-pointer"
+      }`}
+    />
+  </span>
+</td>
 
                 </tr>
               ))

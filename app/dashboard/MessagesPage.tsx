@@ -293,7 +293,7 @@ export default function MessagesPage() {
                 }`}
             >
               {/* Avatar */}
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center text-sm font-semibold">
+              <div className="h-9 w-9 rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center text-sm font-semibold">
                 {c.user?.charAt(0)?.toUpperCase()}
               </div>
 

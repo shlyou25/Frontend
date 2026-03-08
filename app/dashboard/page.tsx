@@ -10,7 +10,7 @@ import Loader from "../../components/Loader";
 import { logoutHandler } from "../../utils/auth";
 import Myportfolio from "./myportfolio";
 import Profile from "./profile";
-import Pricing from "../../utils/Test";
+import Pricing from "../../utils/Plan";
 import MessagesPage from "./MessagesPage";
 import {User,Briefcase,CreditCard,Layers,MessageSquare,LogOut,Menu} from "lucide-react";
 
@@ -34,6 +34,13 @@ const Page = () => {
     };
     checkAuth();
   }, [router]);
+  useEffect(() => {
+  const hash = window.location.hash
+
+  if (hash === "#plan") {
+    setActiveSection("Pricing")
+  }
+}, [])
 
   const sidebarLinks = [{ label: "Profile", icon: User, onClick: () => setActiveSection("Profile"), },
   {

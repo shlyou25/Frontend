@@ -19,5 +19,5 @@ export const handleAuthRedirect = async (
     router: AppRouterInstance
   ) => {
     const status = await checkAuth()
-    router.push(status === "authenticated" ? "/dashboard" : "/login")
+    router.push(status === "authenticated" ? "/dashboard#plan" : "/login")
   }
