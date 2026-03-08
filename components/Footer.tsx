@@ -97,7 +97,6 @@ const Footer = () => {
                   <li><Link href="/privacy" className="hover:opacity-75">Privacy</Link></li>
                 </ul>
               </div>
-
               <div>
                 <p className="font-medium text-gray-900">Support</p>
                 <ul className="mt-4 space-y-3 text-sm">

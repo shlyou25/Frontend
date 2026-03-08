@@ -45,11 +45,10 @@ const Page = () => {
         },
         { withCredentials: true }
       );
-
+     
       // 🔐 Admin OTP
       if (res.data?.code === "ADMIN_OTP_REQUIRED") {
         toast.info("OTP sent to your email");
-
         router.push("/verify");
         return;
       }

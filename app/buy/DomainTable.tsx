@@ -449,7 +449,7 @@ border-b border-gray-200/70">
             </p>
           </div>
         </Modal>
-        <Modal isOpen={open} onClose={() => setOpen(false)} title="Contact Seller">
+        <Modal isOpen={open} onClose={() => setOpen(false)} title="Contact Seller" position="top">
           {selectedDomain && (
             <DomainReplyEmail
               domainId={selectedDomain.domainId}

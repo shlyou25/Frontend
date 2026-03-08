@@ -1,6 +1,8 @@
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 
+type ModalPosition = "center" | "top" | "bottom";
+
 const sizeClasses: Record<ModalSize, string> = {
   sm: "max-w-md",
   md: "max-w-3xl",      // current default
@@ -15,17 +17,24 @@ const Modal = ({
   title,
   children,
   size = "md",
+  position = "center",
 }: {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
   size?: ModalSize;
+  position?: ModalPosition;
+  
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+   <div
+      className={`fixed inset-0 z-50 flex bg-black/40
+      ${position === "bottom" ? "items-end justify-center pb-6" : "items-center justify-center"}
+      `}
+    >
       <div
         className={`relative w-full mx-4 bg-white rounded-xl shadow-lg ${sizeClasses[size]}`}
       >
