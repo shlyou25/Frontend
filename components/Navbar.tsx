@@ -58,7 +58,7 @@ const Navbar = () => {
               </ul>
             </div>
           </li>
-          <Link href="/domainbuy" className="hover:text-blue-600 transition cursor-pointer">
+          <Link href="/buy" className="hover:text-blue-600 transition cursor-pointer">
             Buy
           </Link>
           <li
@@ -115,7 +115,7 @@ const Navbar = () => {
         </Link>
 
         <Link
-          href="/domainbuy"
+          href="/buy"
           onClick={() => setMenuOpen(false)}
           className="block hover:text-blue-600 transition"
         >

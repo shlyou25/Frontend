@@ -68,7 +68,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
                   </ul>
                 </div>
               </li>
-              <Link href="/domainbuy" className="hover:text-blue-600 cursor-pointer">
+              <Link href="/buy" className="hover:text-blue-600 cursor-pointer">
                 Buy
               </Link>
 
@@ -111,7 +111,7 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           Home
         </Link>
 
-        <Link href="/domainbuy" onClick={() => setMenuOpen(false)} className="block">
+        <Link href="/buy" onClick={() => setMenuOpen(false)} className="block">
           Buy
         </Link>
 
