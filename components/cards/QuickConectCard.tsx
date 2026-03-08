@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { handleAuthRedirect } from "@/utils/checkAuth";
+import { useRouter } from 'next/navigation'
 import React from "react";
 
 interface QuickConectCardInterface {
@@ -9,6 +10,7 @@ interface QuickConectCardInterface {
 }
 
 const QuickConectCard = (props: QuickConectCardInterface) => {
+  const router = useRouter()
   return (
     <section className="relative py-28 px-6 overflow-hidden">
       <div
@@ -43,8 +45,8 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
 
           {/* CTA */}
           {props.mainButton && (
-            <Link href="/plan">
-              <button
+            <div >
+              <button  onClick={() => handleAuthRedirect(router)}
                 className="
                 group
                 relative
@@ -66,7 +68,7 @@ const QuickConectCard = (props: QuickConectCardInterface) => {
               >
                 {props.mainButton}
               </button>
-            </Link>
+            </div>
           )}
         </div>
       </div>
