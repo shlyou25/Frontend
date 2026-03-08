@@ -81,7 +81,7 @@ const Footer = () => {
               <div>
                 <p className="font-medium text-gray-900">Domains</p>
                 <ul className="mt-4 space-y-3 text-sm">
-                  <li><Link href="/domainbuy" className="hover:opacity-75">Buy Domains</Link></li>
+                  <li><Link href="/buy" className="hover:opacity-75">Buy Domains</Link></li>
                   <li
                     onClick={() => handleAuthRedirect(router)}
                     className="cursor-pointer hover:opacity-75"
