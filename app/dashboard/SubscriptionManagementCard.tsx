@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { PlanCardInterface } from '../plan/plancard';
+import { PlanCardInterface } from '../../components/plan/plancard';
 import Pricing from '../../utils/Plan';
 import Modal from '../../components/model';
 
