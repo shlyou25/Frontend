@@ -44,6 +44,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [authPopupOpen, setAuthPopupOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modalPos, setModalPos] = useState({ top: 0, left: 0 });
   const totalPages = Math.ceil(total / limit);
   const hasActiveFilters =
     filters.extensions.length ||
@@ -335,13 +336,20 @@ border-b border-gray-200/70">
                         <div className="relative group inline-flex justify-center">
                           <button
                             type="button"
-                            onClick={() => {
+                            onClick={(e) => {
                               if (!isAuthenticated) {
                                 setAuthPopupOpen(true);
                                 return;
                               }
 
                               if (!d.isChatActive) return;
+
+                              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+
+                              setModalPos({
+                                top: rect.bottom + window.scrollY + 8,
+                                left: rect.left + window.scrollX
+                              });
 
                               setSelectedDomain(d);
                               setOpen(true);

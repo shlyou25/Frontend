@@ -35,7 +35,7 @@ const Hero = () => {
         {/* CTA */}
         <div className="flex gap-4 justify-center mt-10">
           <Link
-            href="/domainbuy"
+            href="/buy"
             className="bg-blue-600 text-white px-8 py-3 rounded-full font-medium shadow-md hover:bg-blue-700 transition w-32"
           >
             Buy

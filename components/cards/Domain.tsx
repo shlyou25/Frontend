@@ -13,7 +13,7 @@ const Domain: React.FC<DomainProps> = ({ name }) => {
   return (
     <div
       onClick={() =>
-        router.push(`/domainbuy?filter=${encodeURIComponent(name)}`)
+        router.push(`/buy?filter=${encodeURIComponent(name)}`)
       }
       className="
     group

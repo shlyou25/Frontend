@@ -25,15 +25,20 @@ const Modal = ({
   children: React.ReactNode;
   size?: ModalSize;
   position?: ModalPosition;
-  
+
 }) => {
   if (!isOpen) return null;
 
   return (
-   <div
+    <div
       className={`fixed inset-0 z-50 flex bg-black/40
-      ${position === "bottom" ? "items-end justify-center pb-6" : "items-center justify-center"}
-      `}
+  ${position === "top"
+          ? "items-start justify-center pt-10"
+          : position === "bottom"
+            ? "items-end justify-center pb-10"
+            : "items-center justify-center"
+        }
+  `}
     >
       <div
         className={`relative w-full mx-4 bg-white rounded-xl shadow-lg ${sizeClasses[size]}`}
