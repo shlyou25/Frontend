@@ -32,6 +32,12 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
   const [loaderStatus, setLoaderStatus] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [domainModalOpen, setDomainModalOpen] = useState(false);
+  const [domainCount, setDomainCount] = useState("");
+  const [pendingApproval, setPendingApproval] = useState<{
+    userId: string;
+    domains: string;
+  } | null>(null);
 
 
   const approvePlan = async (
@@ -146,6 +152,15 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
       "PlanRequests.xlsx"
     );
   };
+  const confirmDomainApproval = () => {
+    if (!pendingApproval) return;
+
+    approvePlan(pendingApproval.userId, domainCount);
+
+    setDomainModalOpen(false);
+    setDomainCount("");
+    setPendingApproval(null);
+  };
 
 
   if (loaderStatus) return <Loader />
@@ -200,8 +215,8 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
               <th className="px-6 py-3 text-left">Status</th>
               <th className="px-6 py-3 text-left">Requested On</th>
               {filteredData.some(item => item.status === "Pending") && (
-  <th className="px-6 py-3 text-left">Action</th>
-)}
+                <th className="px-6 py-3 text-left">Action</th>
+              )}
               <th className="px-6 py-3 text-left">Delete</th>
             </tr>
           </thead>
@@ -237,29 +252,39 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
 
-               {item.status === "Pending" && (
-  <td className="px-6 py-4">
-    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-      <button
-        onClick={() => approvePlan(item.userId._id, item.domains)}
-        className="px-3 py-1.5 text-xs font-semibold rounded-md
+                {item.status === "Pending" && (
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <button
+                        onClick={() => {
+                          if (item.domains === "5000+") {
+                            setPendingApproval({
+                              userId: item.userId._id,
+                              domains: item.domains
+                            });
+                            setDomainModalOpen(true);
+                          } else {
+                            approvePlan(item.userId._id, item.domains);
+                          }
+                        }}
+                        className="px-3 py-1.5 text-xs font-semibold rounded-md
         bg-green-100 text-green-700 hover:bg-green-200
         transition w-full sm:w-auto"
-      >
-        Accept
-      </button>
+                      >
+                        Accept
+                      </button>
 
-      <button
-        onClick={() => rejectPlan(item.userId._id, item.domains)}
-        className="px-3 py-1.5 text-xs font-semibold rounded-md
+                      <button
+                        onClick={() => rejectPlan(item.userId._id, item.domains)}
+                        className="px-3 py-1.5 text-xs font-semibold rounded-md
         bg-red-100 text-red-700 hover:bg-red-200
         transition w-full sm:w-auto"
-      >
-        Reject
-      </button>
-    </div>
-  </td>
-)}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </td>
+                )}
                 <td className="px-6 py-4 cursor-pointer">
                   <Trash2
                     className="w-5 h-5 cursor-pointer hover:text-red-500"
@@ -282,6 +307,41 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
         <pre className="text-xs">
           {JSON.stringify(selectedRequest, null, 2)}
         </pre>
+      </Modal>
+      <Modal
+        isOpen={domainModalOpen}
+        onClose={() => setDomainModalOpen(false)}
+        title="Assign Domains"
+      >
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-gray-600">
+            Enter number of domains to assign
+          </p>
+
+          <input
+            type="number"
+            placeholder="Enter domain count"
+            value={domainCount}
+            onChange={(e) => setDomainCount(e.target.value)}
+            className="border rounded-lg px-3 py-2 text-sm"
+          />
+
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setDomainModalOpen(false)}
+              className="px-4 py-2 text-sm bg-gray-100 rounded-lg"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={confirmDomainApproval}
+              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
       </Modal>
       <Confirmation
         open={isConfirmOpen}
