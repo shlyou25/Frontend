@@ -529,7 +529,7 @@ const Myportfolio = () => {
   return (
     <div className="lg:px-[10%] lg:pt-10">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-6 flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4">
           <button
             onClick={() => setDomainStatus(false)}
             className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200

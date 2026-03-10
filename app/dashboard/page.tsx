@@ -144,11 +144,10 @@ const Page = () => {
                   text-sm font-medium
                   transition
 
-                  ${
-                    isActive
+                  ${isActive
                       ? "bg-blue-50 text-blue-600"
                       : "text-gray-700 hover:bg-gray-100"
-                  }
+                    }
 
                   `}
                 >
@@ -176,7 +175,7 @@ const Page = () => {
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-8">
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto cursor-pointer">
 
             {activeSection === "Profile" && <Profile />}
 
