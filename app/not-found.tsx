@@ -35,7 +35,7 @@ export default function NotFound() {
           Home
         </Link>
         <Link
-          href="/domainbuy"
+          href="/buy"
           className="underline hover:text-gray-900 transition"
         >
           Buy

@@ -18,11 +18,13 @@ interface PlanRequestTableProps {
   total: number;
   pendingCount: number;
   onRequestUpdated: () => void;
-  onRequestUpdatedDomain: ()=>void;
+  onRequestUpdatedDomain: () => void;
 }
 
 
-const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: PlanRequestTableProps) => {
+const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: PlanRequestTableProps) => {
+  console.log(data, 'hhhhhh');
+
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [open, setOpen] = useState(false);
@@ -33,13 +35,13 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
 
 
   const approvePlan = async (
-    userId: string, title: string
+    userId: string, domains: string
   ) => {
     if (loaderStatus) return;
     setLoaderStatus(true);
     const payload = {
       userId,
-      title,
+      domains
     };
     try {
       const res = await axios.post(
@@ -59,13 +61,13 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
     }
   };
   const rejectPlan = async (
-    userId: string, planTitle: string
+    userId: string, domains: string
   ) => {
     if (loaderStatus) return;
     setLoaderStatus(true);
     const payload = {
       userId,
-      planTitle,
+      domains
     };
     try {
       const res = await axios.post(
@@ -109,7 +111,7 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
       const matchesText =
         item.userId.name?.toLowerCase().includes(searchValue) ||
         item.userId.email?.toLowerCase().includes(searchValue) ||
-        item.planTitle?.toLowerCase().includes(searchValue);
+        item.sellerType?.toLowerCase().includes(searchValue);
       const matchesDate = dateFilter
         ? item.createdAt.slice(0, 10) === dateFilter
         : true;
@@ -122,10 +124,10 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
       "S.No": index + 1,
       UserName: item.userId.name,
       Email: item.userId.email,
-      PlanName: item.planTitle,
-      Price: item.price,
-      Period: item.per,
-      DomainsAllowed: item.featureLimit,
+      DomainsRequested: item.domains,
+      SellerType: item.sellerType,
+      Marketplace: item.marketplace,
+      Portfolio: item.portfolio,
       Status: item.status,
       RequestedOn: new Date(item.createdAt).toLocaleDateString(),
     }));
@@ -186,16 +188,20 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs sticky top-0 z-20">
             <tr>
               <th className="px-6 py-3 text-left">S.No.</th>
-              <th className="px-6 py-3 text-left">Plan</th>
-              <th className="px-6 py-3 text-left">Price</th>
-              <th className="px-6 py-3 text-left">Period</th>
-              <th className="px-6 py-3 text-left">Domains</th>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">User</th>
+              <th className="px-6 py-3 text-left">Name</th>
               <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Phone</th>
+              <th className="px-6 py-3 text-left">Domains</th>
+              <th className="px-6 py-3 text-left">Marketplace</th>
+              <th className="px-6 py-3 text-left">Seller Type</th>
+              <th className="px-6 py-3 text-left">portfolio</th>
+
+              <th className="px-6 py-3 text-left">comments</th>
+              <th className="px-6 py-3 text-left">Status</th>
               <th className="px-6 py-3 text-left">Requested On</th>
-              <th className="px-6 py-3 text-left">Action</th>
+              {filteredData.some(item => item.status === "Pending") && (
+  <th className="px-6 py-3 text-left">Action</th>
+)}
               <th className="px-6 py-3 text-left">Delete</th>
             </tr>
           </thead>
@@ -204,10 +210,14 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
             {filteredData.map((item, index) => (
               <tr key={item._id} className="hover:bg-gray-50 transition">
                 <td className="px-6 py-4">{index + 1}</td>
-                <td className="px-6 py-4 font-medium">{item.planTitle}</td>
-                <td className="px-6 py-4">{item.price}</td>
-                <td className="px-6 py-4">{item.per}</td>
-                <td className="px-6 py-4">{item.featureLimit}</td>
+                <td className="px-6 py-4 font-medium">{item?.userId.name}</td>
+                <td className="px-6 py-4">{item?.userId?.email}</td>
+                <td className="px-6 py-4">{item?.userId?.phoneNumber}</td>
+                <td className="px-6 py-4">{item.domains}</td>
+                <td className="px-6 py-4">{item.marketplace}</td>
+                <td className="px-6 py-4">{item.sellerType}</td>
+                <td className="px-6 py-4">{item.portfolio}</td>
+                <td className="px-6 py-4">{item.comments}</td>
 
                 <td className="px-6 py-4">
                   <span
@@ -223,35 +233,33 @@ const PlanRequestTable = ({ data, onRequestUpdated,onRequestUpdatedDomain }: Pla
                     {item.status}
                   </span>
                 </td>
-
-                <td className="px-6 py-4">{item.userId.name}</td>
-                <td className="px-6 py-4">{item.userId.email}</td>
-                <td className="px-6 py-4">{item.userId.phoneNumber}</td>
                 <td className="px-6 py-4">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
 
-                <td className="px-6 py-4">
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    <button
-                      onClick={() => approvePlan(item.userId._id, item.planTitle)}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-md
-                 bg-green-100 text-green-700 hover:bg-green-200
-                 transition w-full sm:w-auto"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => rejectPlan(item.userId._id, item.planTitle)}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-md
-                 bg-red-100 text-red-700 hover:bg-red-200
-                 transition w-full sm:w-auto"
-                    >
-                      Reject
-                    </button>
+               {item.status === "Pending" && (
+  <td className="px-6 py-4">
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      <button
+        onClick={() => approvePlan(item.userId._id, item.domains)}
+        className="px-3 py-1.5 text-xs font-semibold rounded-md
+        bg-green-100 text-green-700 hover:bg-green-200
+        transition w-full sm:w-auto"
+      >
+        Accept
+      </button>
 
-                  </div>
-                </td>
+      <button
+        onClick={() => rejectPlan(item.userId._id, item.domains)}
+        className="px-3 py-1.5 text-xs font-semibold rounded-md
+        bg-red-100 text-red-700 hover:bg-red-200
+        transition w-full sm:w-auto"
+      >
+        Reject
+      </button>
+    </div>
+  </td>
+)}
                 <td className="px-6 py-4 cursor-pointer">
                   <Trash2
                     className="w-5 h-5 cursor-pointer hover:text-red-500"

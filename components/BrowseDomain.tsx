@@ -27,7 +27,7 @@ const BrowseDomain = () => {
   }, [])
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/domainbuy?filter=${encodeURIComponent(filter)}`);
+    router.push(`/buy?filter=${encodeURIComponent(filter)}`);
   };
   return (
     <section className="py-20 px-6">

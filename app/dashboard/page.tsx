@@ -12,7 +12,7 @@ import Myportfolio from "./myportfolio";
 import Profile from "./profile";
 import Pricing from "../../utils/Plan";
 import MessagesPage from "./MessagesPage";
-import {User,Briefcase,CreditCard,Layers,MessageSquare,LogOut,Menu} from "lucide-react";
+import { User, Briefcase, CreditCard, Layers, MessageSquare, LogOut, Menu } from "lucide-react";
 
 
 const Page = () => {
@@ -35,12 +35,12 @@ const Page = () => {
     checkAuth();
   }, [router]);
   useEffect(() => {
-  const hash = window.location.hash
+    const hash = window.location.hash
 
-  if (hash === "#plan") {
-    setActiveSection("Pricing")
-  }
-}, [])
+    if (hash === "#plan") {
+      setActiveSection("Pricing")
+    }
+  }, [])
 
   const sidebarLinks = [{ label: "Profile", icon: User, onClick: () => setActiveSection("Profile"), },
   {
@@ -72,7 +72,7 @@ const Page = () => {
 
   if (loading) return <Loader />;
   return (
-    <div className="flex flex-col bg-white py-10">
+    <div className="flex flex-col bg-white h-screen overflow-hidden">
       <NavbarComponenet text="My Domz" IsParaText={false} searchbarStatus={false}
       />
       <div className="flex sm:hidden justify-between items-center px-4 py-3 border-b">
@@ -86,13 +86,13 @@ const Page = () => {
         </button>
       </div>
 
-      <div className="relative flex flex-1">
+      <div className="relative flex flex-1 overflow-hidden">
         <aside
           className={`
     fixed sm:sticky
     top-0 sm:top-22
     left-0
-    h-full sm:h-auto
+    h-screen sm:h-auto
     w-64
     bg-white
     border-r border-gray-200
@@ -131,14 +131,15 @@ const Page = () => {
             className="fixed inset-0 bg-black/30 z-30 sm:hidden"
           />
         )}
-        <main className="flex-1 px-4 sm:px-8 py-6 mt-2 sm:mt-0">
+        <main className="flex-1 px-4 sm:px-8 py-6 mt-2 sm:mt-0 overflow-y-auto">
           {activeSection === "Profile" && <Profile />}
           {activeSection === "Pricing" && <Pricing />}
           {activeSection === "Subscription" && <SubscriptionManagementCard />}
           {activeSection === "billing" && <PaymentSettingCard />}
-
           {activeSection === "MessagesPage" && <MessagesPage />}
           {activeSection === "myPortfolio" && <Myportfolio />}
+
+        
         </main>
       </div>
       <Footer />

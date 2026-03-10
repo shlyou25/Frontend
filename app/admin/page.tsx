@@ -67,6 +67,14 @@ export interface PlanRequestItem {
     name?: string;
     phoneNumber?: string;
   };
+  comments:string,
+  domains:string,
+  marketplace:string,
+  portfolio:string,
+  sellerType:string,
+  social:string,
+  type:string,
+  website:string,
   planTitle: string;
   price: number;
   per: "Month" | "Year";
@@ -143,6 +151,7 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}planrequest/getallplanrequest`,
           { withCredentials: true }
         );
+       
         setPlanResponse(res.data);
       } catch {
         toast.error("Error fetching Plan Requests");
