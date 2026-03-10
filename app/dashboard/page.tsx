@@ -1,4 +1,5 @@
 "use client";
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,14 +13,25 @@ import Myportfolio from "./myportfolio";
 import Profile from "./profile";
 import Pricing from "../../utils/Plan";
 import MessagesPage from "./MessagesPage";
-import { User, Briefcase, CreditCard, Layers, MessageSquare, LogOut, Menu } from "lucide-react";
 
+import {
+  User,
+  Briefcase,
+  CreditCard,
+  Layers,
+  MessageSquare,
+  LogOut,
+  Menu,
+  X
+} from "lucide-react";
 
 const Page = () => {
   const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("Profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -32,118 +44,163 @@ const Page = () => {
         router.push("/signup");
       }
     };
+
     checkAuth();
   }, [router]);
+
   useEffect(() => {
-    const hash = window.location.hash
+    const hash = window.location.hash;
 
     if (hash === "#plan") {
-      setActiveSection("Pricing")
+      setActiveSection("Pricing");
     }
-  }, [])
+  }, []);
 
-  const sidebarLinks = [{ label: "Profile", icon: User, onClick: () => setActiveSection("Profile"), },
-  {
-    label: "My Portfolio",
-    icon: Briefcase,
-    onClick: () => setActiveSection("myPortfolio"),
-  },
-  {
-    label: "Subscription",
-    icon: CreditCard,
-    onClick: () => setActiveSection("Subscription"),
-  },
-  {
-    label: "Plans",
-    icon: Layers,
-    onClick: () => setActiveSection("Pricing"),
-  },
-  {
-    label: "Message",
-    icon: MessageSquare,
-    onClick: () => setActiveSection("MessagesPage"),
-  },
-  {
-    label: "Logout",
-    icon: LogOut,
-    onClick: () => logoutHandler(router),
-  },
+  const sidebarLinks = [
+    { label: "Profile", icon: User, key: "Profile" },
+    { label: "My Portfolio", icon: Briefcase, key: "myPortfolio" },
+    { label: "Subscription", icon: CreditCard, key: "Subscription" },
+    { label: "Plans", icon: Layers, key: "Pricing" },
+    { label: "Message", icon: MessageSquare, key: "MessagesPage" },
   ];
 
   if (loading) return <Loader />;
-  return (
-    <div className="flex flex-col bg-white h-screen overflow-hidden">
-      <NavbarComponenet text="My Domz" IsParaText={false} searchbarStatus={false}
-      />
-      <div className="flex sm:hidden justify-between items-center px-4 py-3 border-b">
-        <h2 className="text-lg font-semibold">Dashboard</h2>
-        <button
-          className="text-gray-700"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          <Menu size={26} />
 
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-50">
+
+      <NavbarComponenet
+        text="My Domz"
+        IsParaText={false}
+        searchbarStatus={false}
+      />
+
+      {/* MOBILE HEADER */}
+      <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-white border-b">
+        <h2 className="font-semibold text-lg">Dashboard</h2>
+
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="p-2 rounded-md hover:bg-gray-100"
+        >
+          <Menu size={24} />
         </button>
       </div>
 
-      <div className="relative flex flex-1 overflow-hidden">
-        <aside
-          className={`
-    fixed sm:sticky
-    top-0 sm:top-22
-    left-0
-    h-screen sm:h-auto
-    w-64
-    bg-white
-    border-r border-gray-200
-    z-40
-    transform transition-transform duration-300 ease-in-out
-    ${sidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
-  `}
-        >
-          <ul className="space-y-6 px-4 py-6">
-            {sidebarLinks.map((item) => {
-              const Icon = item.icon;
+      <div className="flex flex-1 relative overflow-hidden">
 
-              return (
-                <li key={item.label}>
-                  <button
-                    onClick={() => {
-                      item.onClick();
-                      setSidebarOpen(false);
-                    }}
-                    className="flex items-center gap-3 w-full text-left
-                     text-gray-700 hover:text-blue-600
-                     font-medium cursor-pointer"
-                  >
-                    <Icon size={20} strokeWidth={1.8} />
-                    <span>{item.label}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-
-        </aside>
+        {/* OVERLAY */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 bg-black/30 z-30 sm:hidden"
+            className="fixed inset-0 bg-black/40 z-30 sm:hidden"
           />
         )}
-        <main className="flex-1 px-4 sm:px-8 py-6 mt-2 sm:mt-0 overflow-y-auto">
-          {activeSection === "Profile" && <Profile />}
-          {activeSection === "Pricing" && <Pricing />}
-          {activeSection === "Subscription" && <SubscriptionManagementCard />}
-          {activeSection === "billing" && <PaymentSettingCard />}
-          {activeSection === "MessagesPage" && <MessagesPage />}
-          {activeSection === "myPortfolio" && <Myportfolio />}
 
-        
+        {/* SIDEBAR */}
+        <aside
+          className={`
+
+          fixed sm:static
+          z-40
+          top-0 left-0
+          h-full
+          w-64
+          bg-white
+          border-r
+          transform transition-transform duration-300
+
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
+
+          `}
+        >
+
+          {/* mobile close */}
+          <div className="sm:hidden flex justify-between items-center p-4 border-b">
+            <h3 className="font-semibold">Menu</h3>
+            <button onClick={() => setSidebarOpen(false)}>
+              <X size={22} />
+            </button>
+          </div>
+
+          <nav className="p-4 space-y-2">
+
+            {sidebarLinks.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeSection === item.key;
+
+              return (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setActiveSection(item.key);
+                    setSidebarOpen(false);
+                  }}
+                  className={`
+
+                  flex items-center gap-3
+                  w-full px-3 py-2
+                  rounded-lg
+                  text-sm font-medium
+                  transition
+
+                  ${
+                    isActive
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }
+
+                  `}
+                >
+                  <Icon size={18} />
+                  {item.label}
+                </button>
+              );
+            })}
+
+            {/* logout */}
+
+            <button
+              onClick={() => logoutHandler(router)}
+              className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+
+          </nav>
+
+        </aside>
+
+        {/* MAIN CONTENT */}
+
+        <main className="flex-1 overflow-y-auto p-4 sm:p-8">
+
+          <div className="max-w-6xl mx-auto">
+
+            {activeSection === "Profile" && <Profile />}
+
+            {activeSection === "Pricing" && <Pricing />}
+
+            {activeSection === "Subscription" && (
+              <SubscriptionManagementCard />
+            )}
+
+            {activeSection === "billing" && <PaymentSettingCard />}
+
+            {activeSection === "MessagesPage" && <MessagesPage />}
+
+            {activeSection === "myPortfolio" && <Myportfolio />}
+
+          </div>
+
         </main>
+
       </div>
+
       <Footer />
     </div>
   );
 };
+
 export default Page;
