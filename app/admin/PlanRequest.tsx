@@ -210,13 +210,12 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
               <th className="px-6 py-3 text-left">Marketplace</th>
               <th className="px-6 py-3 text-left">Seller Type</th>
               <th className="px-6 py-3 text-left">portfolio</th>
-
+                <th className="px-6 py-3 text-left">Website</th>
+              <th className="px-6 py-3 text-left">Social</th>
               <th className="px-6 py-3 text-left">comments</th>
               <th className="px-6 py-3 text-left">Status</th>
               <th className="px-6 py-3 text-left">Requested On</th>
-              {filteredData.some(item => item.status === "Pending") && (
                 <th className="px-6 py-3 text-left">Action</th>
-              )}
               <th className="px-6 py-3 text-left">Delete</th>
             </tr>
           </thead>
@@ -230,8 +229,10 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
                 <td className="px-6 py-4">{item?.userId?.phoneNumber}</td>
                 <td className="px-6 py-4">{item.domains}</td>
                 <td className="px-6 py-4">{item.marketplace}</td>
-                <td className="px-6 py-4">{item.sellerType}</td>
+                <td className="px-6 py-4">{item.sellerType}</td> 
                 <td className="px-6 py-4">{item.portfolio}</td>
+                <td className="px-6 py-4">{item.website}</td>
+                <td className="px-6 py-4">{item.social}</td>
                 <td className="px-6 py-4">{item.comments}</td>
 
                 <td className="px-6 py-4">
@@ -251,8 +252,6 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
                 <td className="px-6 py-4">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </td>
-
-                {item.status === "Pending" && (
                   <td className="px-6 py-4">
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
@@ -284,7 +283,6 @@ const PlanRequestTable = ({ data, onRequestUpdated, onRequestUpdatedDomain }: Pl
                       </button>
                     </div>
                   </td>
-                )}
                 <td className="px-6 py-4 cursor-pointer">
                   <Trash2
                     className="w-5 h-5 cursor-pointer hover:text-red-500"
