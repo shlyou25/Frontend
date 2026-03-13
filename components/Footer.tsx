@@ -43,28 +43,9 @@ const Footer = () => {
                   />
                 </div>
               </Link>
-              <a
-                href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-  mt-6
-  inline-flex items-center justify-center
-  px-6 py-3
-  rounded-full
-  border border-blue-600
-  bg-white
-  text-blue-600 text-sm font-semibold
-  shadow-sm
-  hover:bg-blue-600 hover:text-white hover:border-blue-600
-  active:scale-[0.97]
-  transition-all duration-200
-  focus:outline-none focus:ring-2 focus:ring-blue-500/30
-  self-start
-"
-              >
-                Support Domz
-              </a>
+              <p className="text-xs text-gray-500 py-4">
+                © 2026 Domz.com LLC
+              </p>
             </div>
 
             {/* Links */}
@@ -123,18 +104,17 @@ const Footer = () => {
                       </div>
                     </div>
                   </li>
+                  <li><a href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401" className="hover:opacity-75">Sponsor</a></li>
                   <li><Link href="/contact/#subscribe" className="hover:opacity-75">Subscribe</Link></li>
                 </ul>
               </div>
             </div>
           </div>
-          <p className="text-xs text-gray-500">
-            © 2026 Domz.com LLC
-          </p>
+
         </div>
       </footer>
 
-      {pathname === "/" && showScrollTop && (
+      {(pathname === "/" || pathname==='/buy') && showScrollTop && (
         <a
           href="#navbar"
           aria-label="Scroll to top"

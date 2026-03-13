@@ -31,7 +31,7 @@ const Page = () => {
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
-  
+
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoaderStatus(true);
@@ -45,7 +45,7 @@ const Page = () => {
         },
         { withCredentials: true }
       );
-     
+
       // 🔐 Admin OTP
       if (res.data?.code === "ADMIN_OTP_REQUIRED") {
         toast.info("OTP sent to your email");
@@ -90,7 +90,7 @@ const Page = () => {
     }
   };
   // 🔒 SITE PASSWORD GATE
-  
+
 
   if (loaderStatus) return <Loader />
   return (
@@ -129,25 +129,37 @@ const Page = () => {
                 onChange={onChangeHandler}
               />
             </div>
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <input
-                type="checkbox"
-                name="terms"
-                checked={userData.terms}
-                onChange={onChangeHandler}
-                className="mt-1 h-4 w-4 rounded"
-                required
-              />
-              <p>
-                I agree to the{" "}
-                <Link href={'/terms'} className="text-blue-600 cursor-pointer">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href={'/privacy'} className="text-blue-600 cursor-pointer">
-                  Privacy Policy
-                </Link>
-              </p>
+            <div className="flex items-start justify-between text-sm text-gray-700">
+
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  name="terms"
+                  checked={userData.terms}
+                  onChange={onChangeHandler}
+                  className="mt-1 h-4 w-4 rounded"
+                  required
+                />
+
+                <p>
+                  I agree to the{" "}
+                  <Link href="/terms" className="text-blue-600 hover:underline cursor-pointer">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="text-blue-600 hover:underline cursor-pointer">
+                    Privacy Policy
+                  </Link>
+                </p>
+              </div>
+
+              <Link
+                href="/forgot-password"
+                className="text-blue-600 hover:underline cursor-pointer whitespace-nowrap"
+              >
+                Forgot password?
+              </Link>
+
             </div>
 
             {/* Login Button */}
@@ -167,9 +179,6 @@ const Page = () => {
                   Sign Up
                 </Link>
               </p>
-              <Link href={'/forgot-password'} className="text-blue-600 cursor-pointer">
-                Forgot password?
-              </Link>
             </div>
           </form>
         </div>

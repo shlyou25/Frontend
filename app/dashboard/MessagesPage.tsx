@@ -232,6 +232,17 @@ export default function MessagesPage() {
       console.error("❌ Failed to send reply", err);
     }
   };
+  // If there are no conversations anywhere, render nothing
+  const hasConversations = domains.some(
+    (d) => d.conversations && d.conversations.length > 0
+  );
+
+  if (!hasConversations) return <div className="px-5 py-4 text-lg text-gray-600 leading-relaxed z-10 text-center">
+    Your messages will appear here
+  </div>
+  if (!messages) return <div className="px-5 py-4 ftext-lg text-gray-600 leading-relaxed z-10 text-center">
+    Your messages will appear here
+  </div>
   return (
     <div className="h-full flex bg-gray-100">
       <aside className="w-64 bg-white border-r flex flex-col">
@@ -274,11 +285,11 @@ export default function MessagesPage() {
       {/* ================= MIDDLE: CONVERSATIONS ================= */}
       <aside className="w-72 bg-white border-r flex flex-col">
         <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
-          Conversations
+          Messages
         </div>
 
         <div className="overflow-y-auto">
-          {activeDomain?.conversations?.map((c:any) => (
+          {activeDomain?.conversations?.map((c: any) => (
             <button
               key={c.conversationId}
               onClick={() => {
@@ -412,7 +423,7 @@ export default function MessagesPage() {
               bg-blue-600 text-white disabled:bg-gray-300
               hover:bg-blue-700 transition-all shadow-sm"
             >
-              <Send size={18}/>
+              <Send size={18} />
             </button>
           </form>
         </div>

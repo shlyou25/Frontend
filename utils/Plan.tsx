@@ -117,8 +117,15 @@
 import { useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { PlanCardInterface } from "@/components/plan/plancard"
+import Link from "next/link"
 
-export default function PartnerDomz() {
+type Props = {
+  planinfo?: PlanCardInterface
+}
+
+export default function PartnerDomz({ planinfo }: Props) {
+  const [showForm, setShowForm] = useState(false)
 
   const [form, setForm] = useState({
     name: "",
@@ -135,263 +142,283 @@ export default function PartnerDomz() {
 
   const [loading, setLoading] = useState(false)
 
-  const handleChange = (e:any)=>{
-    setForm({...form,[e.target.name]:e.target.value})
+  const handleChange = (e: any) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async(e:any)=>{
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    try{
+    try {
       setLoading(true)
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}planrequest/addplanrequest`,
         form,
-        {withCredentials:true}
+        { withCredentials: true }
       )
 
       toast.success(res.data.message || "Application submitted successfully")
 
       setForm({
-        name:"",
-        email:"",
-        phone:"",
-        domains:"",
-        sellerType:"",
-        website:"",
-        social:"",
-        marketplace:"",
-        portfolio:"",
-        comments:""
+        name: "",
+        email: "",
+        phone: "",
+        domains: "",
+        sellerType: "",
+        website: "",
+        social: "",
+        marketplace: "",
+        portfolio: "",
+        comments: ""
       })
 
-    }catch(err:any){
+    } catch (err: any) {
       toast.error(err?.response?.data?.message || "Submission failed")
-    }finally{
+    } finally {
       setLoading(false)
     }
   }
-
+  if (planinfo) 
   return (
-<section className="bg-white px-6 lg:px-8 pb-20">
-
-      {/* HERO SECTION */}
-
+    <p className="mt-6 text-lg text-gray-600 leading-relaxed text-center">
+      You already have an active plan. To request changes, use the{" "}
+      <Link href="/contact" className="text-blue-600 hover:underline cursor-pointer">
+        Contact
+      </Link>{" "}
+      submission form.
+    </p>
+  );
+  return (
+    <section className="bg-white px-6 lg:px-8 pb-20">
       <div className="max-w-2xl mx-auto text-center">
         <h1 className="text-4xl font-bold text-gray-900">
           Partner with Domz
         </h1>
 
-        <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+        <p className="mt-6 text-lg text-gray-600 leading-relaxed text-left">
           Domz features a curated selection of portfolios from established
           domain investors. By working with vetted sellers, buyers can
           confidently discover domains and connect directly with sellers.
         </p>
 
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-gray-600 text-lg text-left">
           There is no charge to list. Domz is supported through
           non-intrusive ads, featured domain promotion and affiliate programs.
         </p>
 
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-gray-600 text-lg text-left">
           If you would like your portfolio to be considered, complete the
           application form below.
         </p>
-      </div>
-
-
-      {/* FORM */}
-
-      <div className="mt-16 max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
-          Portfolio Submission
-        </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          {/* Name */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              required
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Email */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              required
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Phone */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Phone Number (optional)
-            </label>
-            <input
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Domains */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Estimated Number of Domains
-            </label>
-
-            <select
-              required
-              name="domains"
-              value={form.domains}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            >
-              <option value="">Select</option>
-              <option value="10">10</option>
-              <option value="100">100</option>
-              <option value="500">500</option>
-              <option value="1000">1,000</option>
-              <option value="5000+">5,000+</option>
-            </select>
-          </div>
-
-
-          {/* Seller type */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Are You a Broker or Private Seller?
-            </label>
-
-            <select
-              required
-              name="sellerType"
-              value={form.sellerType}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            >
-              <option value="">Select</option>
-              <option value="Broker">Broker</option>
-              <option value="Private Seller">Private Seller</option>
-            </select>
-          </div>
-
-
-          {/* Website */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Business Website
-            </label>
-            <input
-              name="website"
-              value={form.website}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Social */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Business Social Media Links
-            </label>
-            <input
-              name="social"
-              value={form.social}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Marketplace */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Public Marketplace Username (NamePros etc)
-            </label>
-            <input
-              name="marketplace"
-              value={form.marketplace}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Portfolio */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Portfolio URL
-            </label>
-            <input
-              name="portfolio"
-              value={form.portfolio}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Comments */}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Additional Comments
-            </label>
-            <textarea
-              name="comments"
-              rows={4}
-              value={form.comments}
-              onChange={handleChange}
-              className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
-
-
-          {/* Submit */}
-
+        {showForm ? <button
+          onClick={() => setShowForm(!showForm)}
+          className="mt-8 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-md font-semibold transition cursor-pointer"
+        >
+          Cancel
+        </button> :
           <button
-            disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-md transition"
+            onClick={() => setShowForm(!showForm)}
+            className="mt-8 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-md font-semibold transition curor-po"
           >
-            {loading ? "Submitting..." : "Submit Application"}
+            Apply Now
           </button>
-
-        </form>
+        }
 
       </div>
+
+
+      {showForm &&
+
+        <div className="mt-16 max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            Portfolio Submission
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+
+            {/* Name */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                required
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Email */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                required
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Phone */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Phone Number (optional)
+              </label>
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Domains */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Estimated Number of Domains
+              </label>
+
+              <select
+                required
+                name="domains"
+                value={form.domains}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              >
+                <option value="">Select</option>
+                <option value="10">10</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+                <option value="1000">1,000</option>
+                <option value="5000+">5,000+</option>
+              </select>
+            </div>
+
+
+            {/* Seller type */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Are You a Broker or Private Seller?
+              </label>
+
+              <select
+                required
+                name="sellerType"
+                value={form.sellerType}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              >
+                <option value="">Select</option>
+                <option value="Broker">Broker</option>
+                <option value="Private Seller">Private Seller</option>
+              </select>
+            </div>
+
+
+            {/* Website */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Business Website
+              </label>
+              <input
+                name="website"
+                value={form.website}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Social */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Business Social Media Links
+              </label>
+              <input
+                name="social"
+                value={form.social}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Marketplace */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Public Marketplace Username (NamePros etc)
+              </label>
+              <input
+                name="marketplace"
+                value={form.marketplace}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Portfolio */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Portfolio URL
+              </label>
+              <input
+                name="portfolio"
+                value={form.portfolio}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Additional Comments
+              </label>
+              <textarea
+                name="comments"
+                rows={4}
+                value={form.comments}
+                onChange={handleChange}
+                className="mt-2 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+
+            {/* Submit */}
+
+            <button
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-md transition"
+            >
+              {loading ? "Submitting..." : "Submit Application"}
+            </button>
+
+          </form>
+
+        </div>
+      }
+
     </section>
   )
 }

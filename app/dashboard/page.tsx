@@ -24,6 +24,7 @@ import {
   Menu,
   X
 } from "lucide-react";
+import { PlanCardInterface } from "@/components/plan/plancard";
 
 const Page = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("Profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [planInfo, setPlanInfo] = useState<PlanCardInterface>();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -55,13 +57,27 @@ const Page = () => {
       setActiveSection("Pricing");
     }
   }, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_apiLink}plan/getplanbyuser`,
+          { withCredentials: true }
+        );
+        setPlanInfo(res?.data?.plans[0])
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const sidebarLinks = [
     { label: "Profile", icon: User, key: "Profile" },
     { label: "My Portfolio", icon: Briefcase, key: "myPortfolio" },
     { label: "Subscription", icon: CreditCard, key: "Subscription" },
     { label: "Plans", icon: Layers, key: "Pricing" },
-    { label: "Message", icon: MessageSquare, key: "MessagesPage" },
+    { label: "Messages", icon: MessageSquare, key: "MessagesPage" },
   ];
 
   if (loading) return <Loader />;
@@ -179,7 +195,7 @@ const Page = () => {
 
             {activeSection === "Profile" && <Profile />}
 
-            {activeSection === "Pricing" && <Pricing />}
+            {activeSection === "Pricing" && <Pricing planinfo={planInfo} />}
 
             {activeSection === "Subscription" && (
               <SubscriptionManagementCard />

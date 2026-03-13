@@ -35,9 +35,9 @@ const BrowseDomain = () => {
         <h2 className="text-slate-900 text-3xl md:text-5xl font-semibold mb-4">
           Find Your Perfect Domain
         </h2>
-        <p className="text-base text-slate-600 mb-8">
+        {/* <p className="text-base text-slate-600 mb-8">
           Browse available domains and connect directly with sellers.
-        </p>
+        </p> */}
 
         <form className="max-w-xl mx-auto mt-8" onSubmit={onSubmitHandler}>
           <div className="relative">
@@ -56,7 +56,7 @@ const BrowseDomain = () => {
             </button>
           </div>
         </form>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-6 w-full">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8 w-full">
           {promotedDomain?.map((domain) => (
             <Domain name={domain.domain} />
           ))}

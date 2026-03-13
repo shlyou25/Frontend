@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { PlanCardInterface } from '../../components/plan/plancard';
 import Pricing from '../../utils/Plan';
 import Modal from '../../components/model';
+import { useRouter } from 'next/navigation';
+
 
 const SubscriptionManagementCard = () => {
   const [planInfo, setPlanInfo] = useState<PlanCardInterface>();
+  const router = useRouter();
+   const [warningOpen, setWarningOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   useEffect(() => {
@@ -42,7 +46,7 @@ const SubscriptionManagementCard = () => {
               </span>
             </div>
             <div className="mb-4">
-              <span className="block text-sm font-medium text-gray-700 mb-1">Expiration / Next Billing</span>
+              <span className="block text-sm font-medium text-gray-700 mb-1">Auto Renews</span>
               <span className="text-gray-900">
                 {planInfo?.endingDate &&
                   new Date(planInfo.endingDate).toLocaleDateString()
@@ -53,17 +57,54 @@ const SubscriptionManagementCard = () => {
           {/* Right Column */}
           <div className="flex flex-col justify-center items-end space-y-5">
             <button
-              onClick={() => setUpgradeOpen(true)}
+              onClick={() => setWarningOpen(true)}
               className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition"
             >
               Change Plan
             </button>
+
             {/* <div className="flex space-x-3 text-gray-800 text-base">
               <span className="cursor-pointer hover:underline">Monthly</span>
             </div> */}
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={warningOpen}
+        onClose={() => setWarningOpen(false)}
+        title="Active Plan Detected"
+        size="sm"
+      >
+        <div className="space-y-5">
+
+          <p className="text-gray-700">
+            You already have an active plan.
+            To request changes, please use the contact submission form.
+          </p>
+
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setWarningOpen(false)}
+              className="px-4 py-2 border rounded-md hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={() => {
+                setWarningOpen(false);
+                router.push("/contact");
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Contact
+            </button>
+
+          </div>
+
+        </div>
+      </Modal>
+
       <Modal
         isOpen={upgradeOpen}
         onClose={() => setUpgradeOpen(false)}

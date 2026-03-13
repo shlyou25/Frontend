@@ -114,7 +114,7 @@ const StatusHeader = ({
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div>
         <h2 className="text-sm font-semibold text-slate-800">
-          Domain Health Monitoring
+          Domain Upload Status
         </h2>
         <p className="text-xs text-slate-600">
           Filter domains by activity period
@@ -723,14 +723,14 @@ const Myportfolio = () => {
 
             <table className="min-w-full border-collapse">
               <thead
-                className={`sticky z-10 bg-gray-400 ${bulkMode ? 'top-26' : 'top-14'
+                className={`sticky z-10 bg-gray-200 ${bulkMode ? 'top-26' : 'top-14'
                   }`}
               >
-                <tr className="text-xs font-semibold text-slate-600 tracking-wide">
+                <tr className="text-xs font-semibold text-black uppercase tracking-wide">
 
                   {/* ✅ Select all checkbox */}
                   {bulkMode && (
-                    <th className="px-4  text-center w-10">
+                    <th className="px-4  text-center w-10 text-black">
                       <input
                         type="checkbox"
                         checked={isAllSelected}

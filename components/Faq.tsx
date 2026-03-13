@@ -75,7 +75,7 @@ const Faq = () => {
             return (
               <div
                 key={category}
-                className={`rounded-2xl transition-all duration-300 ${openCategory === category ? "bg-blue-50" : "bg-gray-50"
+                className={`rounded-2xl transition-all duration-300 hover:bg-blue-100 cursor-pointer ${openCategory === category ? "bg-blue-50" : "bg-gray-50"
                   }`}
               >
                 <button

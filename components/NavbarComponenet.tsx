@@ -22,8 +22,17 @@ const NavbarComponenet = (props: NavbarTextProp) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full px-4 sm:px-6 lg:px-10 py-5" id="navbar">
-      <div className="relative rounded-3xl bg-linear-to-br from-white via-blue-50 to-blue-100 overflow-hidden pt-4 pb-6">
+    <header className="w-full px-4 sm:px-6 lg:px-10 py-5 " id="navbar" >
+      <div className="relative rounded-3xl overflow-hidden pt-4 pb-6">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 bg-linear-to-b from-blue-100 via-blue-50 to-white" />
+
+        {/* Blue glow */}
+        <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-blue-400/20 blur-3xl" />
+
+        {/* Radial highlight */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.08),transparent_40%)]" />
+        <div className="relative z-20"></div>
         <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6">
           <Link href="/" className="flex items-center">
             <Image
@@ -101,49 +110,49 @@ const NavbarComponenet = (props: NavbarTextProp) => {
             </svg>
           </button>
         </nav>
-       {menuOpen && (
-  <div className="md:hidden fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/20 backdrop-blur-sm">
-    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6">
+        {menuOpen && (
+          <div className="md:hidden fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/20 backdrop-blur-sm">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6">
 
-      <ul className="flex flex-col gap-5 text-lg text-gray-800 font-medium">
+              <ul className="flex flex-col gap-5 text-lg text-gray-800 font-medium">
 
-        <Link href="/" onClick={() => setMenuOpen(false)} className="block">
-          Home
-        </Link>
+                <Link href="/" onClick={() => setMenuOpen(false)} className="block">
+                  Home
+                </Link>
 
-        <Link href="/buy" onClick={() => setMenuOpen(false)} className="block">
-          Buy
-        </Link>
+                <Link href="/buy" onClick={() => setMenuOpen(false)} className="block">
+                  Buy
+                </Link>
 
-        <button
-          onClick={() => {
-            handleAuthRedirect(router);
-            setMenuOpen(false);
-          }}
-          className="text-left"
-        >
-          Sell
-        </button>
+                <button
+                  onClick={() => {
+                    handleAuthRedirect(router);
+                    setMenuOpen(false);
+                  }}
+                  className="text-left"
+                >
+                  Sell
+                </button>
 
-        <Link href="/contact" onClick={() => setMenuOpen(false)} className="block">
-          Contact
-        </Link>
+                <Link href="/contact" onClick={() => setMenuOpen(false)} className="block">
+                  Contact
+                </Link>
 
-      </ul>
+              </ul>
 
-      <button
-        onClick={() => {
-          handleAuthRedirect(router);
-          setMenuOpen(false);
-        }}
-        className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-full font-semibold"
-      >
-        My Domz
-      </button>
+              <button
+                onClick={() => {
+                  handleAuthRedirect(router);
+                  setMenuOpen(false);
+                }}
+                className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-full font-semibold"
+              >
+                My Domz
+              </button>
 
-    </div>
-  </div>
-)}
+            </div>
+          </div>
+        )}
         <div className="flex flex-col items-center justify-center text-center pt-14 pb-1.5 relative z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
             <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">

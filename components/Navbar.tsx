@@ -12,9 +12,9 @@ const Navbar = () => {
   const router = useRouter()
 
   return (
-    <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-6 relative z-50 max-w-7xl mx-auto">
+    <nav className="w-full flex justify-between items-center px-6 lg:px-20 py-6 relative z-50 max-w-7xl mx-auto " id="navbar">
       <Link href="/">
-        <div className="relative h-8 w-[110px] shrink-0">
+        <div className="relative h-8 w-27.5 shrink-0">
           <Image
             src="/assets/logo.jpg"
             alt="Domz Logo"
