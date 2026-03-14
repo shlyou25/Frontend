@@ -766,13 +766,13 @@ const Myportfolio = () => {
                       )}
 
                       <td className="px-4 py-2 text-blue-600 break-all">
-                        {d.finalUrl ? (
-                          <Link href={d.finalUrl} target="_blank" className="hover:underline">
-                            {d.domain}
-                          </Link>
-                        ) : (
-                          d.domain
-                        )}
+                        <Link
+                          href={d.finalUrl ? d.finalUrl : `https://${d.domain}`}
+                          target="_blank"
+                          className="hover:underline"
+                        >
+                          {d.domain}
+                        </Link>
                       </td>
                       <td className="px-4 py-2 text-center">
                         <Toggle

@@ -11,6 +11,7 @@ import Confirmation from "../../components/Confirmation";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PromotedDomainTable from "./PromotedDomainTable";
+import ChangeAdminCheckStatus from "./ChangeAdminCheckStatus";
 
 
 export interface DomainItem {
@@ -19,6 +20,7 @@ export interface DomainItem {
   status: string;
   finalUrl: string | null;
   createdAt: string;
+  adminCheck: boolean,
   owner: {
     name: string;
     email: string;
@@ -41,6 +43,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
     domain: ''
   })
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [adminCheckFilter, setAdminCheckFilter] = useState<string>("all");
   const [isPromotedDomain, setIsPromotedDomain] = useState<boolean>(false);
   const [bulkMode, setBulkMode] = useState(false);
   const [selectedDomains, setSelectedDomains] = useState<DomainItem[]>([]);
@@ -86,9 +89,16 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
           ? true
           : item.status === statusFilter;
 
-      return matchesText && matchesDate && matchesStatus;
+      const matchesAdminCheck =
+        adminCheckFilter === "all"
+          ? true
+          : adminCheckFilter === "checked"
+            ? item.adminCheck === true
+            : item.adminCheck === false;
+
+      return matchesText && matchesDate && matchesStatus && matchesAdminCheck;
     });
-  }, [data, search, dateFilter, statusFilter]);
+  }, [data, search, dateFilter, statusFilter, adminCheckFilter]);
   const isSelected = (id: string) =>
     selectedDomains.some((d) => d.domainId === id);
 
@@ -115,7 +125,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
     if (!domains.length) return;
     const ids = domains.map((d) => d.domainId);
     try {
-      
+
       await axios.delete(
         `${process.env.NEXT_PUBLIC_apiLink}domain/admin/domain/bulk-delete`,
         {
@@ -187,6 +197,15 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
           <option value="Fail">Fail</option>
           <option value="Manual Review">Manual Review</option>
         </select>
+        <select
+          value={adminCheckFilter}
+          onChange={(e) => setAdminCheckFilter(e.target.value)}
+          className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="all">All Admin Checks</option>
+          <option value="checked">Checked</option>
+          <option value="notchecked">Not Checked</option>
+        </select>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <input
@@ -257,6 +276,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
               <th className="px-6 py-3 text-left">Domain</th>
               <th className="px-6 py-3 text-left">Owner</th>
               <th className="px-6 py-3 text-left">Email</th>
+              <th className="px-6 py-3 text-left">Admin Check Staus</th>
               <th className="px-6 py-3 text-left">Staus</th>
               <th className="px-6 py-3 text-left">Registered Date</th>
               <th className="px-6 py-3 text-left">Promote</th>
@@ -278,24 +298,25 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
                 )}
 
                 <td className="px-6 py-4">{index + 1}</td>
-                
-             
+
+
                 <td className="px-6 py-4 font-medium">
-                  {item.finalUrl ? (
-                    <a
-                      href={item.finalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline break-all"
-                    >
-                      {item.domain}
-                    </a>
-                  ) : (
-                    <span className="text-gray-800">{item.domain}</span>
-                  )}
+                  <a
+                    href={item.finalUrl ?? `https://${item.domain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline break-all"
+                  >
+                    {item.domain}
+                  </a>
                 </td>
                 <td className="px-6 py-4">{item?.owner?.name}</td>
                 <td className="px-6 py-4">{item?.owner?.email}</td>
+                <ChangeAdminCheckStatus
+                  adminCheck={item.adminCheck}
+                  domainId={item.domainId}
+                  onRequestUpdated={onRequestUpdated}
+                />
                 <ChangeDomainStatus
                   status={item.status}
                   domainId={item.domainId}

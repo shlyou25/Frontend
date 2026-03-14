@@ -80,23 +80,19 @@ Domains:
         { withCredentials: true }
       );
 
-      const { added, manualReview, failed, remaining } = res.data;
+      const { added, failed, remaining, message } = res.data;
 
-      let toastMessage = `✅ Domain processing completed\n\n`;
+      let toastMessage = `📊 Domain Processing Result\n\n`;
 
-      if (added?.length) {
-        toastMessage += `🟢 Added (${added.length}):\n${added.join(", ")}\n\n`;
+      toastMessage += `🟢 Added: ${added}\n`;
+      toastMessage += `🔴 Failed: ${failed}\n`;
+      toastMessage += `📦 Remaining slots: ${remaining}\n\n`;
+
+      if (failed > 0) {
+        toastMessage +=
+          "⚠️ Some domains were not added due to unsupported TLDs. Check Upload Status for details or contact support via the Contact page.";
       }
 
-      if (manualReview?.length) {
-        toastMessage += `🟡 Manual review (${manualReview.length}):\n${manualReview.join(", ")}\n\n`;
-      }
-
-      if (failed?.length) {
-        toastMessage += `🔴 Failed (${failed.length}):\n${failed.join(", ")}\n\n`;
-      }
-
-      toastMessage += `📦 Remaining slots: ${remaining}`;
       toast.success(toastMessage, {
         autoClose: 8000,
         style: { whiteSpace: "pre-line" },
@@ -154,7 +150,7 @@ example.com, https://www.LanderHost.com/parked/example.com`}
         transition
       "
           />
-           <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4">
             <div className="flex items-start justify-between gap-4">
               <div className="text-sm text-slate-700">
                 <p className="font-semibold text-blue-900 mb-1">

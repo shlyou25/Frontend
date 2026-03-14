@@ -279,7 +279,6 @@ const Page = () => {
             />
           </div>
         )}
-
         {activeView === "Faq" && (
           <div className="bg-white p-6 rounded-xl shadow">
             <Faq />

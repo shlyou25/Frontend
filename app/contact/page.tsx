@@ -2,6 +2,8 @@
 
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from "react";
 import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 import NavbarComponenet from '../../components/NavbarComponenet';
@@ -22,6 +24,8 @@ const page = () => {
     subject: 'New Submisson On the Contact Form',
   });
   const [loaderStatus, setLoaderStatus] = useState(false);
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const onChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,17 +39,31 @@ const page = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!captchaToken) {
+      toast.error("Please verify the captcha");
+      return;
+    }
+
     setLoaderStatus(true);
+
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}email/sendemail`,
-        userData
+        {
+          ...userData,
+          captchaToken
+        }
       );
 
-      toast.success(res?.data?.message || 'Message sent successfully');
+      toast.success(res?.data?.message || "Message sent successfully");
+
+      captchaRef.current?.reset();
+      setCaptchaToken(null);
+
     } catch (err: any) {
       toast.error(
-        err?.response?.data?.message || 'An unexpected error occurred'
+        err?.response?.data?.message || "An unexpected error occurred"
       );
     } finally {
       setLoaderStatus(false);
@@ -102,7 +120,13 @@ const page = () => {
           placeholder="Comment"
           className="bg-blue-100 rounded-2xl w-full px-8 py-5 mb-6"
         />
-
+        <div className="flex justify-center mb-6">
+          <ReCAPTCHA
+            ref={captchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+            onChange={(token) => setCaptchaToken(token)}
+          />
+        </div>
         <div className="flex justify-center">
           <button
             type="submit"
