@@ -91,6 +91,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
       try {
         setLoading(true);
         let res;
+
         if (searchQuery) {
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/search`,
@@ -98,13 +99,24 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
               params: { search: searchQuery, limit: 'all', page: 1 }
             }
           );
+
+        } else if (filters.sellerName) {
+          res = await axios.get(
+            `${process.env.NEXT_PUBLIC_apiLink}domain/seller/${filters.sellerName}`,
+            {
+              params: { page, limit }
+            }
+          );
+
         } else {
-          const params: any = { page, limit };
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
-            { params }
+            {
+              params: { page, limit }
+            }
           );
         }
+
         setDomains(
           (res.data.domains || []).map((d: Domain) => ({
             ...d,
@@ -117,7 +129,9 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
             }
           }))
         );
-        setTotal(res.data.total ?? res.data.domains.length);
+
+        setTotal(res.data.total ?? 0);
+
       } catch {
         toast.error('Failed to load domains');
       } finally {
@@ -126,7 +140,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
     };
 
     fetchDomains();
-  }, [page, limit, searchQuery]);
+  }, [page, limit, searchQuery, filters.sellerName]);
   const filteredDomains = domains
     .filter(d => {
       const full = d.domain.toLowerCase();
@@ -149,10 +163,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
       if (filters.minLength && name.length < filters.minLength) return false;
       if (filters.maxLength && name.length > filters.maxLength) return false;
 
-      if (filters.sellerName) {
-        const seller = d.user?.userName?.toLowerCase() || '';
-        if (!seller.includes(filters.sellerName.toLowerCase())) return false;
-      }
+
 
       return true;
     })
@@ -311,23 +322,14 @@ border-b border-gray-200/70">
                     >
                       <td className="px-5 py-4 font-medium">
                         <div className="w-full max-w-130 truncate">
-                          {d.finalUrl ? (
-                            <Link
-                              href={d.finalUrl}
-                              target="_blank"
-                              title={d.domain}
-                              className="text-blue-600 hover:text-blue-700 hover:underline text-lg"
-                            >
-                              {d.domain}
-                            </Link>
-                          ) : (
-                            <span
-                              title={d.domain}
-                              className="text-blue-600 font-semibold"
-                            >
-                              {d.domain}
-                            </span>
-                          )}
+                          <Link
+                            href={d.finalUrl || `https://${d.domain}`}
+                            target="_blank"
+                            title={d.domain}
+                            className="text-blue-600 hover:text-blue-700 hover:underline text-lg"
+                          >
+                            {d.domain}
+                          </Link>
                         </div>
                       </td>
 
@@ -387,7 +389,8 @@ border-b border-gray-200/70">
                           <button
                             onClick={() => {
                               setShowFilter(true);
-                              setFilters((prev) => ({
+                              setSearchQuery(""); // reset search
+                              setFilters(prev => ({
                                 ...prev,
                                 sellerName: d.user.userName,
                               }));
