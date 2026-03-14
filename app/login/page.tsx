@@ -59,7 +59,7 @@ const Page = () => {
       );
 
       toast.success("Login successful");
-      router.push(me.data.user.role === "admin" ? "/admin" : "/dashboard");
+      router.push(me.data.user.role === "admin" ? "/jmwbZbnwyrtiB71oTHBopM2wZ" : "/dashboard");
 
     } catch (error: any) {
       const data = error?.response?.data;

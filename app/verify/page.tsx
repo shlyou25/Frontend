@@ -48,7 +48,7 @@ const Page = () => {
         sessionStorage.removeItem("verify_email_user_domz");
         router.replace("/login");
       } else {
-        router.replace("/admin");
+        router.replace("/jmwbZbnwyrtiB71oTHBopM2wZ");
       }
     } catch (err: any) {
       toast.error(

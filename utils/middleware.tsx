@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
 
   // Protect all admin routes
-  if (req.nextUrl.pathname.startsWith("/admin")) {
+  if (req.nextUrl.pathname.startsWith("/jmwbZbnwyrtiB71oTHBopM2wZ")) {
     if (!token) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
@@ -16,5 +16,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/jmwbZbnwyrtiB71oTHBopM2wZ/:path*"],
 };
