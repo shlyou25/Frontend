@@ -20,7 +20,7 @@ export interface DomainItem {
   status: string;
   finalUrl: string | null;
   createdAt: string;
-  adminCheck: boolean,
+  adminCheck?: boolean,
   owner: {
     name: string;
     email: string;
