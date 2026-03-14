@@ -24,13 +24,8 @@ const NavbarComponenet = (props: NavbarTextProp) => {
   return (
     <header className="w-full px-4 sm:px-6 lg:px-10 py-5 " id="navbar" >
       <div className="relative rounded-3xl overflow-hidden pt-4 pb-6">
-        {/* Background Gradient */}
         <div className="absolute inset-0 bg-linear-to-b from-blue-100 via-blue-50 to-white" />
-
-        {/* Blue glow */}
         <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-blue-400/20 blur-3xl" />
-
-        {/* Radial highlight */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.08),transparent_40%)]" />
         <div className="relative z-20"></div>
         <nav className="relative z-20 max-w-7xl mx-auto flex items-center justify-between px-6">

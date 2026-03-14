@@ -104,7 +104,7 @@ const Footer = () => {
                       </div>
                     </div>
                   </li>
-                  <li><a href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401" className="hover:opacity-75">Sponsor</a></li>
+                  <li><a href="https://buy.stripe.com/5kQeVf3CAaQQe6z5tAbo401" target='_sponser' className="hover:opacity-75">Sponsor</a></li>
                   <li><Link href="/contact/#subscribe" className="hover:opacity-75">Subscribe</Link></li>
                 </ul>
               </div>

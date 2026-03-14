@@ -89,12 +89,11 @@ const Page = () => {
       setLoaderStatus(false);
     }
   };
-  // 🔒 SITE PASSWORD GATE
 
 
   if (loaderStatus) return <Loader />
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <NavbarComponenet
         text="Login"
         IsParaText={false}

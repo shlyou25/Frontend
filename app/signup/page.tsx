@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { useRouter } from "next/navigation";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Loader from '../../components/Loader';
 import Footer from '../../components/Footer';
 import NavbarComponenet from '../../components/NavbarComponenet';
@@ -59,13 +59,13 @@ const Page = () => {
           terms: userData.terms,
         },
         {
-          withCredentials:true
+          withCredentials: true
         }
       );
 
       // ✅ OTP flow ONLY
       if (res.data?.code === "EMAIL_OTP_SENT") {
-        sessionStorage.setItem('verify_email_user_domz',userData?.email)
+        sessionStorage.setItem('verify_email_user_domz', userData?.email)
         toast.success("OTP sent to your email");
         router.push("/verify?type=email");
         return;
@@ -84,7 +84,7 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-white lg:px-[10%] lg:pt-9">
+    <div className="bg-white lg:px-[10%] lg:pl-[10%] lg:pr-[10%] lg:pt-9">
       <NavbarComponenet text="Sign Up" IsParaText={false} />
 
       {loading ? (
@@ -93,7 +93,9 @@ const Page = () => {
         <div className="lg:px-[10%] lg:pt-16">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold text-center mb-8">
-              <span className="text-blue-600">Create</span> an Account
+              <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">
+                Create an Account
+              </span>
             </h2>
 
             <form className="space-y-6" onSubmit={onSubmitHandler} noValidate>
@@ -141,25 +143,25 @@ const Page = () => {
 
               {/* TERMS */}
               <div className="flex items-start gap-2 text-sm text-gray-700">
-              <input
-                type="checkbox"
-                name="terms"
-                checked={userData.terms}
-                onChange={onChangeHandler}
-                className="mt-1 h-4 w-4 rounded"
-                required
-              />
-              <p>
-                I agree to the{" "}
-                <Link href={'/terms'} className="text-blue-600 cursor-pointer">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href={'/privacy'} className="text-blue-600 cursor-pointer">
-                  Privacy Policy
-                </Link>
-              </p>
-            </div>
+                <input
+                  type="checkbox"
+                  name="terms"
+                  checked={userData.terms}
+                  onChange={onChangeHandler}
+                  className="mt-1 h-4 w-4 rounded"
+                  required
+                />
+                <p>
+                  I agree to the{" "}
+                  <Link href={'/terms'} className="text-blue-600 cursor-pointer">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href={'/privacy'} className="text-blue-600 cursor-pointer">
+                    Privacy Policy
+                  </Link>
+                </p>
+              </div>
 
               {/* SUBMIT */}
               <button
