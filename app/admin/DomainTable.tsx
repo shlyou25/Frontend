@@ -313,7 +313,7 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
                 <td className="px-6 py-4">{item?.owner?.name}</td>
                 <td className="px-6 py-4">{item?.owner?.email}</td>
                 <ChangeAdminCheckStatus
-                  adminCheck={item.adminCheck}
+                  adminCheck={item.adminCheck ?? false}
                   domainId={item.domainId}
                   onRequestUpdated={onRequestUpdated}
                 />
