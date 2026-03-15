@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { checkAuth } from '@/utils/checkAuth';
 import DomainReplyEmail from "./DomainReplyEmail";
 import FilterDomain, { DomainFilters } from '../../components/FilterDashboard';
+import Drawer from './Drawer';
 
 interface Domain {
   domainId: string;
@@ -460,7 +461,13 @@ border-b border-gray-200/70">
             </p>
           </div>
         </Modal>
-        <Modal isOpen={open} onClose={() => setOpen(false)} title="Contact Seller" position="top">
+       
+      </div>
+       <Drawer
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          title="Contact Seller"
+        >
           {selectedDomain && (
             <DomainReplyEmail
               domainId={selectedDomain.domainId}
@@ -468,8 +475,7 @@ border-b border-gray-200/70">
               onClose={() => setOpen(false)}
             />
           )}
-        </Modal>
-      </div>
+        </Drawer>
     </div>
   );
 };
