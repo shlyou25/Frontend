@@ -50,7 +50,6 @@ export default function ChangeDomainStatus({
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const [askFinalUrl, setAskFinalUrl] = useState(false)
   const [finalUrl, setFinalUrl] = useState("")
 
   const safeStatus = normalizeStatus(status)
@@ -89,24 +88,12 @@ export default function ChangeDomainStatus({
     } finally {
       setLoading(false)
       setOpen(false)
-      setAskFinalUrl(false)
-      setFinalUrl("")
     }
   }
 
 
   const handlePassClick = () => {
-    // ✅ Manual Review → Pass (no URL needed)
-    if (safeStatus === "manual_review") {
-      submitChange("pass")
-      return
-    }
-
-    // ✅ Fail → Pass (ask URL)
-    if (safeStatus === "fail") {
-      setFinalUrl("")
-      setAskFinalUrl(true)
-    }
+    submitChange("pass")
   }
   const handleFinalUrlSubmit = () => {
     if (!finalUrl.trim()) {
@@ -162,8 +149,7 @@ export default function ChangeDomainStatus({
             </button>
           )}
 
-          {/* 🔹 FINAL URL INPUT (ONLY FOR Manual → Pass) */}
-          {askFinalUrl && (
+       
             <div className="mt-2 p-2 border-t">
               <input
                 type="url"
@@ -179,7 +165,7 @@ export default function ChangeDomainStatus({
                 Confirm Pass
               </button>
             </div>
-          )}
+       
         </div>
       )}
     </div>
