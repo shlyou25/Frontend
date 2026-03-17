@@ -42,7 +42,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
   const [total, setTotal] = useState(0);
-  const [authPopupOpen, setAuthPopupOpen] = useState(false);
+  const [authDrawerOpen, setAuthDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalPos, setModalPos] = useState({ top: 0, left: 0 });
@@ -91,35 +91,42 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
     const fetchDomains = async () => {
       try {
         setLoading(true);
+
         let res;
 
         if (searchQuery) {
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/search`,
-            {
-              params: { search: searchQuery, limit: 'all', page: 1 }
-            }
+            { params: { search: searchQuery, limit: 'all', page: 1 } }
           );
 
         } else if (filters.sellerName) {
-          res = await axios.get(
-            `${process.env.NEXT_PUBLIC_apiLink}domain/seller/${filters.sellerName}`,
-            {
-              params: { page, limit }
+          try {
+            res = await axios.get(
+              `${process.env.NEXT_PUBLIC_apiLink}domain/seller/${filters.sellerName}`,
+              { params: { page, limit } }
+            );
+          } catch (err: any) {
+            // ✅ If seller not found → treat as empty
+            if (err.response?.status === 404) {
+              setDomains([]);
+              setTotal(0);
+              return;
             }
-          );
+            throw err; // real error
+          }
 
         } else {
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
-            {
-              params: { page, limit }
-            }
+            { params: { page, limit } }
           );
         }
 
+        const domainsData = res?.data?.domains ?? [];
+
         setDomains(
-          (res.data.domains || []).map((d: Domain) => ({
+          domainsData.map((d: Domain) => ({
             ...d,
             user: {
               ...d.user,
@@ -130,11 +137,15 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
             }
           }))
         );
+        setTotal(res?.data?.total ?? domainsData.length);
+      } catch (err: any) {
+        // ✅ Only show toast for real errors
+        if (!err.response || err.response.status >= 500) {
+          toast.error('Something went wrong. Please try again.');
+        }
 
-        setTotal(res.data.total ?? 0);
-
-      } catch {
-        toast.error('Failed to load domains');
+        setDomains([]);
+        setTotal(0);
       } finally {
         setLoading(false);
       }
@@ -341,7 +352,7 @@ border-b border-gray-200/70">
                             type="button"
                             onClick={(e) => {
                               if (!isAuthenticated) {
-                                setAuthPopupOpen(true);
+                               setAuthDrawerOpen(true);
                                 return;
                               }
 
@@ -427,55 +438,58 @@ border-b border-gray-200/70">
             <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>›</button>
           </div>
         )}
-        <Modal
-          isOpen={authPopupOpen}
-          onClose={() => setAuthPopupOpen(false)}
-          title="Message Seller"
-        >
-          <div className="relative space-y-4 text-sm text-gray-700">
-            <p className="text-gray-600 leading-relaxed">
-              Please sign up or log in to message the seller.
-              Creating an account is completely free — no subscription required.
-              <br />
-              Email verification helps keep the marketplace secure and prevent spam.
-            </p>
+     
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-3">
-              <Link
-                href="/signup"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2.5 rounded-lg font-medium transition"
-              >
-                Create Free Account
-              </Link>
-
-              <Link
-                href="/login"
-                className="flex-1 border border-gray-300 hover:bg-gray-100 text-center px-4 py-2.5 rounded-lg font-medium transition"
-              >
-                Log In
-              </Link>
-            </div>
-
-            <p className="text-xs text-gray-500 text-center pt-2">
-              Takes less than a minute to get started
-            </p>
-          </div>
-        </Modal>
-       
       </div>
-       <Drawer
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          title="Contact Seller"
-        >
-          {selectedDomain && (
-            <DomainReplyEmail
-              domainId={selectedDomain.domainId}
-              domain={selectedDomain.domain}
-              onClose={() => setOpen(false)}
-            />
-          )}
-        </Drawer>
+        <Drawer
+  isOpen={authDrawerOpen}
+  onClose={() => setAuthDrawerOpen(false)}
+  title="Message Seller"
+>
+  <div className="space-y-4 text-sm text-gray-700">
+    <p className="text-gray-600 leading-relaxed">
+      Please sign up or log in to message the seller.
+      Creating an account is completely free — no subscription required.
+      <br />
+      Email verification helps keep the marketplace secure and prevent spam.
+    </p>
+
+    <div className="flex flex-col gap-3 pt-3">
+      <Link
+        href="/signup"
+        className="bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2.5 rounded-lg font-medium transition"
+        onClick={() => setAuthDrawerOpen(false)}
+      >
+        Create Free Account
+      </Link>
+
+      <Link
+        href="/login"
+        className="border border-gray-300 hover:bg-gray-100 text-center px-4 py-2.5 rounded-lg font-medium transition"
+        onClick={() => setAuthDrawerOpen(false)}
+      >
+        Log In
+      </Link>
+    </div>
+
+    <p className="text-xs text-gray-500 text-center pt-2">
+      Takes less than a minute to get started
+    </p>
+  </div>
+</Drawer>
+      <Drawer
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Contact Seller"
+      >
+        {selectedDomain && (
+          <DomainReplyEmail
+            domainId={selectedDomain.domainId}
+            domain={selectedDomain.domain}
+            onClose={() => setOpen(false)}
+          />
+        )}
+      </Drawer>
     </div>
   );
 };
