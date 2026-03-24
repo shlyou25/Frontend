@@ -33,7 +33,11 @@ export default function MessagesPage() {
 
 
   const [messages, setMessages] = useState<Message[]>([]);
-  const { unreadMap, setUnreadMap, totalUnread } = useNotifications();
+  const [unreadMap, setUnreadMap] = useState<Record<string, number>>({});
+  const totalUnread = Object.values(unreadMap).reduce(
+    (a, b) => a + b,
+    0
+  );
   const [reply, setReply] = useState("");
   const [myUserId, setMyUserId] = useState<string | null>(null);
 
@@ -49,6 +53,16 @@ export default function MessagesPage() {
   }, [messages]);
 
   // ================= LOAD USER =================
+
+  useEffect(() => {
+  axios
+    .get(`${API}communication/unread-count`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      setUnreadMap(res.data.unreadMap || {});
+    });
+}, []);
   useEffect(() => {
     axios
       .get(`${API}auth/authenticate`, { withCredentials: true })
@@ -99,7 +113,7 @@ export default function MessagesPage() {
           ];
         });
       } else {
-        setUnreadMap((prev:any) => ({
+        setUnreadMap((prev: any) => ({
           ...prev,
           [msg.communicationId]:
             (prev[msg.communicationId] || 0) + 1,
@@ -152,7 +166,7 @@ export default function MessagesPage() {
       { withCredentials: true }
     );
 
-    setUnreadMap((prev:any) => ({
+    setUnreadMap((prev: any) => ({
       ...prev,
       [activeConversation.conversationId]: 0,
     }));
@@ -232,7 +246,7 @@ export default function MessagesPage() {
     return <div className="p-6 text-center">No messages yet</div>;
 
   return (
-    <div className="h-full flex bg-gray-100">
+    <div className="h-full flex bg-gray-100" id="messages">
       {/* DOMAINS */}
       <aside className="w-64 bg-white border-r">
         {domains.map((d) => (
