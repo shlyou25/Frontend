@@ -16,12 +16,8 @@ import { Download, Layers, X } from "lucide-react";
 import {
   Calendar,
   Eye,
-  EyeOff,
   MessageSquare,
-  MessageSquareOff,
-  UserX,
   UserCheck,
-  BellOff,
   Bell,
   Trash2
 } from "lucide-react";
@@ -576,7 +572,7 @@ const Myportfolio = () => {
             </button>
           </div>
         </div>
-        <Modal isOpen={open} onClose={() => setOpen(false)} title="Add Domains">
+        <Modal isOpen={open} onClose={() => setOpen(false)} title="Add Domains" position="center">
           <AddDomainsCard
             onClose={() => {
               setOpen(false);
