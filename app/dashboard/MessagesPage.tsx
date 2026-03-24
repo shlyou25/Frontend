@@ -99,7 +99,7 @@ export default function MessagesPage() {
           ];
         });
       } else {
-        setUnreadMap((prev) => ({
+        setUnreadMap((prev:any) => ({
           ...prev,
           [msg.communicationId]:
             (prev[msg.communicationId] || 0) + 1,
@@ -152,7 +152,7 @@ export default function MessagesPage() {
       { withCredentials: true }
     );
 
-    setUnreadMap((prev) => ({
+    setUnreadMap((prev:any) => ({
       ...prev,
       [activeConversation.conversationId]: 0,
     }));
