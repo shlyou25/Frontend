@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Send, X, SlidersHorizontal, RotateCcw } from 'lucide-react';
-import Modal from '../../components/model';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { checkAuth } from '@/utils/checkAuth';
@@ -76,34 +75,34 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
       setIsAuthenticated(status === 'authenticated');
     })();
   }, []);
-const getPagination = () => {
-  const delta = 2 // pages around current
-  const range = []
-  const rangeWithDots = []
+  const getPagination = () => {
+    const delta = 2 // pages around current
+    const range = []
+    const rangeWithDots = []
 
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 ||
-      i === totalPages ||
-      (i >= page - delta && i <= page + delta)
-    ) {
-      range.push(i)
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i === 1 ||
+        i === totalPages ||
+        (i >= page - delta && i <= page + delta)
+      ) {
+        range.push(i)
+      }
     }
-  }
 
-  let prev = 0
-  for (let i of range) {
-    if (i - prev === 2) {
-      rangeWithDots.push(prev + 1)
-    } else if (i - prev > 2) {
-      rangeWithDots.push("...")
+    let prev = 0
+    for (let i of range) {
+      if (i - prev === 2) {
+        rangeWithDots.push(prev + 1)
+      } else if (i - prev > 2) {
+        rangeWithDots.push("...")
+      }
+      rangeWithDots.push(i)
+      prev = i
     }
-    rangeWithDots.push(i)
-    prev = i
-  }
 
-  return rangeWithDots
-}
+    return rangeWithDots
+  }
   useEffect(() => {
     if (searchQuery) {
       setLimit(500);
@@ -134,13 +133,12 @@ const getPagination = () => {
               { params: { page, limit } }
             );
           } catch (err: any) {
-            // ✅ If seller not found → treat as empty
             if (err.response?.status === 404) {
               setDomains([]);
               setTotal(0);
               return;
             }
-            throw err; // real error
+            throw err;
           }
 
         } else {
@@ -166,7 +164,6 @@ const getPagination = () => {
         );
         setTotal(res?.data?.total ?? domainsData.length);
       } catch (err: any) {
-        // ✅ Only show toast for real errors
         if (!err.response || err.response.status >= 500) {
           toast.error('Something went wrong. Please try again.');
         }
@@ -371,8 +368,6 @@ border-b border-gray-200/70">
                           </Link>
                         </div>
                       </td>
-
-                      {/* ✅ CHAT */}
                       <td className="px-4 py-4 text-center align-middle">
                         <div className="relative group inline-flex justify-center">
                           <button
@@ -408,8 +403,6 @@ border-b border-gray-200/70">
                           >
                             <Send size={16} />
                           </button>
-
-                          {/* tooltip */}
                           <div className="absolute bottom-full mb-2 hidden group-hover:block z-50">
                             <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                               {!d.isChatActive
@@ -421,8 +414,6 @@ border-b border-gray-200/70">
                           </div>
                         </div>
                       </td>
-
-                      {/* ✅ SELLER */}
                       <td className="px-4 py-4 text-center align-middle">
                         {d.user?.userName ? (
                           <button
@@ -450,62 +441,59 @@ border-b border-gray-200/70">
             </table>
           </div>
         </div>
-       {totalPages > 1 && (
-  <nav className="flex items-center justify-center mt-8 text-sm select-none">
+        {totalPages > 1 && (
+          <nav className="flex items-center justify-center mt-8 text-sm select-none">
 
-    <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1">
 
-      {/* Prev */}
-      <button
-        aria-label="Previous page"
-        disabled={page === 1}
-        onClick={() => setPage(p => p - 1)}
-        className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
-      >
-        ‹
-      </button>
+              {/* Prev */}
+              <button
+                aria-label="Previous page"
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+                className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
+              >
+                ‹
+              </button>
 
-      {/* Pages */}
-      {getPagination().map((p, i) =>
-        p === "..." ? (
-          <span
-            key={i}
-            className="px-2 text-gray-400"
-          >
-            …
-          </span>
-        ) : (
-          <button
-            key={i}
-            aria-current={page === p ? "page" : undefined}
-            onClick={() => setPage(Number(p))}
-            className={`
+              {getPagination().map((p, i) =>
+                p === "..." ? (
+                  <span
+                    key={i}
+                    className="px-2 text-gray-400"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={i}
+                    aria-current={page === p ? "page" : undefined}
+                    onClick={() => setPage(Number(p))}
+                    className={`
               px-2.5 py-1 rounded-md transition-all duration-150
 
               ${page === p
-                ? "bg-blue-600 text-white font-medium"
-                : "text-gray-600 hover:text-gray-900"
-              }
+                        ? "bg-blue-600 text-white font-medium"
+                        : "text-gray-600 hover:text-gray-900"
+                      }
             `}
-          >
-            {p}
-          </button>
-        )
-      )}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
+              <button
+                aria-label="Next page"
+                disabled={page === totalPages}
+                onClick={() => setPage(p => p + 1)}
+                className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
+              >
+                ›
+              </button>
 
-      {/* Next */}
-      <button
-        aria-label="Next page"
-        disabled={page === totalPages}
-        onClick={() => setPage(p => p + 1)}
-        className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
-      >
-        ›
-      </button>
-
-    </div>
-  </nav>
-)}
+            </div>
+          </nav>
+        )}
       </div>
       <Drawer
         isOpen={authDrawerOpen}

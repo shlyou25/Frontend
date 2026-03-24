@@ -42,7 +42,7 @@ const Navbar = () => {
             <div className="absolute left-0 top-full mt-3 w-44 rounded-xl bg-white shadow-lg border border-gray-200 
                   opacity-0 invisible group-hover:opacity-100 group-hover:visible 
                   transition-all duration-200">
-              <ul className="py-2 text-sm text-gray-700">
+              <ul className="py-2 text-sm text-gray-700 uppercase">
                 <Link
                   href="/#about"
                   className="block px-4 py-2 hover:bg-gray-50 hover:text-blue-600 transition"

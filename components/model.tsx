@@ -1,7 +1,7 @@
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 
-type ModalPosition = "center" | "top" | "bottom";
+type ModalPosition = "center" | "top" | "bottom" | "anchor";
 
 const sizeClasses: Record<ModalSize, string> = {
   sm: "max-w-md",
@@ -18,6 +18,7 @@ const Modal = ({
   children,
   size = "md",
   position = "center",
+  anchorPos
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -25,23 +26,23 @@ const Modal = ({
   children: React.ReactNode;
   size?: ModalSize;
   position?: ModalPosition;
-
+  anchorPos?: { top: number; left: number };
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex bg-black/40
-  ${position === "top"
-          ? "items-start justify-center pt-10"
-          : position === "bottom"
-            ? "items-end justify-center pb-10"
-            : "items-center justify-center"
-        }
-  `}
-    >
+    <div className="fixed inset-0 z-50 bg-black/30">
       <div
-        className={`relative w-full mx-4 bg-white rounded-xl shadow-lg ${sizeClasses[size]}`}
+        className={`absolute bg-white rounded-xl shadow-xl ${sizeClasses[size]}`}
+        style={
+          position === "anchor"
+            ? {
+                top: anchorPos?.top ?? "50%",
+                left: anchorPos?.left ?? "50%",
+                transform: "translate(-20%, 0)"
+              }
+            : {}
+        }
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
@@ -55,7 +56,7 @@ const Modal = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-[80vh] overflow-y-auto">
+        <div className="p-6 max-h-[70vh] overflow-y-auto">
           {children}
         </div>
       </div>

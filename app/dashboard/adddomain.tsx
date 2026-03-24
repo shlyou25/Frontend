@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader";
 import ExcelDropZone from "./ExcelDropZone";
 import { downloadDomainTemplate } from "../../utils/downloadDomainTemplate";
 import Link from "next/link";

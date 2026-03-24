@@ -190,7 +190,7 @@ export default function PartnerDomz({ planinfo }: Props) {
     </p>
   );
   return (
-    <section className="bg-white px-6 lg:px-8 pb-20">
+    <section className="bg-white px-6 lg:px-8 pb-20" id="plan">
       <div className="max-w-2xl mx-auto text-center">
         <h1 className="text-4xl font-bold text-gray-900">
           Partner with Domz

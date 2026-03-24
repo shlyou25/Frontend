@@ -5,27 +5,31 @@ import Pricing from '../../utils/Plan';
 import Modal from '../../components/model';
 import { useRouter } from 'next/navigation';
 
+export const getUserPlan = async () => {
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_apiLink}plan/getplanbyuser`,
+      { withCredentials: true }
+    )
 
+    return res?.data?.plans?.[0] || null
+  } catch {
+    return null
+  }
+}
 const SubscriptionManagementCard = () => {
   const [planInfo, setPlanInfo] = useState<PlanCardInterface>();
   const router = useRouter();
-   const [warningOpen, setWarningOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_apiLink}plan/getplanbyuser`,
-          { withCredentials: true }
-        );
-        setPlanInfo(res?.data?.plans[0])
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUser();
-  }, []);
+    const fetchPlan = async () => {
+      const plan = await getUserPlan()
+      setPlanInfo(plan)
+    }
+    fetchPlan()
+  }, [])
 
   return (
     <>

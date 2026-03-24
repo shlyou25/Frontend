@@ -50,13 +50,23 @@ const Page = () => {
     checkAuth();
   }, [router]);
 
-  useEffect(() => {
+useEffect(() => {
+  const handleHash = () => {
     const hash = window.location.hash;
 
     if (hash === "#plan") {
       setActiveSection("Pricing");
+    } else if (hash === "#portfolio") {
+      setActiveSection("myPortfolio");
     }
-  }, []);
+  };
+  handleHash();
+  window.addEventListener("hashchange", handleHash);
+
+  return () => {
+    window.removeEventListener("hashchange", handleHash);
+  };
+}, []);
   useEffect(() => {
     const fetchUser = async () => {
       try {

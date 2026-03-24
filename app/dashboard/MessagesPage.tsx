@@ -4,205 +4,202 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 import { Send } from "lucide-react";
+import { useNotifications } from "@/context/NotificationContext";
 
 interface Conversation {
   conversationId: string;
   user: string;
-  unread?: number;
-  lastMessage?: string;
 }
 
-interface DomainGroup { domainId: string; domain: string; conversations: Conversation[]; }
+interface DomainGroup {
+  domainId: string;
+  domain: string;
+  conversations: Conversation[];
+}
+
 interface Message {
   _id: string;
   message: string;
   createdAt: string;
   isMine: boolean;
+  seen?: boolean;
 }
 
 export default function MessagesPage() {
   const [domains, setDomains] = useState<DomainGroup[]>([]);
   const [activeDomain, setActiveDomain] = useState<DomainGroup | null>(null);
-  const [unreadMap, setUnreadMap] = useState<Record<string, number>>({});
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeConversation, setActiveConversation] =
     useState<Conversation | null>(null);
+
+
   const [messages, setMessages] = useState<Message[]>([]);
+  const { unreadMap, setUnreadMap, totalUnread } = useNotifications();
   const [reply, setReply] = useState("");
   const [myUserId, setMyUserId] = useState<string | null>(null);
-  const [typingUser, setTypingUser] = useState<string | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
-  const hasConnectedRef = useRef(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const API = process.env.NEXT_PUBLIC_apiLink;
+  const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
+
+  // ================= SCROLL =================
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const API =
-    process.env.NEXT_PUBLIC_apiLink
-  const SOCKET_URL =
-    process.env.NEXT_PUBLIC_SOCKET_URL
+  // ================= LOAD USER =================
   useEffect(() => {
-    const loadMe = async () => {
-      try {
-        const res = await axios.get(`${API}auth/authenticate`, {
-          withCredentials: true
-        });
-
+    axios
+      .get(`${API}auth/authenticate`, { withCredentials: true })
+      .then((res) => {
         setMyUserId(res.data?.user?.id || res.data?.id);
-      } catch (err) {
-        console.error("Failed to load user");
-      }
-    };
-
-    loadMe();
+      });
   }, [API]);
-  useEffect(() => {
-    if (hasConnectedRef.current) return;
-    hasConnectedRef.current = true;
 
+  // ================= SOCKET INIT (ONCE) =================
+  useEffect(() => {
     const socket = io(SOCKET_URL, {
       withCredentials: true,
       transports: ["websocket"],
-      reconnection: true,
-      reconnectionAttempts: 5
     });
 
     socketRef.current = socket;
 
-    socket.on("connect", () => {
-
-    });
-
-    socket.on("connect_error", (err) => {
-
-    });
-
     return () => {
-      socket.disconnect();
-      socketRef.current = null;
-      hasConnectedRef.current = false;
+      socket.disconnect(); // ✅ now returns void
     };
   }, [SOCKET_URL]);
-  useEffect(() => {
-    if (!activeConversation) return;
 
+  // ================= SOCKET EVENTS =================
+  useEffect(() => {
     const socket = socketRef.current;
     if (!socket) return;
 
-    const joinRoom = () => {
+    // NEW MESSAGE
+    const handleNewMessage = (msg: any) => {
+      const isCurrent =
+        msg.communicationId === activeConversation?.conversationId;
 
-      socket.emit("join_conversation", activeConversation.conversationId);
-    };
+      const isMine = String(msg.senderId) === String(myUserId);
 
-    if (!socket.connected) {
-      socket.once("connect", joinRoom);
-    } else {
-      joinRoom();
-    }
-  }, [activeConversation]);
-  useEffect(() => {
-    const socket = socketRef.current;
-    if (!socket || !myUserId || !activeConversation) return;
+      if (isCurrent) {
+        setMessages((prev) => {
+          if (prev.some((m) => m._id === msg._id)) return prev;
 
-    const handler = (msg: any) => {
-
-
-      if (msg.communicationId !== activeConversation.conversationId) return;
-
-      setMessages(prev => {
-        if (prev.some(m => m._id === msg._id)) return prev;
-
-        const isMineIncoming =
-          String(msg.senderId) === String(myUserId);
-        if (isMineIncoming) {
-          const optimisticIndex = prev.findIndex(
-            m =>
-              m._id.startsWith("temp-") &&
-              m.isMine &&
-              m.message === msg.message
-          );
-
-          if (optimisticIndex !== -1) {
-
-
-            const updated = [...prev];
-            updated[optimisticIndex] = {
+          return [
+            ...prev,
+            {
               _id: msg._id,
               message: msg.message,
               createdAt: msg.createdAt,
-              isMine: true
-            };
-
-            return updated;
-          }
-
-          return prev;
-        }
-        return [
+              isMine,
+              seen: msg.seen ?? false, // ✅ DO NOT FORCE FALSE
+            },
+          ];
+        });
+      } else {
+        setUnreadMap((prev) => ({
           ...prev,
-          {
-            _id: msg._id,
-            message: msg.message,
-            createdAt: msg.createdAt,
-            isMine: false
-          }
-        ];
-      });
-      if (msg.communicationId !== activeConversation?.conversationId) {
-        setUnreadMap(prev => ({
-          ...prev,
-          [msg.communicationId]: (prev[msg.communicationId] || 0) + 1
+          [msg.communicationId]:
+            (prev[msg.communicationId] || 0) + 1,
         }));
-        return;
       }
     };
 
+    // SEEN EVENT
+    const handleSeen = ({ conversationId }: any) => {
+      if (conversationId !== activeConversation?.conversationId) return;
 
+      setMessages((prev) => {
+        const updated = [...prev];
+
+        for (let i = updated.length - 1; i >= 0; i--) {
+          if (updated[i].isMine) {
+            updated[i] = { ...updated[i], seen: true };
+            break;
+          }
+        }
+
+        return updated;
+      });
+    };
+
+    socket.on("new_message", handleNewMessage);
+    socket.on("messages_seen", handleSeen);
 
     return () => {
-      socket.off("new_message", handler);
+      socket.off("new_message", handleNewMessage);
+      socket.off("messages_seen", handleSeen);
     };
   }, [activeConversation, myUserId]);
+
+  // ================= JOIN ROOM =================
   useEffect(() => {
-    const loadInbox = async () => {
-      try {
-        const res = await axios.get(`${API}communication`, {
-          withCredentials: true
-        });
+    const socket = socketRef.current;
+    if (!socket || !activeConversation) return;
 
+    socket.emit("join_conversation", activeConversation.conversationId);
+  }, [activeConversation]);
 
+  // ================= MARK AS SEEN =================
+  useEffect(() => {
+    if (!activeConversation) return;
+
+    axios.post(
+      `${API}communication/${activeConversation.conversationId}/seen`,
+      {},
+      { withCredentials: true }
+    );
+
+    setUnreadMap((prev) => ({
+      ...prev,
+      [activeConversation.conversationId]: 0,
+    }));
+  }, [activeConversation]);
+
+  // ================= LOAD INBOX =================
+  useEffect(() => {
+    axios
+      .get(`${API}communication`, { withCredentials: true })
+      .then((res) => {
         setDomains(res.data || []);
 
         if (res.data?.length) {
           setActiveDomain(res.data[0]);
-          setActiveConversation(res.data[0].conversations?.[0] || null);
+          setActiveConversation(res.data[0].conversations?.[0]);
         }
-      } catch (err) {
-        console.error("❌ Failed to load inbox", err);
-      }
-    };
-
-    loadInbox();
+      });
   }, [API]);
+
+  // ================= LOAD MESSAGES (SAFE MERGE) =================
   useEffect(() => {
     if (!activeConversation) return;
 
-    const loadMessages = async () => {
-      try {
-        const res = await axios.get(
-          `${API}communication/${activeConversation.conversationId}/messages`,
-          { withCredentials: true }
-        );
+    axios
+      .get(
+        `${API}communication/${activeConversation.conversationId}/messages`,
+        { withCredentials: true }
+      )
+      .then((res) => {
+        setMessages((prev) => {
+          const incoming = res.data || [];
 
-        setMessages(res.data || []);
-      } catch (err) {
-        console.error("❌ Failed to load messages", err);
-      }
-    };
+          return incoming.map((msg: any) => {
+            const existing = prev.find((p) => p._id === msg._id);
 
-    loadMessages();
+            return existing
+              ? {
+                ...msg,
+                seen: existing.seen ?? msg.seen ?? false, // ✅ NEVER downgrade
+              }
+              : msg;
+          });
+        });
+      });
   }, [activeConversation, API]);
+
+  // ================= SEND =================
   const sendReply = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!reply.trim() || !activeConversation) return;
@@ -215,163 +212,69 @@ export default function MessagesPage() {
         _id: tempId,
         message: reply,
         createdAt: new Date().toISOString(),
-        isMine: true
-      }
+        isMine: true,
+        seen: false,
+      },
     ]);
 
-    const messageToSend = reply;
+    const msg = reply;
     setReply("");
 
-    try {
-      await axios.post(
-        `${API}communication/${activeConversation.conversationId}/reply`,
-        { message: messageToSend },
-        { withCredentials: true }
-      );
-    } catch (err) {
-      console.error("❌ Failed to send reply", err);
-    }
+    await axios.post(
+      `${API}communication/${activeConversation.conversationId}/reply`,
+      { message: msg },
+      { withCredentials: true }
+    );
   };
-  // If there are no conversations anywhere, render nothing
-  const hasConversations = domains.some(
-    (d) => d.conversations && d.conversations.length > 0
-  );
 
-  if (!hasConversations) return <div className="px-5 py-4 text-lg text-gray-600 leading-relaxed z-10 text-center">
-    Your messages will appear here
-  </div>
-  if (!messages) return <div className="px-5 py-4 ftext-lg text-gray-600 leading-relaxed z-10 text-center">
-    Your messages will appear here
-  </div>
+  // ================= UI =================
+  if (!domains.length)
+    return <div className="p-6 text-center">No messages yet</div>;
+
   return (
     <div className="h-full flex bg-gray-100">
-      <aside className="w-64 bg-white border-r flex flex-col">
-        <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
-          Domains
-        </div>
-
-        <div className="overflow-y-auto">
-          {domains.length === 0 && (
-            <div className="p-6 text-sm text-gray-400 text-center">
-              No conversations yet
-            </div>
-          )}
-
-          {domains.map((d) => (
-            <button
-              key={d.domainId}
-              onClick={() => {
-                setActiveDomain(d);
-                setActiveConversation(d.conversations?.[0] || null);
-              }}
-              className={`w-full text-left px-5 py-3 border-b transition-all
-              hover:bg-gray-50
-              ${activeDomain?.domainId === d.domainId
-                  ? "bg-blue-50 border-l-4 border-l-blue-600"
-                  : ""
-                }`}
-            >
-              <div className="font-medium text-sm text-gray-900 truncate">
-                {d.domain}
-              </div>
-              <div className="text-xs text-gray-400">
-                {d.conversations?.length || 0} chats
-              </div>
-            </button>
-          ))}
-        </div>
+      {/* DOMAINS */}
+      <aside className="w-64 bg-white border-r">
+        {domains.map((d) => (
+          <button
+            key={d.domainId}
+            onClick={() => {
+              setActiveDomain(d);
+              setActiveConversation(d.conversations[0]);
+            }}
+            className="w-full text-left px-4 py-3 border-b hover:bg-gray-50"
+          >
+            {d.domain}
+          </button>
+        ))}
       </aside>
 
-      {/* ================= MIDDLE: CONVERSATIONS ================= */}
-      <aside className="w-72 bg-white border-r flex flex-col">
-        <div className="px-5 py-4 font-semibold text-gray-900 border-b sticky top-0 bg-white z-10">
-          Messages
-        </div>
+      {/* CONVERSATIONS */}
+      <aside className="w-72 bg-white border-r">
+        {activeDomain?.conversations.map((c) => (
+          <button
+            key={c.conversationId}
+            onClick={() => setActiveConversation(c)}
+            className="w-full text-left px-4 py-3 border-b flex justify-between"
+          >
+            <span>{c.user}</span>
 
-        <div className="overflow-y-auto">
-          {activeDomain?.conversations?.map((c: any) => (
-            <button
-              key={c.conversationId}
-              onClick={() => {
-                setActiveConversation(c);
-                setUnreadMap(prev => ({ ...prev, [c.conversationId]: 0 }));
-              }}
-              className={`w-full text-left px-5 py-3 border-b flex items-center gap-3
-              transition-all hover:bg-gray-50
-              ${activeConversation?.conversationId === c.conversationId
-                  ? "bg-blue-50"
-                  : ""
-                }`}
-            >
-              {/* Avatar */}
-              <div className="h-9 w-9 rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center text-sm font-semibold">
-                {c.user?.charAt(0)?.toUpperCase()}
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm text-gray-900 truncate">
-                  {c.user}
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-xs text-gray-400 truncate">
-                    {messages[messages.length - 1]?.message || "No messages yet"}
-                  </div>
-
-                  {unreadMap[c.conversationId] > 0 && (
-                    <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                      {unreadMap[c.conversationId]}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
+            {unreadMap[c.conversationId] > 0 && (
+              <span className="bg-red-500 text-white px-2 rounded-full text-xs">
+                {unreadMap[c.conversationId]}
+              </span>
+            )}
+          </button>
+        ))}
       </aside>
 
-      {/* ================= RIGHT: CHAT ================= */}
-      <main className="flex-1 flex flex-col bg-gray-50">
-        {/* ===== Chat Header ===== */}
-        <div className="px-6 py-4 bg-white border-b flex items-center gap-3 sticky top-0 z-10">
-          {activeConversation ? (
-            <>
-              <div className="h-10 w-10 rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center font-semibold">
-                {activeConversation.user?.charAt(0)?.toUpperCase()}
-              </div>
-
-              <div>
-                <div className="font-semibold text-gray-900">
-                  {activeConversation.user}
-                </div>
-
-              </div>
-              {typingUser && (
-                <div className="text-xs text-blue-500">
-                  {typingUser} is typing...
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-sm text-gray-400">
-              Select a conversation
-            </div>
-          )}
+      {/* CHAT */}
+      <main className="flex-1 flex flex-col">
+        <div className="p-4 border-b bg-white font-semibold">
+          {activeConversation?.user}
         </div>
 
-        {/* ===== Messages ===== */}
-        <div
-          id="messages-container"
-          className="flex-1 overflow-y-auto px-6 py-6 space-y-4"
-        >
-          {messages.length === 0 && (
-            <div className="h-full flex items-center justify-center text-gray-400 text-sm">
-              <div className="text-center text-gray-400">
-                <div className="text-4xl mb-2">💬</div>
-                Start the conversation
-              </div>
-            </div>
-          )}
-
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {messages.map((m) => (
             <div
               key={m._id}
@@ -379,23 +282,25 @@ export default function MessagesPage() {
                 }`}
             >
               <div
-                className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm shadow-sm
+                className={`px-4 py-2 rounded-xl max-w-[60%]
                 ${m.isMine
-                    ? "bg-blue-600 text-white rounded-br-sm"
-                    : "bg-white text-gray-900 border rounded-bl-sm"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white border"
                   }`}
               >
-                <p className="whitespace-pre-wrap leading-relaxed">
-                  {m.message}
-                </p>
-                <div
-                  className={`text-[11px] mt-1 ${m.isMine ? "text-blue-100" : "text-gray-400"
-                    }`}
-                >
+                {m.message}
+
+                <div className="text-[10px] mt-1 flex gap-1">
                   {new Date(m.createdAt).toLocaleTimeString([], {
                     hour: "2-digit",
-                    minute: "2-digit"
+                    minute: "2-digit",
                   })}
+
+                  {m.isMine && (
+                    <span>
+                      {m.seen ? "✓✓ Seen" : "✓ Sent"}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -403,30 +308,17 @@ export default function MessagesPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* ===== Input ===== */}
-        <div className="bg-white border-t px-4 py-3">
-          <form onSubmit={sendReply} className="flex items-end gap-3">
-            <textarea
-              placeholder="Type a message..."
-              rows={1}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl resize-none text-sm
-              focus:outline-none focus:ring-2 focus:ring-blue-500
-              max-h-32"
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-            />
-
-            <button
-              type="submit"
-              disabled={!reply.trim()}
-              className="h-11 w-11 flex items-center justify-center rounded-full
-              bg-blue-600 text-white disabled:bg-gray-300
-              hover:bg-blue-700 transition-all shadow-sm"
-            >
-              <Send size={18} />
-            </button>
-          </form>
-        </div>
+        <form onSubmit={sendReply} className="p-3 flex gap-2 bg-white">
+          <input
+            value={reply}
+            onChange={(e) => setReply(e.target.value)}
+            className="flex-1 border px-3 py-2 rounded-lg"
+            placeholder="Type message..."
+          />
+          <button className="bg-blue-600 text-white px-4 rounded-lg">
+            <Send size={16} />
+          </button>
+        </form>
       </main>
     </div>
   );
