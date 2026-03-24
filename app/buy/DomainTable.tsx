@@ -76,7 +76,34 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
       setIsAuthenticated(status === 'authenticated');
     })();
   }, []);
+const getPagination = () => {
+  const delta = 2 // pages around current
+  const range = []
+  const rangeWithDots = []
 
+  for (let i = 1; i <= totalPages; i++) {
+    if (
+      i === 1 ||
+      i === totalPages ||
+      (i >= page - delta && i <= page + delta)
+    ) {
+      range.push(i)
+    }
+  }
+
+  let prev = 0
+  for (let i of range) {
+    if (i - prev === 2) {
+      rangeWithDots.push(prev + 1)
+    } else if (i - prev > 2) {
+      rangeWithDots.push("...")
+    }
+    rangeWithDots.push(i)
+    prev = i
+  }
+
+  return rangeWithDots
+}
   useEffect(() => {
     if (searchQuery) {
       setLimit(500);
@@ -352,7 +379,7 @@ border-b border-gray-200/70">
                             type="button"
                             onClick={(e) => {
                               if (!isAuthenticated) {
-                               setAuthDrawerOpen(true);
+                                setAuthDrawerOpen(true);
                                 return;
                               }
 
@@ -423,60 +450,99 @@ border-b border-gray-200/70">
             </table>
           </div>
         </div>
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-6 mt-6 text-sm">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>‹</button>
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={page === i + 1 ? 'bg-blue-600 text-white px-3 py-1 rounded cursor-pointer' : ''}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>›</button>
-          </div>
-        )}
-     
+       {totalPages > 1 && (
+  <nav className="flex items-center justify-center mt-8 text-sm select-none">
 
-      </div>
-        <Drawer
-  isOpen={authDrawerOpen}
-  onClose={() => setAuthDrawerOpen(false)}
-  title="Message Seller"
->
-  <div className="space-y-4 text-sm text-gray-700">
-    <p className="text-gray-600 leading-relaxed">
-      Please sign up or log in to message the seller.
-      Creating an account is completely free — no subscription required.
-      <br />
-      Email verification helps keep the marketplace secure and prevent spam.
-    </p>
+    <div className="flex items-center gap-1">
 
-    <div className="flex flex-col gap-3 pt-3">
-      <Link
-        href="/signup"
-        className="bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2.5 rounded-lg font-medium transition"
-        onClick={() => setAuthDrawerOpen(false)}
+      {/* Prev */}
+      <button
+        aria-label="Previous page"
+        disabled={page === 1}
+        onClick={() => setPage(p => p - 1)}
+        className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
       >
-        Create Free Account
-      </Link>
+        ‹
+      </button>
 
-      <Link
-        href="/login"
-        className="border border-gray-300 hover:bg-gray-100 text-center px-4 py-2.5 rounded-lg font-medium transition"
-        onClick={() => setAuthDrawerOpen(false)}
+      {/* Pages */}
+      {getPagination().map((p, i) =>
+        p === "..." ? (
+          <span
+            key={i}
+            className="px-2 text-gray-400"
+          >
+            …
+          </span>
+        ) : (
+          <button
+            key={i}
+            aria-current={page === p ? "page" : undefined}
+            onClick={() => setPage(Number(p))}
+            className={`
+              px-2.5 py-1 rounded-md transition-all duration-150
+
+              ${page === p
+                ? "bg-blue-600 text-white font-medium"
+                : "text-gray-600 hover:text-gray-900"
+              }
+            `}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      {/* Next */}
+      <button
+        aria-label="Next page"
+        disabled={page === totalPages}
+        onClick={() => setPage(p => p + 1)}
+        className="px-2 py-1 text-gray-500 hover:text-gray-900 disabled:opacity-30"
       >
-        Log In
-      </Link>
+        ›
+      </button>
+
     </div>
+  </nav>
+)}
+      </div>
+      <Drawer
+        isOpen={authDrawerOpen}
+        onClose={() => setAuthDrawerOpen(false)}
+        title="Message Seller"
+      >
+        <div className="space-y-4 text-sm text-gray-700">
+          <p className="text-gray-600 leading-relaxed">
+            Please sign up or log in to message the seller.
+            Creating an account is completely free — no subscription required.
+            <br />
+            Email verification helps keep the marketplace secure and prevent spam.
+          </p>
 
-    <p className="text-xs text-gray-500 text-center pt-2">
-      Takes less than a minute to get started
-    </p>
-  </div>
-</Drawer>
+          <div className="flex flex-col gap-3 pt-3">
+            <Link
+              href="/signup"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2.5 rounded-lg font-medium transition"
+              onClick={() => setAuthDrawerOpen(false)}
+            >
+              Create Free Account
+            </Link>
+
+            <Link
+              href="/login"
+              className="border border-gray-300 hover:bg-gray-100 text-center px-4 py-2.5 rounded-lg font-medium transition"
+              onClick={() => setAuthDrawerOpen(false)}
+            >
+              Log In
+            </Link>
+          </div>
+
+          <p className="text-xs text-gray-500 text-center pt-2">
+            Takes less than a minute to get started
+          </p>
+        </div>
+      </Drawer>
       <Drawer
         isOpen={open}
         onClose={() => setOpen(false)}
