@@ -7,6 +7,7 @@ import { handleAuthRedirect } from "../utils/checkAuth";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useNotifications } from "../context/NotificationContext";
+import { Bell } from "lucide-react";
 
 export type NavbarTextProp = {
   text: string;
@@ -91,39 +92,23 @@ const NavbarComponenet = (props: NavbarTextProp) => {
           </div>
           <div className="hidden md:flex items-center gap-4">
 
-            {/* 🔔 Messages Icon */}
-            <div
-              onClick={() => router.push("/messages")}
-              className="relative cursor-pointer"
-            >
-              <div className="h-10 w-10 rounded-full bg-white/80 backdrop-blur 
-      border border-gray-200 flex items-center justify-center 
-      hover:bg-gray-100 transition shadow-sm">
-                💬
+            {/* 🔔 Notification Icon */}
+            <Link href="/dashboard#message" className="relative">
+              <div className="p-2 rounded-full hover:bg-gray-100 transition">
+                <Bell className="w-5 h-5 text-gray-700" />
+
+                {totalUnread > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1">
+                    {totalUnread > 99 ? "99+" : totalUnread}
+                  </span>
+                )}
               </div>
+            </Link>
 
-              {totalUnread > 0 && (
-                <span
-                  className="
-          absolute -top-1 -right-1
-          bg-red-500 text-white
-          text-[11px] font-semibold
-          px-1.5 py-0.5
-          rounded-full
-          min-w-[18px]
-          text-center
-          shadow
-        "
-                >
-                  {totalUnread > 99 ? "99+" : totalUnread}
-                </span>
-              )}
-            </div>
-
-            {/* Existing Button */}
+            {/* CTA */}
             <button
               onClick={() => handleAuthRedirect(router)}
-              className="bg-linear-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-full font-semibold shadow hover:from-blue-600 hover:to-blue-700 transition"
+              className="bg-blue-600 text-white px-5 py-2 rounded-full font-medium hover:bg-blue-700 transition"
             >
               My Domz
             </button>
