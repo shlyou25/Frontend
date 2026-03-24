@@ -311,11 +311,19 @@ const Myportfolio = () => {
   };
 
   const fetchDomains = async () => {
+  try {
     const res = await axios.get(`${API}/getdomainbyuser`, {
       withCredentials: true,
     });
+
     setUserDomains(res.data.domains || []);
-  };
+  } catch (error: any) {
+    console.error(error);
+    toast.error(
+      error?.response?.data?.message || "Failed to load domains"
+    );
+  }
+};
 
   useEffect(() => {
     fetchDomains();
@@ -525,9 +533,9 @@ const Myportfolio = () => {
   }, [searchedDomains, dateRange, customFrom, customTo]);
 
   if (loading) return <Loader />;
-
+ 
   return (
-    <div className="lg:px-[10%] lg:pt-10">
+    <div className="lg:px-[10%] lg:pt-10" id="portfolio">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4">
           <button

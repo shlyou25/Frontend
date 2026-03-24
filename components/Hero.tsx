@@ -1,17 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { checkAuth } from "../utils/checkAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import domzimg from '../public/assets/icons/domz.png'
+import { handleAuthRedirect } from "@/utils/checkAuth";
 const Hero = () => {
   const router = useRouter();
 
-  const handleAuthRedirect = async () => {
-    const status = await checkAuth();
-    router.push(status === "authenticated" ? "/dashboard" : "/login");
-  };
 
   return (
     <header className="w-full pt-16 pb-20 px-6">
@@ -42,7 +38,7 @@ const Hero = () => {
           </Link>
 
           <button
-            onClick={handleAuthRedirect}
+            onClick={() => handleAuthRedirect(router)}
             className="border border-blue-600 text-blue-600 px-8 py-3 rounded-full font-medium hover:bg-blue-50 transition w-32"
           >
             Sell
