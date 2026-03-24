@@ -1,5 +1,4 @@
 "use client";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -58,8 +57,11 @@ useEffect(() => {
       setActiveSection("Pricing");
     } else if (hash === "#portfolio") {
       setActiveSection("myPortfolio");
+    } else if (hash === "#messages") {
+      setActiveSection("MessagesPage");
     }
   };
+
   handleHash();
   window.addEventListener("hashchange", handleHash);
 
@@ -100,8 +102,6 @@ useEffect(() => {
         IsParaText={false}
         searchbarStatus={false}
       />
-
-      {/* MOBILE HEADER */}
       <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-white border-b">
         <h2 className="font-semibold text-lg">Dashboard</h2>
 
@@ -114,16 +114,12 @@ useEffect(() => {
       </div>
 
       <div className="flex flex-1 relative overflow-hidden">
-
-        {/* OVERLAY */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
             className="fixed inset-0 bg-black/40 z-30 sm:hidden"
           />
         )}
-
-        {/* SIDEBAR */}
         <aside
           className={`
 
@@ -140,17 +136,13 @@ useEffect(() => {
 
           `}
         >
-
-          {/* mobile close */}
           <div className="sm:hidden flex justify-between items-center p-4 border-b">
             <h3 className="font-semibold">Menu</h3>
             <button onClick={() => setSidebarOpen(false)}>
               <X size={22} />
             </button>
           </div>
-
           <nav className="p-4 space-y-2">
-
             {sidebarLinks.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.key;
@@ -182,9 +174,6 @@ useEffect(() => {
                 </button>
               );
             })}
-
-            {/* logout */}
-
             <button
               onClick={() => logoutHandler(router)}
               className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50"
@@ -196,8 +185,6 @@ useEffect(() => {
           </nav>
 
         </aside>
-
-        {/* MAIN CONTENT */}
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-8">
 
