@@ -6,7 +6,7 @@ import Link from "next/link";
 import { handleAuthRedirect } from "../utils/checkAuth";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useNotifications } from "@/context/NotificationContext";
+import { useNotifications } from "../context/NotificationContext";
 
 export type NavbarTextProp = {
   text: string;
