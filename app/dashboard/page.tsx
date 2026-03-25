@@ -96,12 +96,15 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-
-      <NavbarComponenet
+   
+      <div className=" lg:pl-[10%] lg:pr-[10%] lg:pt-9">
+ <NavbarComponenet
         text="My Domz"
         IsParaText={false}
         searchbarStatus={false}
       />
+      </div>
+     
       <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-white border-b">
         <h2 className="font-semibold text-lg">Dashboard</h2>
 
