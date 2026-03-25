@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { CheckCircle2, Clock } from "lucide-react";
 
 interface Props {
   adminCheck: boolean;
@@ -9,13 +10,17 @@ interface Props {
   onRequestUpdated: () => void;
 }
 
-const ChangeAdminCheckStatus = ({ adminCheck, domainId, onRequestUpdated }: Props) => {
+const ChangeAdminCheckStatus = ({
+  adminCheck,
+  domainId,
+  onRequestUpdated,
+}: Props) => {
 
   const handleChange = async (value: string) => {
     try {
       await axios.patch(
         `${process.env.NEXT_PUBLIC_apiLink}domain/admin/update-admin-check/${domainId}`,
-        { adminCheck: value === "Checked" },
+        { adminCheck: value === "checked" },
         { withCredentials: true }
       );
 
@@ -28,25 +33,42 @@ const ChangeAdminCheckStatus = ({ adminCheck, domainId, onRequestUpdated }: Prop
 
   return (
     <td className="px-6 py-4">
-      <select
-        value={adminCheck ? "checked" : "not_checked"}
-        onChange={(e) => handleChange(e.target.value)}
-        className={`px-3 py-2 rounded-md text-sm font-medium border transition
-      focus:outline-none focus:ring-2
-      ${adminCheck
-            ? "bg-green-100 text-green-700 border-green-300 focus:ring-green-300"
-            : "bg-red-100 text-red-700 border-red-300 focus:ring-red-300"
-          }
-    `}
-      >
-        <option value="checked" className="text-green-700">
-          ✅ Checked
-        </option>
+      <div className="relative inline-block w-full">
+        <select
+          value={adminCheck ? "checked" : "not_checked"}
+          onChange={(e) => handleChange(e.target.value)}
+          className={`
+            w-full appearance-none
+            pl-10 pr-8 py-2.5
+            rounded-lg text-sm font-medium
+            border transition-all duration-200
+            focus:outline-none focus:ring-2
+            cursor-pointer
 
-        <option value="not_checked" className="text-red-700">
-          ❌ Pending
-        </option>
-      </select>
+            ${adminCheck
+              ? "bg-green-50 text-green-700 border-green-300 focus:ring-green-300"
+              : "bg-red-50 text-red-700 border-red-300 focus:ring-red-300"
+            }
+          `}
+        >
+          <option value="checked">Checked</option>
+          <option value="not_checked">Pending</option>
+        </select>
+
+        {/* LEFT ICON */}
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          {adminCheck ? (
+            <CheckCircle2 size={16} className="text-green-600" />
+          ) : (
+            <Clock size={16} className="text-red-500" />
+          )}
+        </div>
+
+        {/* DROPDOWN ARROW */}
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+          ▾
+        </div>
+      </div>
     </td>
   );
 };
