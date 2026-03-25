@@ -44,7 +44,6 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [authDrawerOpen, setAuthDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [modalPos, setModalPos] = useState({ top: 0, left: 0 });
   const totalPages = Math.ceil(total / limit);
   const hasActiveFilters =
     filters.extensions.length ||
@@ -144,7 +143,21 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
         } else {
           res = await axios.get(
             `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
-            { params: { page, limit } }
+            {
+              params: {
+                page,
+                limit,
+                sortBy,
+                search: searchQuery,
+                extensions: filters.extensions.join(","),
+                startsWith: filters.startsWith,
+                endsWith: filters.endsWith,
+                contains: filters.contains,
+                minLength: filters.minLength,
+                maxLength: filters.maxLength,
+                sellerName: filters.sellerName
+              }
+            }
           );
         }
 
@@ -176,48 +189,9 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
     };
 
     fetchDomains();
-  }, [page, limit, searchQuery, filters.sellerName]);
-  const filteredDomains = domains
-    .filter(d => {
-      const full = d.domain.toLowerCase();
-      const name = full.split('.')[0];
+  }, [page,limit,searchQuery,filters,sortBy]);
 
-      if (
-        filters.extensions.length &&
-        !filters.extensions.some(ext => full.endsWith(ext))
-      ) return false;
-
-      if (filters.exact) {
-        if (filters.startsWith && name !== filters.startsWith.toLowerCase()) return false;
-        if (filters.endsWith && name !== filters.endsWith.toLowerCase()) return false;
-        if (filters.contains && name !== filters.contains.toLowerCase()) return false;
-      } else {
-        if (filters.startsWith && !name.startsWith(filters.startsWith.toLowerCase())) return false;
-        if (filters.endsWith && !name.endsWith(filters.endsWith.toLowerCase())) return false;
-        if (filters.contains && !name.includes(filters.contains.toLowerCase())) return false;
-      }
-      if (filters.minLength && name.length < filters.minLength) return false;
-      if (filters.maxLength && name.length > filters.maxLength) return false;
-
-
-
-      return true;
-    })
-    .sort((a, b) => {
-      const nameA = a.domain.toLowerCase().split('.')[0];
-      const nameB = b.domain.toLowerCase().split('.')[0];
-
-      switch (sortBy) {
-        case 'az': return a.domain.localeCompare(b.domain);
-        case 'za': return b.domain.localeCompare(a.domain);
-        case 'length_asc': return nameA.length - nameB.length;
-        case 'length_desc': return nameB.length - nameA.length;
-        case 'newest': return +new Date(b.createdAt) - +new Date(a.createdAt);
-        case 'oldest': return +new Date(a.createdAt) - +new Date(b.createdAt);
-        default: return 0;
-      }
-    });
-
+const filteredDomains = domains;
   return (
     <div className="w-full mt-10">
       <div className="rounded-2xl border border-gray-200/70 bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] overflow-hidden">
@@ -379,14 +353,6 @@ border-b border-gray-200/70">
                               }
 
                               if (!d.isChatActive) return;
-
-                              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-
-                              setModalPos({
-                                top: rect.bottom + window.scrollY + 8,
-                                left: rect.left + window.scrollX
-                              });
-
                               setSelectedDomain(d);
                               setOpen(true);
                             }}
