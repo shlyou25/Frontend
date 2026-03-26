@@ -1,78 +1,157 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { PlanCardInterface } from '../../components/plan/plancard';
-import Pricing from '../../utils/Plan';
-import Modal from '../../components/model';
-import { useRouter } from 'next/navigation';
+"use client";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Modal from "../../components/model";
+import Pricing from "../../utils/Plan";
+import { useRouter } from "next/navigation";
+import {
+  Calendar,
+  Layers,
+  Activity,
+  AlertTriangle,
+} from "lucide-react";
 
 export const getUserPlan = async () => {
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_apiLink}plan/getplanbyuser`,
       { withCredentials: true }
-    )
+    );
 
-    return res?.data?.plans?.[0] || null
+    return res?.data?.currentPlan || null;
   } catch {
-    return null
+    return null;
   }
-}
+};
+
 const SubscriptionManagementCard = () => {
-  const [planInfo, setPlanInfo] = useState<PlanCardInterface>();
+  const [planInfo, setPlanInfo] = useState<any>(null);
   const router = useRouter();
   const [warningOpen, setWarningOpen] = useState(false);
-  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   useEffect(() => {
     const fetchPlan = async () => {
-      const plan = await getUserPlan()
-      setPlanInfo(plan)
-    }
-    fetchPlan()
-  }, [])
+      const plan = await getUserPlan();
+      setPlanInfo(plan);
+    };
+    fetchPlan();
+  }, []);
+
+  if (!planInfo) return null;
+
+  const usagePercent =
+    (planInfo.domainsUsed / planInfo.feature) * 100;
+
+  const daysLeft = Math.ceil(
+    (new Date(planInfo.endingDate).getTime() - Date.now()) /
+      (1000 * 60 * 60 * 24)
+  );
 
   return (
     <>
-      <div className="max-w-2xl mx-auto p-6 bg-gray-50 rounded-lg shadow flex flex-col mb-5">
-        <h2 className="text-xl font-semibold mb-6">Active Plan</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md border border-gray-100 mb-6">
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <div className="mb-4">
-              <span className="block text-sm font-medium text-gray-700 mb-1">Current Plan Tier</span>
-              <div className="bg-white rounded border px-3 py-2 text-gray-900 shadow-sm max-w-fit">{planInfo?.title}</div>
-            </div>
-            <div className="mb-4">
-              <span className="block text-sm font-medium text-gray-700 mb-1">Plan Start Date</span>
-              <span className="text-gray-900">
-                {planInfo?.startDate &&
-                  new Date(planInfo.startDate).toLocaleDateString()
-                }
-              </span>
-            </div>
-            <div className="mb-4">
-              <span className="block text-sm font-medium text-gray-700 mb-1">Auto Renews</span>
-              <span className="text-gray-900">
-                {planInfo?.endingDate &&
-                  new Date(planInfo.endingDate).toLocaleDateString()
-                }
-              </span>
-            </div>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Active Plan
+            </h2>
+            <p className="text-sm text-gray-500">
+              Manage your subscription & usage
+            </p>
           </div>
-          {/* Right Column */}
-          <div className="flex flex-col justify-center items-end space-y-5">
+
+          <span className="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-1 rounded-full">
+            {planInfo.title}
+          </span>
+        </div>
+
+        {/* Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {/* Left */}
+          <div className="space-y-5">
+
+            {/* Dates */}
+            <div className="flex items-center gap-3">
+              <Calendar size={18} className="text-gray-500" />
+              <div>
+                <p className="text-xs text-gray-500">Start Date</p>
+                <p className="text-sm font-medium">
+                  {new Date(planInfo.startDate).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Calendar size={18} className="text-gray-500" />
+              <div>
+                <p className="text-xs text-gray-500">Expires On</p>
+                <p className="text-sm font-medium">
+                  {new Date(planInfo.endingDate).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+
+            {/* Days left */}
+            <div className="flex items-center gap-3">
+              <AlertTriangle size={18} className="text-orange-500" />
+              <p className="text-sm font-medium text-orange-600">
+                {daysLeft} days remaining
+              </p>
+            </div>
+
+          </div>
+
+          {/* Right */}
+          <div className="space-y-5">
+
+            {/* Usage */}
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="flex items-center gap-2 text-gray-600">
+                  <Layers size={16} />
+                  Domains Usage
+                </span>
+                <span className="font-medium">
+                  {planInfo.domainsUsed} / {planInfo.feature}
+                </span>
+              </div>
+
+              {/* Progress bar */}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className={`h-2 rounded-full ${
+                    usagePercent > 80
+                      ? "bg-red-500"
+                      : usagePercent > 60
+                      ? "bg-yellow-500"
+                      : "bg-blue-600"
+                  }`}
+                  style={{ width: `${usagePercent}%` }}
+                />
+              </div>
+
+              <p className="text-xs text-gray-500 mt-1">
+                {planInfo.remainingDomains} domains remaining
+              </p>
+            </div>
+
+            {/* Action */}
             <button
               onClick={() => setWarningOpen(true)}
-              className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition"
+              className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 font-medium transition"
             >
               Change Plan
             </button>
 
-            {/* <div className="flex space-x-3 text-gray-800 text-base">
-              <span className="cursor-pointer hover:underline">Monthly</span>
-            </div> */}
           </div>
         </div>
       </div>
+
+      {/* Modal */}
       <Modal
         isOpen={warningOpen}
         onClose={() => setWarningOpen(false)}
@@ -80,10 +159,8 @@ const SubscriptionManagementCard = () => {
         size="sm"
       >
         <div className="space-y-5">
-
           <p className="text-gray-700">
-            You already have an active plan.
-            To request changes, please use the contact submission form.
+            You already have an active plan. Contact support to modify it.
           </p>
 
           <div className="flex justify-end gap-3">
@@ -103,19 +180,8 @@ const SubscriptionManagementCard = () => {
             >
               Contact
             </button>
-
           </div>
-
         </div>
-      </Modal>
-
-      <Modal
-        isOpen={upgradeOpen}
-        onClose={() => setUpgradeOpen(false)}
-        title="Upgrade your plan"
-        size="xl"
-      >
-        <Pricing />
       </Modal>
     </>
   );
