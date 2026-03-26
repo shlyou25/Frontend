@@ -34,20 +34,23 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
   const isSelected = (id: string) =>
     selectedDomains.some((d) => d.id === id);
 
+  const selectableDomains = filteredData.filter(d => d.status === "Fail");
+
   const isAllSelected =
-    filteredData.length > 0 &&
-    selectedDomains.length === filteredData.length;
+    selectableDomains.length > 0 &&
+    selectedDomains.length === selectableDomains.length;
 
   const toggleSelectAll = () => {
     if (isAllSelected) {
       setSelectedDomains([]);
     } else {
-      setSelectedDomains(filteredData);
+      setSelectedDomains(filteredData.filter(d => d.status === "Fail"));
     }
   };
 
 
   const toggleRow = (domain: Domain) => {
+    if (domain.status !== "Fail") return;
     setSelectedDomains((prev) =>
       prev.some((d) => d.id === domain.id)
         ? prev.filter((d) => d.id !== domain.id)
@@ -90,13 +93,13 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
 
   return (
     <div className="bg-white rounded-xl shadow-md border border-gray-200">
-      {/* Top controls */}
+
       <div className="p-4 border-b flex items-center justify-between gap-4">
 
         <button
           onClick={() => {
             setBulkMode((prev) => !prev);
-            setSelectedDomains([]); // clear stale selections
+            setSelectedDomains([]);
           }}
           className={`px-4 py-2 text-sm rounded-md border transition hover:cursor-pointer
     ${bulkMode
@@ -151,6 +154,7 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
                   <input
                     type="checkbox"
                     checked={isAllSelected}
+                    disabled={selectableDomains.length === 0}
                     onChange={toggleSelectAll}
                     className="h-4 w-4"
                   />
@@ -183,8 +187,10 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
                       <input
                         type="checkbox"
                         checked={isSelected(domain.id)}
+                        disabled={domain.status !== "Fail"}
                         onChange={() => toggleRow(domain)}
-                        className="h-4 w-4"
+                        className={`h-4 w-4 ${domain.status !== "Fail" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
                       />
 
                     </td>
@@ -210,28 +216,27 @@ const DomainStatus = ({ data, onDeleteSuccess }: DomainTableProps) => {
                     {new Date(domain.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4 border-b text-sm text-gray-900">
-  <span
-    title={
-      domain.status === "Pass"
-        ? "To delete this name from your portfolio go to 'My Domains'"
-        : "Delete this name from your account"
-    }
-    className="inline-block"
-  >
-    <Trash2
-      onClick={() => {
-        if (domain.status === "Pass") return;
-        setPendingDelete([domain]);
-        setConfirmOpen(true);
-      }}
-      className={`${
-        domain.status === "Pass"
-          ? "text-gray-400 opacity-50 cursor-not-allowed"
-          : "text-red-600 hover:text-red-700 cursor-pointer"
-      }`}
-    />
-  </span>
-</td>
+                    <span
+                      title={
+                        domain.status === "Pass"
+                          ? "To delete this name from your portfolio go to 'My Domains'"
+                          : "Delete this name from your account"
+                      }
+                      className="inline-block"
+                    >
+                      <Trash2
+                        onClick={() => {
+                          if (domain.status === "Pass") return;
+                          setPendingDelete([domain]);
+                          setConfirmOpen(true);
+                        }}
+                        className={`${domain.status === "Pass"
+                          ? "text-gray-400 opacity-50 cursor-not-allowed"
+                          : "text-red-600 hover:text-red-700 cursor-pointer"
+                          }`}
+                      />
+                    </span>
+                  </td>
 
                 </tr>
               ))

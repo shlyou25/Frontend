@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import ExcelDropZone from "./ExcelDropZone";
 import { downloadDomainTemplate } from "../../utils/downloadDomainTemplate";
 import Link from "next/link";
+import { CheckCircle, XCircle, Package } from "lucide-react";
 
 const AddDomainsCard = ({ onClose }: { onClose: () => void }) => {
   const [domainText, setDomainText] = useState("");
@@ -19,19 +20,23 @@ Domains:
 <domain2>
 <domain3>`;
 
+
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (loading) return;
+
     if (domainText.includes("Format each root domain")) {
-      toast.error("Please replace the template text with actual domains.");
+      toast.error("Please replace the template text.");
       return;
     }
-    toast.success('Domains submitted for addition to your portfolio. You will be notified once they are added.')
+
     try {
       setLoading(true);
-      const isValidDomain = (domain: string) =>
-        /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(domain);
 
-      // Normalize textarea → lines
+      const isValidDomain = (domain: string) =>
+        /^(?!-)(?:[a-z0-9-]{1,63}\.)+[a-z]{2,}$/i.test(domain);
+
       const parsedDomains = domainText
         .split("\n")
         .map((line) => line.trim())
@@ -40,35 +45,33 @@ Domains:
           const [domainName, url] = line.split(",").map((v) => v?.trim());
 
           return {
-            domainName: domainName?.trim(),
+            domainName: domainName?.toLowerCase(),
             url: url || undefined,
-            rawLine: line,
           };
         });
 
-      // 🚨 VALIDATION (KEY FIX)
       const invalidRows = parsedDomains.filter(
         (d) => !d.domainName || !isValidDomain(d.domainName)
       );
 
       if (invalidRows.length) {
-        toast.error(
-          "Each line must start with a valid root domain (e.g., example.com). URL alone is not allowed."
-        );
+        toast.error("Invalid domain format detected.");
         setLoading(false);
         return;
       }
 
-      // ✅ clean objects
-      const domains = parsedDomains.map(({ rawLine, ...rest }) => rest);
-
-      // ✅ dedupe
       const uniqueDomains = Array.from(
-        new Map(domains.map((d) => [d.domainName, d])).values()
+        new Map(parsedDomains.map((d) => [d.domainName, d])).values()
       );
 
       if (!uniqueDomains.length) {
-        toast.error("Please add at least one valid domain.");
+        toast.error("Please add at least one domain.");
+        setLoading(false);
+        return;
+      }
+
+      if (uniqueDomains.length > 500) {
+        toast.error("Max 500 domains allowed per upload.");
         setLoading(false);
         return;
       }
@@ -79,23 +82,61 @@ Domains:
         { withCredentials: true }
       );
 
-      const { added, failed, remaining, message } = res.data;
+      const { added, failed, failedBreakdown, remaining } = res.data;
 
-      let toastMessage = `📊 Domain Processing Result\n\n`;
+      let message = `📊 Domain Upload Summary\n\n`;
 
-      toastMessage += `🟢 Added: ${added}\n`;
-      toastMessage += `🔴 Failed: ${failed}\n`;
-      toastMessage += `📦 Remaining slots: ${remaining}\n\n`;
+      message += `🟢 Added: ${added}\n`;
+      message += `🔴 Failed: ${failed}\n`;
 
-      if (failed > 0) {
-        toastMessage +=
-          "⚠️ Some domains were not added due to unsupported TLDs. Check Upload Status for details or contact support via the Contact page.";
+      if (failed > 0 && failedBreakdown) {
+        message += `\nBreakdown:\n`;
+
+        if (failedBreakdown.tld) {
+          message += `• Invalid TLD: ${failedBreakdown.tld}\n`;
+        }
+
+        if (failedBreakdown.urlMismatch) {
+          message += `• URL Mismatch: ${failedBreakdown.urlMismatch}\n`;
+        }
       }
 
-      toast.success(toastMessage, {
-        autoClose: 8000,
-        style: { whiteSpace: "pre-line" },
-      });
+      if (remaining !== undefined) {
+        message += `\n📦 Remaining slots: ${remaining}`;
+      }
+
+      toast.success(
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center gap-2 text-green-600">
+            <CheckCircle size={16} />
+            <span>Added: {added}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-red-600">
+            <XCircle size={16} />
+            <span>Failed: {failed}</span>
+          </div>
+
+          {failed > 0 && failedBreakdown && (
+            <div className="pl-6 text-slate-600 text-xs">
+              {failedBreakdown.tld > 0 && (
+                <div>• Invalid TLD: {failedBreakdown.tld}</div>
+              )}
+              {failedBreakdown.urlMismatch > 0 && (
+                <div>• URL mismatch: {failedBreakdown.urlMismatch}</div>
+              )}
+            </div>
+          )}
+
+          {remaining !== undefined && (
+            <div className="flex items-center gap-2 text-blue-600 pt-1">
+              <Package size={16} />
+              <span>Remaining: {remaining}</span>
+            </div>
+          )}
+        </div>,
+        { autoClose: 8000 }
+      );
       setDomainText("");
       onClose();
     } catch (error: any) {
@@ -109,7 +150,7 @@ Domains:
 
   return (
     <>
-      <form onSubmit={onSubmitHandler} className="relative">
+      <form onSubmit={onSubmitHandler} className="relative left-1/2 -translate-x-1/2">
         <p className="text-center text-sm text-slate-600 mb-6">
           Add domains by uploading a spreadsheet or entering them below.
         </p>
