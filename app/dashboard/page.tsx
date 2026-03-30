@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import Footer from "../../components/Footer";
 import NavbarComponenet from "../../components/NavbarComponenet";
@@ -24,7 +25,7 @@ import {
   X
 } from "lucide-react";
 import { PlanCardInterface } from "@/components/plan/plancard";
-import { Metadata } from "next";
+
 
 export const metadata: Metadata = {
   title: "Domz.com | Dashboard",
