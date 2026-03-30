@@ -1,0 +1,153 @@
+'use client';
+
+import axios from 'axios';
+import { ChangeEvent, useState } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from "react";
+import { Metadata } from 'next';
+import { toast } from 'react-toastify';
+import Footer from '../../components/Footer';
+import NavbarComponenet from '../../components/NavbarComponenet';
+import Loader from '../../components/Loader';
+import Subscribe from '../../utils/subscribe';
+
+
+interface UserMessageInterface {
+  name: string;
+  email: string;
+  message: string;
+  subject: string;
+}
+export const metadata: Metadata = {
+  title: "Domz.com | Contact",
+  description:
+    "Contact Domz.com regarding our curated domain marketplace. We help buyers and trusted investors connect directly and complete commission-free domain transactions.",
+};
+const ContactClient = () => {
+  
+  const [userData, setUserData] = useState<UserMessageInterface>({
+    name: '',
+    email: '',
+    message: '',
+    subject: 'New Submisson On the Contact Form',
+  });
+  const [loaderStatus, setLoaderStatus] = useState(false);
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const onChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!captchaToken) {
+      toast.error("Please verify the captcha");
+      return;
+    }
+
+    setLoaderStatus(true);
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_apiLink}email/sendemail`,
+        {
+          ...userData,
+          captchaToken
+        }
+      );
+
+      toast.success(res?.data?.message || "Message sent successfully");
+
+      captchaRef.current?.reset();
+      setCaptchaToken(null);
+
+    } catch (err: any) {
+      toast.error(
+        err?.response?.data?.message || "An unexpected error occurred"
+      );
+    } finally {
+      setLoaderStatus(false);
+    }
+  };
+  if (loaderStatus) return <Loader />;
+  return (
+    <div className="lg:pl-[10%] lg:pr-[10%] lg:pt-9">
+      <NavbarComponenet
+        text="Let's Start the conversation"
+        IsParaText
+        ParaText={
+          <>
+            As a user-centric platform, your feedback matters.
+            <br />
+            Reach out via the contact form or email, info@domz.com
+          </>
+        }
+        searchbarStatus={false}
+        email="info@domz.com"
+      />
+      <form
+        onSubmit={onSubmitHandler}
+        className="max-w-170 mx-auto pt-6 px-4 md:px-0"
+      >
+        <h2 className="text-center text-[2rem] font-bold mb-3">
+          <span className="bg-linear-to-r from-blue-600 via-blue-500 to-slate-900 bg-clip-text text-transparent">Your questions and feedback
+            matter.
+          </span>
+        </h2>
+
+        <input
+          type="text"
+          name="name"
+          required
+          onChange={onChangeHandler}
+          placeholder="Name"
+          className="bg-blue-100 rounded-2xl w-full px-8 py-5 mb-6"
+        />
+
+        <input
+          type="email"
+          name="email"
+          required
+          onChange={onChangeHandler}
+          placeholder="Email"
+          className="bg-blue-100 rounded-2xl w-full px-8 py-5 mb-6"
+        />
+
+        <textarea
+          name="message"
+          required
+          onChange={onChangeHandler}
+          placeholder="Comment"
+          className="bg-blue-100 rounded-2xl w-full px-8 py-5 mb-6"
+        />
+        <div className="flex justify-center mb-6">
+          <ReCAPTCHA
+            ref={captchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+            onChange={(token) => setCaptchaToken(token)}
+          />
+        </div>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="w-57.5 h-15 bg-blue-600 text-white rounded-full font-semibold"
+          >
+            SUBMIT
+          </button>
+        </div>
+      </form>
+      <Subscribe buttonText="Subscribe Now" heading="Stay Updated" text="Get news, announcements, and highlighted names when our newsletter launches." />
+      <Footer />
+    </div>
+  );
+};
+
+export default ContactClient;
