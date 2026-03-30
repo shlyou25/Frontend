@@ -11,8 +11,38 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Domz",
-  description: "Domz.com is a curated domain marketplace where trusted investors list domain name portfolios. Discover great names, connect directly with sellers, and close deals commission-free.",
+  metadataBase: new URL("https://www.domz.com"),
+
+  title: {
+    default: "Domz.com | Domain Name Marketplace",
+    template: "%s | Domz.com",
+  },
+
+  description:
+    "Domz.com is a curated domain marketplace where trusted investors list domain name portfolios. Discover great names, connect directly with sellers, and close deals commission-free.",
+
+  applicationName: "Domz.com",
+
+  openGraph: {
+    title: "Domz.com | Domain Name Marketplace",
+    description:
+      "Discover great domain names, connect directly with sellers, and close deals commission-free.",
+    url: "https://www.domz.com",
+    siteName: "Domz.com",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Domz.com | Domain Name Marketplace",
+    description:
+      "Discover premium domains and connect directly with sellers commission-free.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
