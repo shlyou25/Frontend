@@ -4,12 +4,13 @@ import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
+import { Metadata } from 'next';
 import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 import NavbarComponenet from '../../components/NavbarComponenet';
 import Loader from '../../components/Loader';
 import Subscribe from '../../utils/subscribe';
-import { Metadata } from 'next';
+
 
 interface UserMessageInterface {
   name: string;
