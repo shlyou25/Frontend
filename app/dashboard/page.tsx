@@ -24,6 +24,13 @@ import {
   X
 } from "lucide-react";
 import { PlanCardInterface } from "@/components/plan/plancard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Domz.com | Dashboard",
+  description:
+    "Manage your domain name portfolios in the Domz.com dashboard. Upload listings, review offers, and connect directly with buyers commission-free.",
+};
 
 const Page = () => {
   const router = useRouter();
