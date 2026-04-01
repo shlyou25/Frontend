@@ -114,18 +114,19 @@
 
 'use client'
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
 import { PlanCardInterface } from "@/components/plan/plancard"
 import Link from "next/link"
-
 type Props = {
   planinfo?: PlanCardInterface
 }
 
 export default function PartnerDomz({ planinfo }: Props) {
   const [showForm, setShowForm] = useState(false)
+  
+  const formRef = useRef<HTMLDivElement | null>(null)
 
   const [form, setForm] = useState({
     name: "",
@@ -179,6 +180,16 @@ export default function PartnerDomz({ planinfo }: Props) {
       setLoading(false)
     }
   }
+  const handleApplyClick = () => {
+  setShowForm(true)
+
+  setTimeout(() => {
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }, 100) // wait for render
+}
   if (planinfo) 
   return (
     <p className="mt-6 text-lg text-gray-600 leading-relaxed text-center">
@@ -212,13 +223,13 @@ export default function PartnerDomz({ planinfo }: Props) {
           application form below.
         </p>
         {showForm ? <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => setShowForm(false)}
           className="mt-8 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-md font-semibold transition cursor-pointer"
         >
           Cancel
         </button> :
           <button
-            onClick={() => setShowForm(!showForm)}
+            onClick={handleApplyClick}
             className="mt-8 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-md font-semibold transition curor-po"
           >
             Apply Now
@@ -230,7 +241,7 @@ export default function PartnerDomz({ planinfo }: Props) {
 
       {showForm &&
 
-        <div className="mt-16 max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+        <div ref={formRef} className="mt-16 max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
 
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
             Portfolio Submission

@@ -13,8 +13,9 @@ import Faq from './Faq';
 import UserTable from './UserTable';
 import PlanRequestTable from './PlanRequest';
 import Subscribers from './subscribers';
+import AdminDomainTable from './admindomain';
 
-type AdminView = "dashboard" | "Users" | "domains" | "Plans" | "Plan Requests" | "Faq" | "Subscribers";
+type AdminView = "dashboard" | "Users" | "domains" | "Plans" | "Plan Requests" | "Faq" | "Subscribers" | "Upload Domain";
 
 
 export interface UserPlan {
@@ -35,7 +36,7 @@ export interface UserInterface {
   plan?: UserPlan | null;
 }
 
-interface DomainsResponse {
+export interface DomainsResponse {
   success: boolean;
   count: number;
   manualReviewCount: number;
@@ -99,6 +100,7 @@ const Page = () => {
   const [allUsers, setAllUsers] = useState<UserInterface[]>([]);
   const [refreshUsers, setRefreshUsers] = useState(0);
   const [domainsData, setDomainsData] = useState<DomainsResponse | null>(null);
+  const [admindomainsdata, setadmindomainsdata] = useState<DomainsResponse | null>(null);
   const [refreshDomainStatus, setrefreshDomainStatus] = useState(0);
   const [allPlans, setallPlans] = useState<PlansResponse>()
   const [refreshPlans, setRefreshPlans] = useState(0);
@@ -159,7 +161,7 @@ const Page = () => {
     };
     fetchPlanRequests();
   }, [isauthenciated, refreshPlanRequest]);
-
+ 
   useEffect(() => {
     if (!isauthenciated) return;
 
@@ -172,6 +174,26 @@ const Page = () => {
       
         
         setDomainsData(res.data); 
+      } catch {
+        toast.error("Error fetching domains");
+      }
+    };
+    fetchDomains();
+  }, [isauthenciated, refreshDomainStatus]);
+  useEffect(() => {
+    if (!isauthenciated) return;
+
+    const fetchDomains = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_apiLink}domain/getdomainbyuser`,
+          { withCredentials: true }
+        );
+        console.log('====================================');
+        console.log(res.data,"okay");
+        console.log('====================================');
+        
+        setadmindomainsdata(res.data); 
       } catch {
         toast.error("Error fetching domains");
       }
@@ -219,7 +241,6 @@ const Page = () => {
       >
         <Content activeView={activeView} setActiveView={setActiveView} />
       </aside>
-      {/* DESKTOP SIDEBAR */}
       <aside className="hidden sm:flex sm:w-64 sm:h-full sm:fixed bg-white border-r">
         <Content activeView={activeView} setActiveView={setActiveView} />
       </aside>
@@ -246,12 +267,10 @@ const Page = () => {
             </div>
           </>
         )}
-        {/* IDEAS */}
        {isauthenciated &&  activeView === "dashboard" && <Table />}
         {activeView === "Users" && <UserTable data={allUsers}
           onRefresh={() => setRefreshUsers(prev => prev + 1)}
         />}
-        {/* DOMAINS */}
         {activeView === "domains" && domainsData?.domains && (
           <div className="bg-white p-6 rounded-xl shadow">
             <DomainTable
@@ -289,6 +308,19 @@ const Page = () => {
            <Subscribers/>
           </div>
         )}
+
+         {activeView === "Faq" && (
+          <div className="bg-white p-6 rounded-xl shadow">
+           <Faq/>
+          </div>
+        )}
+        {activeView === "Upload Domain" && domainsData?.domains && (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <AdminDomainTable
+            />
+          </div>
+        )}
+        
       </main>
     </div>
   );
