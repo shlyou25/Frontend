@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "Contact Domz.com regarding our curated domain marketplace. We help buyers and trusted investors connect directly and complete commission-free domain transactions.",
 };
 const ContactClient = () => {
-  
+
   const [userData, setUserData] = useState<UserMessageInterface>({
     name: '',
     email: '',
@@ -32,7 +32,7 @@ const ContactClient = () => {
     subject: 'New Submisson On the Contact Form',
   });
   const [loaderStatus, setLoaderStatus] = useState(false);
-  const captchaRef = useRef<ReCAPTCHA | null>(null);
+  const captchaRef = useRef<InstanceType<typeof ReCAPTCHA> | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const onChangeHandler = (
@@ -132,7 +132,7 @@ const ContactClient = () => {
           <ReCAPTCHA
             ref={captchaRef}
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
-            onChange={(token) => setCaptchaToken(token)}
+            onChange={(token: string | null) => setCaptchaToken(token)}
           />
         </div>
         <div className="flex justify-center">
