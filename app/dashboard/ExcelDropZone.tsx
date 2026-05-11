@@ -21,9 +21,20 @@ const ExcelDropZone = ({
 
       const lines = rows
         .map((row) => {
-          const domain = String(row.domainName || "").trim();
-          const url = String(row.url || "").trim();
+         
+          const normalizedRow = Object.keys(row).reduce((acc, key) => {
+            acc[key.toLowerCase()] = row[key];
+            return acc;
+          }, {} as Record<string, any>);
+
+          const domain = String(
+            normalizedRow.domainname || normalizedRow.domain || ""
+          ).trim();
+
+          const url = String(normalizedRow.url || "").trim();
+
           if (!domain) return null;
+
           return url ? `${domain}, ${url}` : domain;
         })
         .filter(Boolean)
