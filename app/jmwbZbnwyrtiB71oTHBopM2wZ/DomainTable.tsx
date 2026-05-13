@@ -271,12 +271,11 @@ const DomainsTable = ({ data, onRequestUpdated }: DomainsTableProps) => {
                   />
                 </th>
               )}
-
-              <th className="px-6 py-3 text-left">S.No.</th>
+              <th className="px-6 py-3 text-left ">S.No.</th>
               <th className="px-6 py-3 text-left">Domain</th>
               <th className="px-6 py-3 text-left">Owner</th>
               <th className="px-6 py-3 text-left">Email</th>
-              <th className="px-6 py-3 text-left">Admin Check Staus</th>
+              <th className="px-6 py-3 text-left whitespace-nowrap">Admin Check Status</th>
               <th className="px-6 py-3 text-left">Staus</th>
               <th className="px-6 py-3 text-left">Registered Date</th>
               <th className="px-6 py-3 text-left">Promote</th>

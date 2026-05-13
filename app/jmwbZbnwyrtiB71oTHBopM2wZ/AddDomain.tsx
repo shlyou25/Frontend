@@ -46,7 +46,7 @@ Domains:
           const [domainName, url] = line.split(",").map((v) => v?.trim());
 
           return {
-            domainName: domainName?.toLowerCase(),
+            domainName: domainName,
             url: url || undefined,
           };
         });
@@ -71,11 +71,11 @@ Domains:
         return;
       }
 
-      if (uniqueDomains.length > 500) {
-        toast.error("Max 500 domains allowed per upload.");
-        setLoading(false);
-        return;
-      }
+      // if (uniqueDomains.length > 500) {
+      //   toast.error("Max 500 domains allowed per upload.");
+      //   setLoading(false);
+      //   return;
+      // }
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_apiLink}domain/adddomainadmin`,

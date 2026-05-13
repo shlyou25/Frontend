@@ -32,7 +32,7 @@ const ChangeAdminCheckStatus = ({
   };
 
   return (
-    <td className="px-6 py-4">
+    <td className="px-6 py-4 ">
       <div className="relative inline-block w-full">
         <select
           value={adminCheck ? "checked" : "not_checked"}
