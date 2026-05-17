@@ -155,7 +155,7 @@ Domains:
     <>
       <form
         onSubmit={onSubmitHandler}
-        className="flex justify-center px-4 py-10 bg-slate-50 min-h-screen"
+        className="flex justify-center px-4 py-10 bg-slate-50 h-full"
       >
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
 
@@ -222,52 +222,6 @@ example.com, https://lander.com/example`}
             />
           </div>
 
-          {/* AI BOX */}
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 flex justify-between gap-4">
-            <div>
-              <p className="text-sm font-semibold text-blue-900 mb-1">
-                AI Formatting Helper
-              </p>
-              <p className="text-xs text-slate-600 mb-2">
-                Convert domains into correct format instantly
-              </p>
-
-              <pre className="text-xs bg-white border rounded-lg p-2 overflow-auto">
-                {AI_PROMPT}
-              </pre>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                navigator.clipboard.writeText(AI_PROMPT);
-                toast.success("Copied");
-              }}
-              className="h-8 px-3 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700"
-            >
-              Copy
-            </button>
-          </div>
-
-          {/* CONFIRMATIONS */}
-          <div className="space-y-3 text-sm">
-            <label className="flex items-start gap-3">
-              <input type="checkbox" required className="mt-1 w-4 h-4" />
-              <span>I confirm I own these domains</span>
-            </label>
-
-            <label className="flex items-start gap-3">
-              <input type="checkbox" required className="mt-1 w-4 h-4" />
-              <span>
-                I agree to{" "}
-                <Link href="/terms" className="text-blue-600 underline">
-                  terms
-                </Link>
-              </span>
-            </label>
-          </div>
-
-          {/* CTA */}
           <button
             type="submit"
             disabled={loading}
