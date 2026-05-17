@@ -25,7 +25,7 @@ const ExcelDropZone = ({
       const lines = rows
         .map((row) => {
           const normalizedRow = Object.keys(row).reduce((acc, key) => {
-            acc[key.toLowerCase().trim()] = row[key];
+            acc[key.trim()] = row[key];
             return acc;
           }, {} as Record<string, any>);
 
