@@ -50,18 +50,21 @@ Domains:
           };
         });
 
+      const validDomains = parsedDomains.filter(
+        (d) => d.domainName && isValidDomain(d.domainName)
+      );
+
       const invalidRows = parsedDomains.filter(
         (d) => !d.domainName || !isValidDomain(d.domainName)
       );
 
       if (invalidRows.length) {
-        toast.error("Invalid domain format detected.");
-        setLoading(false);
-        return;
+        toast.warning(
+          `${invalidRows.length} invalid domain(s) skipped`
+        );
       }
-
       const uniqueDomains = Array.from(
-        new Map(parsedDomains.map((d) => [d.domainName, d])).values()
+        new Map(validDomains.map((d) => [d.domainName, d])).values()
       );
 
       if (!uniqueDomains.length) {
