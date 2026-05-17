@@ -19,27 +19,43 @@ const ExcelDropZone = ({
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<any>(sheet, { defval: "" });
 
+      const isValidDomain = (domain: string) =>
+        /^(?!-)(?:[a-z0-9-]{1,63}\.)+[a-z]{2,}$/i.test(domain);
+
       const lines = rows
         .map((row) => {
-         
           const normalizedRow = Object.keys(row).reduce((acc, key) => {
-            acc[key.toLowerCase()] = row[key];
+            acc[key.toLowerCase().trim()] = row[key];
             return acc;
           }, {} as Record<string, any>);
 
-          const domain = String(
-            normalizedRow.domainname || normalizedRow.domain || ""
+          let domain = String(
+            normalizedRow.domainname ||
+            normalizedRow.domain ||
+            ""
+          )
+            .trim()
+            .replace(/,$/, "");
+
+          const url = String(
+            normalizedRow.url ||
+            normalizedRow.link ||
+            ""
           ).trim();
 
-          const url = String(normalizedRow.url || "").trim();
+          // extract domain if accidentally pasted full row
+          if (domain.includes(",")) {
+            domain = domain.split(",")[0].trim();
+          }
 
-          if (!domain) return null;
+          if (!isValidDomain(domain)) return null;
 
-          return url ? `${domain}, ${url}` : domain;
+          return url
+            ? `${domain}, ${url}`
+            : domain;
         })
         .filter(Boolean)
         .join("\n");
-
       if (!lines) {
         toast.error("No valid domains found in file");
         return;
