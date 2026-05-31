@@ -19,13 +19,13 @@ const ExcelDropZone = ({
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<any>(sheet, { defval: "" });
 
-      const isValidDomain = (domain: string) =>
-        /^(?!-)(?:[a-z0-9-]{1,63}\.)+[a-z]{2,}$/i.test(domain);
+     const isValidDomain = (domain: string) =>
+  /^(?!-)(?:[A-Za-z0-9-]{1,63}\.)+[A-Za-z]{2,}$/.test(domain);
 
       const lines = rows
         .map((row) => {
           const normalizedRow = Object.keys(row).reduce((acc, key) => {
-            acc[key.trim()] = row[key];
+            acc[key.toLowerCase().trim()] = row[key];
             return acc;
           }, {} as Record<string, any>);
 
