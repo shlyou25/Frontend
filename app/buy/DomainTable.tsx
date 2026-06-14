@@ -37,9 +37,9 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
   const [filters, setFilters] = useState<DomainFilters>(DEFAULT_FILTERS);
-  const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [sortBy, setSortBy] = useState<SortOption>('length_asc');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState<number>(10);
+  const [limit, setLimit] = useState<number>(100);
   const [total, setTotal] = useState(0);
   const [authDrawerOpen, setAuthDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -189,9 +189,9 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
     };
 
     fetchDomains();
-  }, [page,limit,searchQuery,filters,sortBy]);
+  }, [page, limit, searchQuery, filters, sortBy]);
 
-const filteredDomains = domains;
+  const filteredDomains = domains;
   return (
     <div className="w-full mt-10">
       <div className="rounded-2xl border border-gray-200/70 bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] overflow-hidden">
