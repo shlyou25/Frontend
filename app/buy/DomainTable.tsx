@@ -37,7 +37,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
   const [filters, setFilters] = useState<DomainFilters>(DEFAULT_FILTERS);
-  const [sortBy, setSortBy] = useState<SortOption>('length_desc');
+  const [sortBy, setSortBy] = useState<SortOption>('length_asc');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<number>(100);
   const [total, setTotal] = useState(0);
