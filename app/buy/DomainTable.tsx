@@ -37,7 +37,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
   const [filters, setFilters] = useState<DomainFilters>(DEFAULT_FILTERS);
-  const [sortBy, setSortBy] = useState<SortOption>('length_asc');
+  const [sortBy, setSortBy] = useState<SortOption>('length_desc');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<number>(100);
   const [total, setTotal] = useState(0);
@@ -128,8 +128,15 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
         } else if (filters.sellerName) {
           try {
             res = await axios.get(
-              `${process.env.NEXT_PUBLIC_apiLink}domain/seller/${filters.sellerName}`,
-              { params: { page, limit } }
+              `${process.env.NEXT_PUBLIC_apiLink}domain/public`,
+              {
+                params: {
+                  page,
+                  limit,
+                  sortBy,
+                  sellerName: filters.sellerName
+                }
+              }
             );
           } catch (err: any) {
             if (err.response?.status === 404) {
