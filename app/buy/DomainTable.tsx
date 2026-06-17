@@ -8,6 +8,7 @@ import { checkAuth } from '@/utils/checkAuth';
 import DomainReplyEmail from "./DomainReplyEmail";
 import FilterDomain, { DomainFilters } from '../../components/FilterDashboard';
 import Drawer from './Drawer';
+import FeaturedSellers from './FeaturedSellers';
 
 interface Domain {
   domainId: string;
@@ -19,6 +20,9 @@ interface Domain {
     id?: string;
     userName?: string;
   };
+}
+interface FeaturedSeller {
+  userName: string;
 }
 
 interface Props {
@@ -43,6 +47,9 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [total, setTotal] = useState(0);
   const [authDrawerOpen, setAuthDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [featuredSellers, setFeaturedSellers] = useState<FeaturedSeller[]>([]);
+  const [showFeaturedSellers, setShowFeaturedSellers] = useState(false);
+  const [featuredSellerDrawer, setFeaturedSellerDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const totalPages = Math.ceil(total / limit);
   const hasActiveFilters =
@@ -197,7 +204,21 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
 
     fetchDomains();
   }, [page, limit, searchQuery, filters, sortBy]);
+  useEffect(() => {
+    const fetchFeaturedSellers = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_apiLink}user/featured-sellers`
+        );
 
+        setFeaturedSellers(res.data.sellers || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFeaturedSellers();
+  }, []);
   const filteredDomains = domains;
   return (
     <div className="w-full mt-10">
@@ -206,54 +227,91 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
 px-5 py-4
 bg-white/60 backdrop-blur
 border-b border-gray-200/70">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowFilter(v => !v)}
-              className="
-    inline-flex items-center justify-center
-    bg-blue-600 hover:bg-blue-700
-    text-white font-semibold
-    px-5 py-2.5
-    rounded-lg
-    shadow-sm hover:shadow-md
-    active:scale-[0.98]
-    focus:outline-none focus:ring-2 focus:ring-blue-500/40
-    transition-all duration-200
-  "
-            >
-              {showFilter ? (
-                <>
-                  <X size={16} className="mr-2" />
-                  Close Filter
-                </>
-              ) : (
-                <>
-                  <SlidersHorizontal size={16} className="mr-2" />
-                  Filter
-                </>
-              )}
-            </button>
-            <button
-              disabled={!hasActiveFilters && !searchQuery}
-              onClick={() => {
-                setFilters(DEFAULT_FILTERS);
-                setPage(1);
-                setSearchQuery("");
-              }}
-              className={`
-    inline-flex items-center gap-2
-    px-4 py-2 rounded-xl text-sm font-medium
-    border transition-all duration-200
-    ${hasActiveFilters || searchQuery
-                  ? 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 shadow-sm hover:shadow-md'
-                  : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
-                }
-  `}
-            >
-              <RotateCcw size={16} />
-              Clear Filters
-            </button>
-          </div>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+  <button
+    onClick={() => setShowFilter(v => !v)}
+    className="
+      inline-flex items-center justify-center
+      bg-blue-600 hover:bg-blue-700
+      text-white font-semibold
+      px-4 sm:px-5 py-2.5
+      rounded-lg
+      shadow-sm hover:shadow-md
+      active:scale-[0.98]
+      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+      transition-all duration-200
+      whitespace-nowrap
+    "
+  >
+    {showFilter ? (
+      <>
+        <X size={16} className="mr-2" />
+        <span className="hidden sm:inline">Close Filter</span>
+        <span className="sm:hidden">Close</span>
+      </>
+    ) : (
+      <>
+        <SlidersHorizontal size={16} className="mr-2" />
+        Filter
+      </>
+    )}
+  </button>
+
+  <button
+    onClick={() => setFeaturedSellerDrawer(true)}
+    className="
+      inline-flex items-center justify-center
+      bg-blue-600 hover:bg-blue-700
+      text-white font-semibold
+      px-4 sm:px-5 py-2.5
+      rounded-lg
+      shadow-sm hover:shadow-md
+      active:scale-[0.98]
+      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+      transition-all duration-200
+      whitespace-nowrap
+    "
+  >
+    <span className="hidden sm:inline">
+      Featured Sellers
+    </span>
+
+    <span className="sm:hidden">
+      Sellers
+    </span>
+  </button>
+
+  <button
+    disabled={!hasActiveFilters && !searchQuery}
+    onClick={() => {
+      setFilters(DEFAULT_FILTERS);
+      setPage(1);
+      setSearchQuery("");
+    }}
+    className={`
+      inline-flex items-center gap-2
+      px-3 sm:px-4 py-2
+      rounded-xl text-sm font-medium
+      border transition-all duration-200
+      whitespace-nowrap
+      ${
+        hasActiveFilters || searchQuery
+          ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 shadow-sm hover:shadow-md"
+          : "border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50"
+      }
+    `}
+  >
+    <RotateCcw size={16} />
+
+    <span className="hidden sm:inline">
+      Clear Filters
+    </span>
+
+    <span className="sm:hidden">
+      Clear
+    </span>
+  </button>
+</div>
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span>Show</span>
@@ -295,6 +353,44 @@ border-b border-gray-200/70">
           {showFilter && (
             <aside className="w-72 min-w-72 border-r border-gray-200/70 bg-gray-50/60 backdrop-blur-sm overflow-y-auto">
               <FilterDomain filters={filters} onChange={setFilters} />
+            </aside>
+          )}
+          {showFeaturedSellers && (
+            <aside className="lg:hidden border-b border-gray-200 bg-white">
+              <div className="p-4">
+                <h3 className="font-semibold mb-3">
+                  Featured Sellers
+                </h3>
+
+                <div className="space-y-2">
+                  {featuredSellers.map((seller) => (
+                    <button
+                      key={seller.userName}
+                      onClick={() => {
+                        setSearchQuery("");
+
+                        setFilters(prev => ({
+                          ...prev,
+                          sellerName: seller.userName,
+                        }));
+
+                        setPage(1);
+
+                        setShowFeaturedSellers(false);
+                      }}
+                      className={`
+              w-full text-left p-3 rounded-lg border
+              ${filters.sellerName === seller.userName
+                          ? "bg-blue-50 border-blue-500"
+                          : "bg-white border-gray-200"
+                        }
+            `}
+                    >
+                      {seller.userName}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </aside>
           )}
           <div className="flex-1 overflow-x-auto">
@@ -413,6 +509,28 @@ border-b border-gray-200/70">
               </tbody>
             </table>
           </div>
+          <FeaturedSellers
+            sellers={featuredSellers}
+            selectedSeller={filters.sellerName}
+            onSelect={(sellerName) => {
+              setSearchQuery('');
+
+              setFilters((prev) => ({
+                ...prev,
+                sellerName,
+              }));
+
+              setPage(1);
+            }}
+            onClear={() => {
+              setFilters((prev) => ({
+                ...prev,
+                sellerName: '',
+              }));
+
+              setPage(1);
+            }}
+          />
         </div>
         {totalPages > 1 && (
           <nav className="flex items-center justify-center mt-8 text-sm select-none">
@@ -502,6 +620,40 @@ border-b border-gray-200/70">
           <p className="text-xs text-gray-500 text-center pt-2">
             Takes less than a minute to get started
           </p>
+        </div>
+      </Drawer>
+      <Drawer
+        isOpen={featuredSellerDrawer}
+        onClose={() => setFeaturedSellerDrawer(false)}
+        title="Featured Sellers"
+      >
+        <div className="space-y-2">
+          {featuredSellers.map((seller) => (
+            <button
+              key={seller.userName}
+              onClick={() => {
+                setSearchQuery("");
+
+                setFilters((prev) => ({
+                  ...prev,
+                  sellerName: seller.userName,
+                }));
+
+                setPage(1);
+
+                setFeaturedSellerDrawer(false);
+              }}
+              className={`
+          w-full text-left p-3 rounded-xl border transition
+          ${filters.sellerName === seller.userName
+                  ? "bg-blue-50 border-blue-500 text-blue-700"
+                  : "bg-white border-gray-200 hover:border-blue-300"
+                }
+        `}
+            >
+              {seller.userName}
+            </button>
+          ))}
         </div>
       </Drawer>
       <Drawer
