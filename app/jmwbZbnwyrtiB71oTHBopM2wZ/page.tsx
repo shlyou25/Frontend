@@ -33,6 +33,7 @@ export interface UserInterface {
   phoneNumber?: string;
   createdAt: string;
   isActive: boolean;
+  featuredSeller:boolean;
   plan?: UserPlan | null;
 }
 
