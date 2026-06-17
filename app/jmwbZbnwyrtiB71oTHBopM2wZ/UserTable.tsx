@@ -50,6 +50,27 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
             );
         }
     };
+    const onFeaturedSellerChange = async (
+        userId: string,
+    ) => {
+        try {
+            const res = await axios.patch(
+                `${process.env.NEXT_PUBLIC_apiLink}user/featured-seller/${userId}`,
+                {},
+                { withCredentials: true }
+            );
+
+            if (res.data?.status) {
+                toast.success(res.data.message);
+                onRefresh();
+            }
+        } catch (error: any) {
+            toast.error(
+                error?.response?.data?.message ||
+                "Failed to update featured seller"
+            );
+        }
+    };
     /* 🔍 FILTER LOGIC */
     const filteredData = useMemo(() => {
         return data.filter(item => {
@@ -65,7 +86,7 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
                 : true;
 
             return matchesText && matchesDate;
-        }); 
+        });
     }, [data, search, dateFilter]);
 
     /* 📤 EXPORT TO EXCEL */
@@ -131,6 +152,7 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
                             <th className="px-6 py-3 text-left">Registered Date</th>
                             <th className="px-6 py-3 text-left">Status</th>
                             <th className="px-6 py-3 text-left">Change Status</th>
+                            <th className="px-6 py-3 text-left">Featured Seller</th>
                             <th className="px-6 py-3 text-left">Plan</th>
                         </tr>
                     </thead>
@@ -162,6 +184,30 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
         after:h-4 after:w-4 after:bg-white
         after:rounded-full after:transition-all
         ${item.isActive ? "after:translate-x-4" : ""}`}
+                                        />
+                                    </label>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <label className="inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={item.featuredSeller}
+                                            className="sr-only peer"
+                                            onChange={() =>
+                                                onFeaturedSellerChange(
+                                                    item._id,
+                                                )
+                                            }
+                                        />
+
+                                        <div
+                                            className={`relative w-9 h-5 rounded-full transition-colors
+        ${item.featuredSeller ? "bg-green-500" : "bg-red-500"}
+        after:content-['']
+        after:absolute after:top-0.5 after:left-0.5
+        after:h-4 after:w-4 after:bg-white
+        after:rounded-full after:transition-all
+        ${item.featuredSeller ? "after:translate-x-4" : ""}`}
                                         />
                                     </label>
                                 </td>
