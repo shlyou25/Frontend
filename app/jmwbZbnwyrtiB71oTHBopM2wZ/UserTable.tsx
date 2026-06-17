@@ -8,6 +8,7 @@ import { UserInterface } from "./page";
 import axios from "axios";
 import Modal from "../../components/model";
 import AddPlan from "./AddPlan";
+import { Check, Pencil, X } from "lucide-react";
 
 interface UserTableProps {
     data: UserInterface[];
@@ -23,6 +24,9 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
     const [dateFilter, setDateFilter] = useState("");
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null);
+    const [editingUserId, setEditingUserId] = useState<string | null>(null);
+    const [editedUserName, setEditedUserName] = useState("");
+
     const onChangeHandler = async (_id: string, currentStatus: boolean) => {
         const payload = {
             _id,
@@ -47,6 +51,28 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
             console.error("Toggle user status error:", error);
             toast.error(
                 error?.response?.data?.message || "Something went wrong"
+            );
+        }
+    };
+    const updateUsername = async (userId: string) => {
+        try {
+            const res = await axios.patch(
+                `${process.env.NEXT_PUBLIC_apiLink}user/update-username`,
+                {
+                    userId,
+                    userName: editedUserName,
+                },
+                { withCredentials: true }
+            );
+
+            if (res.data?.success) {
+                toast.success("Username updated successfully");
+                setEditingUserId(null);
+                onRefresh();
+            }
+        } catch (error: any) {
+            toast.error(
+                error?.response?.data?.message || "Failed to update username"
             );
         }
     };
@@ -147,6 +173,7 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
                         <tr>
                             <th className="px-6 py-3 text-left">S.No.</th>
                             <th className="px-6 py-3 text-left">Name</th>
+                            <th className="px-6 py-3 text-left">User Name</th>
                             <th className="px-6 py-3 text-left">Email</th>
                             <th className="px-6 py-3 text-left">Phone Number</th>
                             <th className="px-6 py-3 text-left">Registered Date</th>
@@ -161,6 +188,46 @@ const UserTable = ({ data, onRefresh }: UserTableProps) => {
                             <tr key={index} className="hover:bg-gray-50 transition">
                                 <td className="px-6 py-4">{index + 1}</td>
                                 <td className="px-6 py-4 text-blue-600 font-medium">{item.name || "No Name"}</td>
+                                <td className="px-6 py-4">
+                                    {editingUserId === item._id ? (
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="text"
+                                                value={editedUserName}
+                                                onChange={(e) => setEditedUserName(e.target.value)}
+                                                className="border rounded-lg px-2 py-1 text-sm"
+                                            />
+
+                                            <button
+                                                onClick={() => updateUsername(item._id)}
+                                                className="text-green-600 hover:text-green-700"
+                                            >
+                                                <Check size={18} />
+                                            </button>
+
+                                            <button
+                                                onClick={() => setEditingUserId(null)}
+                                                className="text-red-600 hover:text-red-700"
+                                            >
+                                                <X size={18} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            <span>{item.userName || "No Name"}</span>
+
+                                            <button
+                                                onClick={() => {
+                                                    setEditingUserId(item._id);
+                                                    setEditedUserName(item.userName || "");
+                                                }}
+                                                className="text-blue-600 hover:text-blue-800 transition"
+                                            >
+                                                <Pencil size={16} />
+                                            </button>
+                                        </div>
+                                    )}
+                                </td>
                                 <td className="px-6 py-4">{item.email}</td>
                                 <td className="px-6 py-4">{item.phoneNumber}</td>
                                 <td className="px-6 py-4">
