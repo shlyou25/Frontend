@@ -29,6 +29,7 @@ export interface UserPlan {
 export interface UserInterface {
   _id: string;
   email: string;
+  userName:string;
   name?: string;
   phoneNumber?: string;
   createdAt: string;
@@ -138,7 +139,7 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}user/allusers`,
           { withCredentials: true }
         );
-        setAllUsers(res.data.users);
+        setAllUsers(res?.data?.users);
       } catch {
         toast.error("Error fetching users");
       }
@@ -190,10 +191,6 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_apiLink}domain/getdomainbyuser`,
           { withCredentials: true }
         );
-        console.log('====================================');
-        console.log(res.data,"okay");
-        console.log('====================================');
-        
         setadmindomainsdata(res.data); 
       } catch {
         toast.error("Error fetching domains");
@@ -217,6 +214,8 @@ const Page = () => {
     };
     fetchPlans();
   }, [isauthenciated, refreshPlans])
+  
+  
   if (loading) return <Loader />;
   return (
     <div className="relative h-screen bg-[#F5F7FB]">
