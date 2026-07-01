@@ -727,7 +727,7 @@ const DomainTable = ({ searchQuery, setSearchQuery }: Props) => {
   const [authDrawerOpen, setAuthDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [featuredSellers, setFeaturedSellers] = useState<FeaturedSeller[]>([]);
-  const [showFeaturedSellers, setShowFeaturedSellers] = useState(false);
+  const [showFeaturedSellers, setShowFeaturedSellers] = useState(true);
   const [featuredSellerDrawer, setFeaturedSellerDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isXl, setIsXl] = useState(false);
